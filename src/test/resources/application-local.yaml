@@ -1,0 +1,9 @@
+AZURE_PREFIX: https://login.microsoftonline.com/navq.onmicrosoft.com/oauth2/v2.0
+
+AZURE_APP_WELL_KNOWN_URL: ${AZURE_PREFIX}/.well-known/openid-configuration
+AZURE_OPENID_CONFIG_TOKEN_ENDPOINT: ${AZURE_PREFIX}/token
+
+CLUSTER_ENV: dev
+
+CREDENTIAL_USERNAME: 123
+CREDENTIAL_PASSWORD: 123
