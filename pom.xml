@@ -29,6 +29,7 @@
         <springdoc.version>1.6.14</springdoc.version>
         <mockk.version>1.13.4</mockk.version>
         <felles.version>1.20230117091843_19b020f</felles.version>
+        <nav.security.version>2.1.8</nav.security.version> <!-- Denne burde være samme versjon som i felles -->
         <start-class>no.nav.infotrygd.feed.proxy.ApplicationKt</start-class>
     </properties>
     <dependencies>
@@ -116,6 +117,12 @@
             <groupId>io.mockk</groupId>
             <artifactId>mockk-jvm</artifactId>
             <version>${mockk.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>no.nav.security</groupId>
+            <artifactId>token-validation-spring-test</artifactId>
+            <version>${nav.security.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -6,7 +6,8 @@ metadata:
   labels:
     team: teamfamilie
 spec:
-  image: { { image } }
+  image: {{image}}
+  port: 8087
   liveness:
     path: /internal/status/isAlive
     initialDelay: 30
@@ -38,7 +39,7 @@ spec:
     enabled: true
     paths:
       - kvPath: /serviceuser/data/dev/srvinfotrygd-feed
-        mountPath: /secret/serviceuser
+        mountPath: /var/run/secrets/serviceuser/srvinfotrygd-feed
   azure:
     application:
       enabled: true
