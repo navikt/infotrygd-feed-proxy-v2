@@ -13,6 +13,9 @@ no.nav.security.jwt:
       accepted_audience: ${AZURE_APP_CLIENT_ID}
       proxyurl: http://webproxy-nais.nav.no:8088
       cookie_name: azure_token
+    sts:
+      discoveryurl: ${STS_DISCOVERY_URL}
+      accepted_audience: ${GYLDIGE_SERVICE_BRUKERE}
   client:
     registration:
       familie-baks-infotrygd-feed:
@@ -61,6 +64,6 @@ VEDTAKSFEED_URL: https://vedtaksfeed.intern.nav.no
 
 STS_PREFIX: http://security-token-service.default
 STS_DISCOVERY_SUFFIX: /rest/v1/sts/.well-known/openid-configuration
-STS_URL: ${STS_PREFIX}/rest/v1/sts/token
-STS_DISCOVERY_URL: ${STS_PREFIX}${STS_DISCOVERY_SUFFIX}
-GYLDIGE_SERVICE_BRUKERE: srvinfotrygd #TOO
+STS_URL: ${STS_PREFIX}/rest/v1/sts/token # Trenges av RestTemplateSTS
+GYLDIGE_SERVICE_BRUKERE: srvinfotrygd-feed
+STS_DISCOVERY_URL: https://security-token-service.nais.adeo.no/rest/v1/sts/.well-known/openid-configuration

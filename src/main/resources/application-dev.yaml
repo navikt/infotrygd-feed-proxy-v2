@@ -1,13 +1,5 @@
-no.nav.security.jwt:
-  issuer:
-    sts:
-      discoveryurl: ${STS_DISCOVERY_URL}
-      accepted_audience: ${GYLDIGE_SERVICE_BRUKERE}
-    stsTest:
-      discoveryurl: https://security-token-service-t4.nais.preprod.local${STS_DISCOVERY_SUFFIX}
-      accepted_audience: ${GYLDIGE_SERVICE_BRUKERE}
-
 CLUSTER_ENV: dev
 BAKS_INFOTRYGD_FEED_URL: https://familie-baks-infotrygd-feed.dev.intern.nav.no
 VEDTAKSFEED_URL: https://vedtaksfeed.dev.intern.nav.no
+STS_DISCOVERY_URL: https://security-token-service.nais.preprod.local/rest/v1/sts/.well-known/openid-configuration
 STS_URL: https://security-token-service.nais.preprod.local/rest/v1/sts/token
