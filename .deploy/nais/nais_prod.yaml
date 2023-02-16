@@ -33,12 +33,12 @@ spec:
   secureLogs:
     enabled: true
   ingresses:
-    - https://infotrygd-feed-proxy.dev.intern.nav.no
-    - https://infotrygd-feed-proxy.dev-fss-pub.nais.io
+    - https://infotrygd-feed-proxy.intern.nav.no
+    - https://infotrygd-feed-proxy.prod-fss-pub.nais.io
   vault:
     enabled: true
     paths:
-      - kvPath: /serviceuser/data/dev/srvinfotrygd-feed
+      - kvPath: /serviceuser/data/prod/srvinfotrygd-feed
         mountPath: /var/run/secrets/serviceuser/srvinfotrygd-feed
   azure:
     application:
@@ -51,15 +51,15 @@ spec:
       rules:
         - application: infotrygd-feed-konsument
           namespace: infotrygd
-          cluster: dev-fss
+          cluster: prod-fss
     outbound:
       rules:
         - application: familie-baks-infotrygd-feed
           namespace: teamfamilie
-          cluster: dev-gcp
+          cluster: prod-gcp
         - application: vedtaksfeed
           namespace: tbd
-          cluster: dev-gcp
+          cluster: prod-gcp
   env:
     - name: SPRING_PROFILES_ACTIVE
-      value: dev
+      value: prod
