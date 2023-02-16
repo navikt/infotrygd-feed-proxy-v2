@@ -48,7 +48,7 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-fss
-          RESOURCE: .deploy/nais/nais-dev.yaml
+          RESOURCE: .deploy/nais/nais_dev.yaml
   deploy_i_prod-fss:
     name: Deploy til prod-fss
     needs: build
@@ -60,4 +60,4 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-fss
-          RESOURCE: .deploy/nais/nais-prod.yaml
+          RESOURCE: .deploy/nais/nais_prod.yaml
