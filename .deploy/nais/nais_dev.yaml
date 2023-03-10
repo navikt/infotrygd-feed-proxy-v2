@@ -33,8 +33,7 @@ spec:
   secureLogs:
     enabled: true
   ingresses:
-    - https://infotrygd-feed-proxy.dev.intern.nav.no #deprekeres. Kan slettes hvis ikke infotrygd bruker denne
-    - https://infotrygd-feed-proxy.intern.dev.nav.no
+    - https://infotrygd-feed-proxy.dev.intern.nav.no
     - https://infotrygd-feed-proxy.dev-fss-pub.nais.io
   vault:
     enabled: true
