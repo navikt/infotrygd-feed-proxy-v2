@@ -1,10 +1,10 @@
 apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
-  name: infotrygd-feed-proxy
-  namespace: teamfamilie
+  name: infotrygd-feed-proxy-v2
+  namespace: infotrygd
   labels:
-    team: teamfamilie
+    team: infotrygd
 spec:
   image: {{image}}
   port: 8087
@@ -33,13 +33,13 @@ spec:
   secureLogs:
     enabled: true
   ingresses:
-    - https://infotrygd-feed-proxy.dev.intern.nav.no
-    - https://infotrygd-feed-proxy.dev-fss-pub.nais.io
+    - https://infotrygd-feed-proxy-v2.dev.intern.nav.no
+    - https://infotrygd-feed-proxy-v2.dev-fss-pub.nais.io
   vault:
     enabled: true
     paths:
-      - kvPath: /serviceuser/data/dev/srvinfotrygd-feed
-        mountPath: /var/run/secrets/serviceuser/srvinfotrygd-feed
+      - kvPath: /serviceuser/data/dev/srvinfotrygd-feed-proxy-v2
+        mountPath: /var/run/secrets/serviceuser/srvinfotrygd-feed-proxy-v2
   azure:
     application:
       enabled: true

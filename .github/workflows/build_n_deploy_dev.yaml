@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE: ghcr.io/navikt/infotrygd-feed-proxy:${{ github.sha }}
+  IMAGE: ghcr.io/navikt/infotrygd-feed-proxy-v2:${{ github.sha }}
 
 jobs:
   build:

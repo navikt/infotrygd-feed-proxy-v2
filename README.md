@@ -11,9 +11,9 @@ Appen deployes til teamfamilie, både i dev og prod.
 For å teste applikasjon i dev må man bruke sts-token. Slik generer du STS token i dev.
 1. Åpen STS swagger-ui med denne lenke 
 https://security-token-service.nais.preprod.local/swagger-ui/index.html i Chrome SKSS
-2. logger på swagger via username "srvinfotrygd-feed" og passord. 
+2. logger på swagger via username "srvinfotrygd-feed-proxy-v2" og passord. 
 3. Passordet finner du enten i vault 
-https://vault.adeo.no/ui/vault/secrets/serviceuser/show/dev/srvinfotrygd-feed 
+https://vault.adeo.no/ui/vault/secrets/serviceuser/show/dev/srvinfotrygd-feed-proxy-v2 
 eller ved å logge på POD.
 4. Kall /rest/v1/sts/token tjeneste for å generer et token.
 5. Genererte tokenet kan brukes som Bearer token for å logge på swagger-ui 
