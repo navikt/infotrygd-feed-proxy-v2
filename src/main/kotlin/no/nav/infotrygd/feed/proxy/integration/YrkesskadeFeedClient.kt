@@ -25,7 +25,6 @@ class YrkesskadeFeedClient(
         logger.info("Henter yrkesskade feed med URI=$hentYrkesskadeFeedUri")
         return getForEntity<String>(hentYrkesskadeFeedUri, headers()).also {
             logger.info("Hentet yrkesskade feed med URI=$hentYrkesskadeFeedUri. Kall ok")
-            logger.info("$it") // TODO erlend 25.22.2024: Fjern logging av dataene før prodsetting
         }
     }
 
