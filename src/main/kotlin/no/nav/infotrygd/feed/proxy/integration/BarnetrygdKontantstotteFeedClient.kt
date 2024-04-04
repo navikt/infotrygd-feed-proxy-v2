@@ -11,15 +11,14 @@ import org.springframework.web.client.RestOperations
 import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 
-@Suppress("NonAsciiCharacters")
 @Service
-class BaksInfotrygdFeedClient(
-    @Value("\${BAKS_INFOTRYGD_FEED_URL}") private val baksInfotrygdFeedUri: URI,
+class BarnetrygdKontantstotteFeedClient(
+    @Value("\${BARNETRYGD_KONTANTSTOTTE_FEED_URL}") private val barnetrygdKontantstotteFeedUri: URI,
     @Qualifier("azure") restOperations: RestOperations,
 ) : AbstractRestClient(restOperations, "baksInfotrygdFeed") {
 
     fun hentBarnetrygdFeed(sekvensnummer: Long): String {
-        val hentBarnetrygdFeedUri = UriComponentsBuilder.fromUri(baksInfotrygdFeedUri)
+        val hentBarnetrygdFeedUri = UriComponentsBuilder.fromUri(barnetrygdKontantstotteFeedUri)
             .pathSegment("/api/barnetrygd/v1/feed")
             .queryParam("sistLesteSekvensId", sekvensnummer)
             .build().toUri()
@@ -29,8 +28,8 @@ class BaksInfotrygdFeedClient(
         }
     }
 
-    fun hentKontantstøtteFeed(sekvensnummer: Long): String {
-        val hentBarnetrygdFeedUri = UriComponentsBuilder.fromUri(baksInfotrygdFeedUri)
+    fun hentKontantstotteFeed(sekvensnummer: Long): String {
+        val hentBarnetrygdFeedUri = UriComponentsBuilder.fromUri(barnetrygdKontantstotteFeedUri)
             .pathSegment("/api/kontantstotte/v1/feed")
             .queryParam("sistLesteSekvensId", sekvensnummer)
             .build().toUri()

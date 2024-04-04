@@ -12,20 +12,20 @@ import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 
 @Service
-class VedtaksfeedClient(
-    @Value("\${VEDTAKSFEED_URL}") private val vedtaksFeedUri: URI,
+class SykepengerFeedClient(
+    @Value("\${SYKEPENGER_FEED_URL}") private val sykepengerFeedUri: URI,
     @Qualifier("azure") restOperations: RestOperations,
 ) : AbstractRestClient(restOperations, "vedtaksfeed") {
 
-    fun hentVedtaksfeed(sekvensnummer: Long): String {
-        val hentVedtaksfeedUri = UriComponentsBuilder.fromUri(vedtaksFeedUri)
+    fun hentSykepengerFeed(sekvensnummer: Long): String {
+        val hentSykepengerFeedUri = UriComponentsBuilder.fromUri(sykepengerFeedUri)
             .pathSegment("/feed")
             .queryParam("sistLesteSekvensId", sekvensnummer)
             .build().toUri()
 
-        logger.info("Henter vedtaksfeed med URI=$hentVedtaksfeedUri")
-        return getForEntity<String>(hentVedtaksfeedUri, headers()).also {
-            logger.info("Hentet vedtaksfeed med URI=$hentVedtaksfeedUri. Kall ok")
+        logger.info("Henter sykepenger feed med URI=$hentSykepengerFeedUri")
+        return getForEntity<String>(hentSykepengerFeedUri, headers()).also {
+            logger.info("Hentet sykepenger feed med URI=$hentSykepengerFeedUri. Kall ok")
         }
     }
 
