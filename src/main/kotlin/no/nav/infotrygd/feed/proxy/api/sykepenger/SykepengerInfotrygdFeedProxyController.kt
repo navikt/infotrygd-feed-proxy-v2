@@ -19,13 +19,13 @@ class SykepengerInfotrygdFeedProxyController(private val vedtaksfeedClient: Vedt
 
     @Operation(
         summary = "Hent liste med hendelser.",
-        description = "Henter hendelser med sekvensId større enn sistLesteSekvensId."
+        description = "Henter hendelser med sekvensId større enn sistLesteSekvensId.",
     )
     @GetMapping("/v1/feed", produces = ["application/json; charset=us-ascii"])
     fun hentFeed(
         @Parameter(description = "Sist leste sekvensnummer.", required = true, example = "0")
         @RequestParam("sistLesteSekvensId")
-        sekvensnummer: Long
+        sekvensnummer: Long,
     ): ResponseEntity<String> {
         return Result.runCatching {
             vedtaksfeedClient.hentVedtaksfeed(sekvensnummer = sekvensnummer)
@@ -38,7 +38,7 @@ class SykepengerInfotrygdFeedProxyController(private val vedtaksfeedClient: Vedt
             onFailure = {
                 logger.error("Feil ved henting av feeds fra sekvensnummer $sekvensnummer", it)
                 ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
-            }
+            },
         )
     }
 

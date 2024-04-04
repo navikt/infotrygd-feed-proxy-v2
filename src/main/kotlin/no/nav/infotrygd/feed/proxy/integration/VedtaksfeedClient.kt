@@ -14,7 +14,7 @@ import java.net.URI
 @Service
 class VedtaksfeedClient(
     @Value("\${VEDTAKSFEED_URL}") private val vedtaksFeedUri: URI,
-    @Qualifier("azure") restOperations: RestOperations
+    @Qualifier("azure") restOperations: RestOperations,
 ) : AbstractRestClient(restOperations, "vedtaksfeed") {
 
     fun hentVedtaksfeed(sekvensnummer: Long): String {
