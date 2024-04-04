@@ -2,7 +2,7 @@ package no.nav.infotrygd.feed.proxy.api.sykepenger
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
-import no.nav.infotrygd.feed.proxy.integration.VedtaksfeedClient
+import no.nav.infotrygd.feed.proxy.integration.SykepengerFeedClient
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/sykepenger/vedtaksfeed")
 @ProtectedWithClaims(issuer = "sts")
-class SykepengerInfotrygdFeedProxyController(private val vedtaksfeedClient: VedtaksfeedClient) {
+class SykepengerFeedProxyController(private val sykepengerFeedClient: SykepengerFeedClient) {
 
     @Operation(
         summary = "Hent liste med hendelser.",
@@ -28,7 +28,7 @@ class SykepengerInfotrygdFeedProxyController(private val vedtaksfeedClient: Vedt
         sekvensnummer: Long,
     ): ResponseEntity<String> {
         return Result.runCatching {
-            vedtaksfeedClient.hentVedtaksfeed(sekvensnummer = sekvensnummer)
+            sykepengerFeedClient.hentSykepengerFeed(sekvensnummer = sekvensnummer)
         }.fold(
             onSuccess = { feed ->
                 logger.info("Hentet feeds fra sekvensnummer $sekvensnummer")

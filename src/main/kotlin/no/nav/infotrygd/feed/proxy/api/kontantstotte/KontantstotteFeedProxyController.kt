@@ -1,8 +1,8 @@
-package no.nav.infotrygd.feed.proxy.api.kontantstøtte
+package no.nav.infotrygd.feed.proxy.api.kontantstotte
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
-import no.nav.infotrygd.feed.proxy.integration.BaksInfotrygdFeedClient
+import no.nav.infotrygd.feed.proxy.integration.BarnetrygdKontantstotteFeedClient
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
-@Suppress("NonAsciiCharacters")
 @RestController
 @RequestMapping("/api/kontantstotte")
 @ProtectedWithClaims(issuer = "sts")
-class KontantstøtteInfotrygdFeedProxyController(private val baksInfotrygdFeedClient: BaksInfotrygdFeedClient) {
+class KontantstotteFeedProxyController(private val barnetrygdKontantstotteFeedClient: BarnetrygdKontantstotteFeedClient) {
 
     @Operation(
         summary = "Hent liste med hendelser.",
@@ -29,7 +28,7 @@ class KontantstøtteInfotrygdFeedProxyController(private val baksInfotrygdFeedCl
         sekvensnummer: Long,
     ): ResponseEntity<String> {
         return Result.runCatching {
-            baksInfotrygdFeedClient.hentKontantstøtteFeed(sekvensnummer = sekvensnummer)
+            barnetrygdKontantstotteFeedClient.hentKontantstotteFeed(sekvensnummer = sekvensnummer)
         }.fold(
             onSuccess = { feed ->
                 logger.info("Hentet feeds fra sekvensnummer $sekvensnummer")
