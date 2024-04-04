@@ -17,9 +17,9 @@ class RestTemplateSts {
     @Bean("noToken")
     fun restTemplateNoToken(
         restTemplateBuilder: RestTemplateBuilder,
-        consumerIdClientInterceptor: ConsumerIdClientInterceptor
+        consumerIdClientInterceptor: ConsumerIdClientInterceptor,
     ): RestOperations = restTemplateBuilder.additionalInterceptors(
         consumerIdClientInterceptor,
-        MdcValuesPropagatingClientInterceptor()
+        MdcValuesPropagatingClientInterceptor(),
     ).build()
 }

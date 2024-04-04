@@ -19,13 +19,13 @@ class BarnetrygdInfotrygdFeedProxyController(private val baksInfotrygdFeedClient
 
     @Operation(
         summary = "Hent liste med hendelser.",
-        description = "Henter hendelser med sekvensId større enn sistLesteSekvensId."
+        description = "Henter hendelser med sekvensId større enn sistLesteSekvensId.",
     )
     @GetMapping("/v1/feed", produces = ["application/json; charset=us-ascii"])
     fun hentFeed(
         @Parameter(description = "Sist leste sekvensnummer.", required = true, example = "0")
         @RequestParam("sistLesteSekvensId")
-        sekvensnummer: Long
+        sekvensnummer: Long,
     ): ResponseEntity<String> {
         return Result.runCatching {
             baksInfotrygdFeedClient.hentBarnetrygdFeed(sekvensnummer = sekvensnummer)
@@ -38,7 +38,7 @@ class BarnetrygdInfotrygdFeedProxyController(private val baksInfotrygdFeedClient
             onFailure = {
                 logger.error("Feil ved henting av feeds fra sekvensnummer $sekvensnummer", it)
                 ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
-            }
+            },
         )
     }
 

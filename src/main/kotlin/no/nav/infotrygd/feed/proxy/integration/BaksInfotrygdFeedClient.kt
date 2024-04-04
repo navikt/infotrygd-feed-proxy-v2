@@ -11,10 +11,11 @@ import org.springframework.web.client.RestOperations
 import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 
+@Suppress("NonAsciiCharacters")
 @Service
 class BaksInfotrygdFeedClient(
     @Value("\${BAKS_INFOTRYGD_FEED_URL}") private val baksInfotrygdFeedUri: URI,
-    @Qualifier("azure") restOperations: RestOperations
+    @Qualifier("azure") restOperations: RestOperations,
 ) : AbstractRestClient(restOperations, "baksInfotrygdFeed") {
 
     fun hentBarnetrygdFeed(sekvensnummer: Long): String {
