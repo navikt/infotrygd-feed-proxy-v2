@@ -11,7 +11,6 @@ import org.springframework.web.client.RestOperations
 import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 
-@Suppress("NonAsciiCharacters")
 @Service
 class BarnetrygdKontantstotteFeedClient(
     @Value("\${BARNETRYGD_KONTANTSTOTTE_FEED_URL}") private val barnetrygdKontantstotteFeedUri: URI,
