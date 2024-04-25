@@ -1,6 +1,9 @@
-name: Dev - Build, push, and deploy app
+name: Build, push, and deploy app i dev
 
 on:
+  push:
+    branches:
+      - 'dev'
   workflow_dispatch:
 
 env:
@@ -8,7 +11,7 @@ env:
 
 jobs:
   build:
-    name: Build, push and deploy to dev-fss
+    name: Build, push and deploy to dev-fss and prod-fss
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -34,8 +37,8 @@ jobs:
           docker build --tag ${IMAGE} .
           docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
           docker push ${IMAGE}
-  deploy:
-    name: Deploy to NAIS
+  deploy_i_dev-fss:
+    name: Deploy til dev-fss
     needs: build
     runs-on: ubuntu-latest
     steps:
