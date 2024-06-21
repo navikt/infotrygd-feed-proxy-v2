@@ -1,4 +1,4 @@
 CLUSTER_ENV: prod
 BARNETRYGD_KONTANTSTOTTE_FEED_URL: https://familie-baks-infotrygd-feed.intern.nav.no
 SYKEPENGER_FEED_URL: https://vedtaksfeed.intern.nav.no
-YRKESSKADE_FEED_URL: https://yrkesskade-infotrygd-feed.intern.nav.no
+YRKESSKADE_FEED_URL: https://yrkesskade-infotrygd-feed.intern.dev.nav.no
