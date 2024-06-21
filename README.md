@@ -17,4 +17,4 @@ https://vault.adeo.no/ui/vault/secrets/serviceuser/show/dev/srvinfotrygd-feed-pr
 eller ved å logge på POD.
 4. Kall /rest/v1/sts/token tjeneste for å generer et token.
 5. Genererte tokenet kan brukes som Bearer token for å logge på swagger-ui 
-https://infotrygd-feed-proxy.dev.intern.nav.no/swagger-ui/index.html  
+https://infotrygd-feed-proxy.dev.intern.nav.no/swagger-ui/index.html
