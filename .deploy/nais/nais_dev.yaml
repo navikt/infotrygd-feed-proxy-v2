@@ -60,6 +60,9 @@ spec:
         - application: vedtaksfeed
           namespace: tbd
           cluster: dev-gcp
+        - application: yrkesskade-infotrygd-feed
+          namespace: yrkesskade
+          cluster: dev-gcp
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: dev

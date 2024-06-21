@@ -1,4 +1,4 @@
-# infotrygd-feed-proxy
+# infotrygd-feed-proxy-v2
 
 Applikasjon som kan brukes mellom gcp<->on-prem for kommunikasjon med infotrygd tjenester. Eks. for infotrygd som kaller 
 på familie-baks-infotrygd-feed med sts token, så mottar denne sts, og kaller videre på familie-baks-infotrygd-feed med
@@ -17,4 +17,4 @@ https://vault.adeo.no/ui/vault/secrets/serviceuser/show/dev/srvinfotrygd-feed-pr
 eller ved å logge på POD.
 4. Kall /rest/v1/sts/token tjeneste for å generer et token.
 5. Genererte tokenet kan brukes som Bearer token for å logge på swagger-ui 
-https://infotrygd-feed-proxy.dev.intern.nav.no/swagger-ui/index.html  
+https://infotrygd-feed-proxy.dev.intern.nav.no/swagger-ui/index.html
