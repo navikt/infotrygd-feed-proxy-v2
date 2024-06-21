@@ -1,4 +1,4 @@
-# infotrygd-feed-proxy
+# infotrygd-feed-proxy-v2
 
 Applikasjon som kan brukes mellom gcp<->on-prem for kommunikasjon med infotrygd tjenester. Eks. for infotrygd som kaller 
 på familie-baks-infotrygd-feed med sts token, så mottar denne sts, og kaller videre på familie-baks-infotrygd-feed med
