@@ -29,13 +29,13 @@ class BarnetrygdKontantstotteFeedClient(
     }
 
     fun hentKontantstotteFeed(sekvensnummer: Long): String {
-        val hentBarnetrygdFeedUri = UriComponentsBuilder.fromUri(barnetrygdKontantstotteFeedUri)
+        val hentKontantstotteFeedUri = UriComponentsBuilder.fromUri(barnetrygdKontantstotteFeedUri)
             .pathSegment("/api/kontantstotte/v1/feed")
             .queryParam("sistLesteSekvensId", sekvensnummer)
             .build().toUri()
-        logger.info("Henter kontantstotte feed med URI=$hentBarnetrygdFeedUri")
-        return getForEntity<String>(hentBarnetrygdFeedUri, headers()).also {
-            logger.info("Hentet kontantstotte feed med URI=$hentBarnetrygdFeedUri. Kall ok")
+        logger.info("Henter kontantstotte feed med URI=$hentKontantstotteFeedUri")
+        return getForEntity<String>(hentKontantstotteFeedUri, headers()).also {
+            logger.info("Hentet kontantstotte feed med URI=$hentKontantstotteFeedUri. Kall ok")
         }
     }
 
