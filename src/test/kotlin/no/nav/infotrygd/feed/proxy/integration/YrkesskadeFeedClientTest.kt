@@ -2,9 +2,12 @@ package no.nav.infotrygd.feed.proxy.integration
 
 import io.mockk.every
 import io.mockk.mockk
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
-import org.springframework.http.*
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpMethod
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestOperations
 import org.springframework.web.client.exchange
@@ -16,7 +19,6 @@ class YrkesskadeFeedClientTest {
 
     private val ysFeedClient = YrkesskadeFeedClient(URI.create("http://localhost:8080"), restOperationsMock)
 
-
     @Test
     fun `skal hente yrkesskade feed`() {
         val headers = LinkedMultiValueMap<String, String>()
@@ -25,7 +27,7 @@ class YrkesskadeFeedClientTest {
             restOperationsMock.exchange<String>(
                 any<URI>(),
                 eq(HttpMethod.GET),
-                any<HttpEntity<String>>()
+                any<HttpEntity<String>>(),
             )
         } returns ResponseEntity(feedMelding(), headers, HttpStatus.OK)
 
@@ -34,7 +36,7 @@ class YrkesskadeFeedClientTest {
         assertNotNull(feed)
     }
 
-    private fun feedMelding() : String = """
+    private fun feedMelding(): String = """
 {
   "elementer": [
     {
