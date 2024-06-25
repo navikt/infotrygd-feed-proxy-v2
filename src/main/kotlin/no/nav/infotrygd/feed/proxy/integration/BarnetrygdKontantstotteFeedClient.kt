@@ -19,7 +19,7 @@ class BarnetrygdKontantstotteFeedClient(
 
     fun hentBarnetrygdFeed(sekvensnummer: Long): String {
         val hentBarnetrygdFeedUri = UriComponentsBuilder.fromUri(barnetrygdKontantstotteFeedUri)
-            .pathSegment("/api/barnetrygd/v1/feed")
+            .pathSegment("api/barnetrygd/v1/feed")
             .queryParam("sistLesteSekvensId", sekvensnummer)
             .build().toUri()
         logger.info("Henter barnetrygd feed med URI=$hentBarnetrygdFeedUri")

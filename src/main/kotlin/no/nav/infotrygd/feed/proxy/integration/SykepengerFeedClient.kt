@@ -19,7 +19,7 @@ class SykepengerFeedClient(
 
     fun hentSykepengerFeed(sekvensnummer: Long): String {
         val hentSykepengerFeedUri = UriComponentsBuilder.fromUri(sykepengerFeedUri)
-            .pathSegment("/feed")
+            .pathSegment("feed")
             .queryParam("sistLesteSekvensId", sekvensnummer)
             .build().toUri()
 

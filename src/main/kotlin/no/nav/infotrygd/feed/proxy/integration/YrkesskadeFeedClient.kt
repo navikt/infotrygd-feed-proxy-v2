@@ -19,7 +19,7 @@ class YrkesskadeFeedClient(
 
     fun hentYrkesskadeFeed(sekvensnummer: Long): String {
         val hentYrkesskadeFeedUri = UriComponentsBuilder.fromUri(yrkesskadeFeedUri)
-            .pathSegment("/api/yrkesskade/v1/feed")
+            .pathSegment("api/v1/feed")
             .queryParam("sistLesteSekvensId", sekvensnummer)
             .build().toUri()
         logger.info("Henter yrkesskade feed med URI=$hentYrkesskadeFeedUri")
