@@ -25,6 +25,7 @@ class YrkesskadeFeedClient(
         logger.info("Henter yrkesskade feed med URI=$hentYrkesskadeFeedUri")
         return getForEntity<String>(hentYrkesskadeFeedUri, headers()).also {
             logger.info("Hentet yrkesskade feed med URI=$hentYrkesskadeFeedUri. Kall ok")
+            securelogger.info("Yrkesskade: $it")
         }
     }
 
@@ -35,5 +36,6 @@ class YrkesskadeFeedClient(
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
+        private val securelogger = LoggerFactory.getLogger("secureLogger")
     }
 }
