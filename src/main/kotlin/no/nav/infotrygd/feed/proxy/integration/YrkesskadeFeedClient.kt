@@ -12,20 +12,20 @@ import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 
 @Service
-class VedtaksfeedClient(
-    @Value("\${VEDTAKSFEED_URL}") private val vedtaksFeedUri: URI,
-    @Qualifier("azure") restOperations: RestOperations
-) : AbstractRestClient(restOperations, "vedtaksfeed") {
+class YrkesskadeFeedClient(
+    @Value("\${YRKESSKADE_FEED_URL}") private val yrkesskadeFeedUri: URI,
+    @Qualifier("azure") restOperations: RestOperations,
+) : AbstractRestClient(restOperations, "yrkesskadeFeed") {
 
-    fun hentVedtaksfeed(sekvensnummer: Long): String {
-        val hentVedtaksfeedUri = UriComponentsBuilder.fromUri(vedtaksFeedUri)
-            .pathSegment("/feed")
+    fun hentYrkesskadeFeed(sekvensnummer: Long): String {
+        val hentYrkesskadeFeedUri = UriComponentsBuilder.fromUri(yrkesskadeFeedUri)
+            .pathSegment("api/v1/feed")
             .queryParam("sistLesteSekvensId", sekvensnummer)
             .build().toUri()
-
-        logger.info("Henter vedtaksfeed med URI=$hentVedtaksfeedUri")
-        return getForEntity<String>(hentVedtaksfeedUri, headers()).also {
-            logger.info("Hentet vedtaksfeed med URI=$hentVedtaksfeedUri. Kall ok")
+        logger.info("Henter yrkesskade feed med URI=$hentYrkesskadeFeedUri")
+        return getForEntity<String>(hentYrkesskadeFeedUri, headers()).also {
+            logger.info("Hentet yrkesskade feed med URI=$hentYrkesskadeFeedUri. Kall ok")
+            logger.info("$it") // TODO erlend 25.22.2024: Fjern logging av dataene før prodsetting
         }
     }
 

@@ -1,8 +1,8 @@
-package no.nav.infotrygd.feed.proxy.api.barnetrygd
+package no.nav.infotrygd.feed.proxy.api.kontantstotte
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
-import no.nav.infotrygd.feed.proxy.integration.BaksInfotrygdFeedClient
+import no.nav.infotrygd.feed.proxy.integration.BarnetrygdKontantstotteFeedClient
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -13,22 +13,22 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/barnetrygd")
+@RequestMapping("/api/kontantstotte")
 @ProtectedWithClaims(issuer = "sts")
-class BarnetrygdInfotrygdFeedProxyController(private val baksInfotrygdFeedClient: BaksInfotrygdFeedClient) {
+class KontantstotteFeedProxyController(private val barnetrygdKontantstotteFeedClient: BarnetrygdKontantstotteFeedClient) {
 
     @Operation(
         summary = "Hent liste med hendelser.",
-        description = "Henter hendelser med sekvensId større enn sistLesteSekvensId."
+        description = "Henter hendelser med sekvensId større enn sistLesteSekvensId.",
     )
     @GetMapping("/v1/feed", produces = ["application/json; charset=us-ascii"])
     fun hentFeed(
         @Parameter(description = "Sist leste sekvensnummer.", required = true, example = "0")
         @RequestParam("sistLesteSekvensId")
-        sekvensnummer: Long
+        sekvensnummer: Long,
     ): ResponseEntity<String> {
         return Result.runCatching {
-            baksInfotrygdFeedClient.hentBarnetrygdFeed(sekvensnummer = sekvensnummer)
+            barnetrygdKontantstotteFeedClient.hentKontantstotteFeed(sekvensnummer = sekvensnummer)
         }.fold(
             onSuccess = { feed ->
                 logger.info("Hentet feeds fra sekvensnummer $sekvensnummer")
@@ -38,7 +38,7 @@ class BarnetrygdInfotrygdFeedProxyController(private val baksInfotrygdFeedClient
             onFailure = {
                 logger.error("Feil ved henting av feeds fra sekvensnummer $sekvensnummer", it)
                 ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
-            }
+            },
         )
     }
 

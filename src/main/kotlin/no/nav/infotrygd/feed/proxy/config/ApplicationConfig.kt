@@ -58,9 +58,9 @@ class ApplicationConfig {
     fun restOperations(
         restTemplateBuilder: RestTemplateBuilder,
         consumerIdClientInterceptor: ConsumerIdClientInterceptor,
-        internLoggerInterceptor: InternLoggerInterceptor
+        internLoggerInterceptor: InternLoggerInterceptor,
     ): RestOperations = restTemplateBuilder.additionalInterceptors(
         consumerIdClientInterceptor,
-        MdcValuesPropagatingClientInterceptor()
+        MdcValuesPropagatingClientInterceptor(),
     ).build()
 }

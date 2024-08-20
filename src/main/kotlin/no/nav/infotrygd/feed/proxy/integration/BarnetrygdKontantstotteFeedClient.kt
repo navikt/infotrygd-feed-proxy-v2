@@ -12,14 +12,14 @@ import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 
 @Service
-class BaksInfotrygdFeedClient(
-    @Value("\${BAKS_INFOTRYGD_FEED_URL}") private val baksInfotrygdFeedUri: URI,
-    @Qualifier("azure") restOperations: RestOperations
+class BarnetrygdKontantstotteFeedClient(
+    @Value("\${BARNETRYGD_KONTANTSTOTTE_FEED_URL}") private val barnetrygdKontantstotteFeedUri: URI,
+    @Qualifier("azure") restOperations: RestOperations,
 ) : AbstractRestClient(restOperations, "baksInfotrygdFeed") {
 
     fun hentBarnetrygdFeed(sekvensnummer: Long): String {
-        val hentBarnetrygdFeedUri = UriComponentsBuilder.fromUri(baksInfotrygdFeedUri)
-            .pathSegment("/api/barnetrygd/v1/feed")
+        val hentBarnetrygdFeedUri = UriComponentsBuilder.fromUri(barnetrygdKontantstotteFeedUri)
+            .pathSegment("api/barnetrygd/v1/feed")
             .queryParam("sistLesteSekvensId", sekvensnummer)
             .build().toUri()
         logger.info("Henter barnetrygd feed med URI=$hentBarnetrygdFeedUri")
@@ -28,14 +28,14 @@ class BaksInfotrygdFeedClient(
         }
     }
 
-    fun hentKontantstøtteFeed(sekvensnummer: Long): String {
-        val hentBarnetrygdFeedUri = UriComponentsBuilder.fromUri(baksInfotrygdFeedUri)
+    fun hentKontantstotteFeed(sekvensnummer: Long): String {
+        val hentKontantstotteFeedUri = UriComponentsBuilder.fromUri(barnetrygdKontantstotteFeedUri)
             .pathSegment("/api/kontantstotte/v1/feed")
             .queryParam("sistLesteSekvensId", sekvensnummer)
             .build().toUri()
-        logger.info("Henter kontantstotte feed med URI=$hentBarnetrygdFeedUri")
-        return getForEntity<String>(hentBarnetrygdFeedUri, headers()).also {
-            logger.info("Hentet kontantstotte feed med URI=$hentBarnetrygdFeedUri. Kall ok")
+        logger.info("Henter kontantstotte feed med URI=$hentKontantstotteFeedUri")
+        return getForEntity<String>(hentKontantstotteFeedUri, headers()).also {
+            logger.info("Hentet kontantstotte feed med URI=$hentKontantstotteFeedUri. Kall ok")
         }
     }
 
