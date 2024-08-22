@@ -13,12 +13,12 @@ import java.net.URI
 
 @Service
 class BarnetrygdKontantstotteFeedClient(
-    @Value("\${BARNETRYGD_KONTANTSTOTTE_FEED_URL}") private val barnetrygdKontantstotteFeedUri: URI,
+    @Value("\${BAKS_FEED_URL}") private val baksFeedUri: URI,
     @Qualifier("azure") restOperations: RestOperations,
 ) : AbstractRestClient(restOperations, "baksInfotrygdFeed") {
 
     fun hentBarnetrygdFeed(sekvensnummer: Long): String {
-        val hentBarnetrygdFeedUri = UriComponentsBuilder.fromUri(barnetrygdKontantstotteFeedUri)
+        val hentBarnetrygdFeedUri = UriComponentsBuilder.fromUri(baksFeedUri)
             .pathSegment("api/barnetrygd/v1/feed")
             .queryParam("sistLesteSekvensId", sekvensnummer)
             .build().toUri()
@@ -29,7 +29,7 @@ class BarnetrygdKontantstotteFeedClient(
     }
 
     fun hentKontantstotteFeed(sekvensnummer: Long): String {
-        val hentKontantstotteFeedUri = UriComponentsBuilder.fromUri(barnetrygdKontantstotteFeedUri)
+        val hentKontantstotteFeedUri = UriComponentsBuilder.fromUri(baksFeedUri)
             .pathSegment("/api/kontantstotte/v1/feed")
             .queryParam("sistLesteSekvensId", sekvensnummer)
             .build().toUri()
