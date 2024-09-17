@@ -64,7 +64,7 @@ jobs:
   deploy-prod:
     name: Deploy til prod-fss
     if: github.ref_name == 'main'
-    environment: dev-fss:infotrygd
+    environment: prod-fss:infotrygd
     needs: [build, deploy-dev]
     runs-on: ubuntu-latest
     steps:
