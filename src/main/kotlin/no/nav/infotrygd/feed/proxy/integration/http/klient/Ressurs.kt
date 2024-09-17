@@ -83,5 +83,4 @@ data class Ressurs<T>(
     override fun toString(): String {
         return "Ressurs(status=$status, melding='$melding')"
     }
-
 }

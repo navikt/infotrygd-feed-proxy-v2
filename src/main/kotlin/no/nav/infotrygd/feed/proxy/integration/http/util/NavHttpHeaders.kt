@@ -1,4 +1,4 @@
-package no.nav.infotrygd.feed.proxy.integration.http.util;
+package no.nav.infotrygd.feed.proxy.integration.http.util
 
 enum class NavHttpHeaders(
     private val header: String,

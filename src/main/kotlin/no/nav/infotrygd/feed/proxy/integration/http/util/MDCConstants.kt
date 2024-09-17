@@ -1,4 +1,4 @@
-package no.nav.infotrygd.feed.proxy.integration.http.util;
+package no.nav.infotrygd.feed.proxy.integration.http.util
 
 object MDCConstants {
     const val MDC_USER_ID = "userId"

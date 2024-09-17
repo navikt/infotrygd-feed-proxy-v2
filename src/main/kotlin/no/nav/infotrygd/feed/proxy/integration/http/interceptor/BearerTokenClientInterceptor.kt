@@ -76,4 +76,3 @@ private fun clientPropertiesForGrantType(
 ) =
     values.firstOrNull { GrantType.CLIENT_CREDENTIALS == it.grantType }
         ?: error("could not find oauth2 client config for uri=$uri and grant type=CLIENT_CREDENTIALS")
-
