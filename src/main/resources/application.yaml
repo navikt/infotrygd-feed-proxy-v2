@@ -67,8 +67,11 @@ management:
   endpoints.web:
     exposure.include: info, health, metrics, prometheus
     base-path: "/internal"
-  metrics.export.prometheus.enabled: true
   metrics.web.server.request.autotime.enabled: true
+  prometheus:
+    metrics:
+      export:
+        enabled: true
 
 springdoc:
   packagesToScan: no.nav.infotrygd.feed.proxy

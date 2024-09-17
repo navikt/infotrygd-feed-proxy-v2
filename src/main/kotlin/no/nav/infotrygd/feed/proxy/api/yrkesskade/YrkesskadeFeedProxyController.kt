@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/yrkesskade")
 @ProtectedWithClaims(issuer = "sts")
-class YrkesskadeFeedProxyController(private val yrkesskadeFeedClient: YrkesskadeFeedClient) {
-
+class YrkesskadeFeedProxyController(
+    private val yrkesskadeFeedClient: YrkesskadeFeedClient,
+) {
     @Operation(
         summary = "Hent liste med hendelser.",
         description = "Henter hendelser med sekvensId større enn sistLesteSekvensId.",
@@ -26,21 +27,21 @@ class YrkesskadeFeedProxyController(private val yrkesskadeFeedClient: Yrkesskade
         @Parameter(description = "Sist leste sekvensnummer.", required = true, example = "0")
         @RequestParam("sistLesteSekvensId")
         sekvensnummer: Long,
-    ): ResponseEntity<String> {
-        return Result.runCatching {
-            yrkesskadeFeedClient.hentYrkesskadeFeed(sekvensnummer = sekvensnummer)
-        }.fold(
-            onSuccess = { feed ->
-                logger.info("Hentet feeds fra sekvensnummer $sekvensnummer")
-                secureLogger.info("Hentet feeds $feed fra sekvensnummer $sekvensnummer")
-                ResponseEntity.ok(feed)
-            },
-            onFailure = {
-                logger.error("Feil ved henting av feeds fra sekvensnummer $sekvensnummer", it)
-                ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
-            },
-        )
-    }
+    ): ResponseEntity<String> =
+        Result
+            .runCatching {
+                yrkesskadeFeedClient.hentYrkesskadeFeed(sekvensnummer = sekvensnummer)
+            }.fold(
+                onSuccess = { feed ->
+                    logger.info("Hentet feeds fra sekvensnummer $sekvensnummer")
+                    secureLogger.info("Hentet feeds $feed fra sekvensnummer $sekvensnummer")
+                    ResponseEntity.ok(feed)
+                },
+                onFailure = {
+                    logger.error("Feil ved henting av feeds fra sekvensnummer $sekvensnummer", it)
+                    ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+                },
+            )
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
