@@ -48,7 +48,7 @@ no.nav.security.jwt:
       foreldrepenger:
         resource-url: ${FPSAK_FEED_URL}
         token-endpoint-url: ${AZURE_OPENID_CONFIG_TOKEN_ENDPOINT}
-        grant-tyoe: client_credentials
+        grant-type: client_credentials
         scope: api://${CLUSTER_ENV}-fss.fpsak.fpsak-api/.default
         authentication:
           client-id: ${AZURE_APP_CLIENT_ID}
