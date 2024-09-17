@@ -28,7 +28,7 @@
         <kotlin.version>1.8.0</kotlin.version>
         <springdoc.version>1.6.14</springdoc.version>
         <mockk.version>1.13.4</mockk.version>
-        <felles.version>1.20230117091843_19b020f</felles.version>
+        <felles.version>3.20240913110742_adb42f8</felles.version>
         <nav.security.version>2.1.8</nav.security.version> <!-- Denne burde være samme versjon som i felles -->
         <start-class>no.nav.infotrygd.feed.proxy.ApplicationKt</start-class>
     </properties>
