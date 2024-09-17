@@ -29,6 +29,7 @@ abstract class AbstractRestClient(
         httpHeaders: HttpHeaders? = null,
     ): T = execute(uri) { operations.exchange<T>(uri, HttpMethod.GET, HttpEntity(null, httpHeaders)) }
 
+    @Suppress("UNCHECKED_CAST")
     private fun <T> validerOgPakkUt(
         respons: ResponseEntity<T>,
         uri: URI,
