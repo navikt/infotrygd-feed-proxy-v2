@@ -1,4 +1,4 @@
-package no.nav.infotrygd.feed.proxy.integration.http.klient
+package no.nav.infotrygd.feed.proxy.integration.http.util
 
 import java.util.UUID
 

@@ -14,7 +14,7 @@ import java.net.URI
 @Service
 class SykepengerFeedClient(
     @Value("\${SYKEPENGER_FEED_URL}") private val sykepengerFeedUri: URI,
-    @Qualifier("azure") restOperations: RestOperations,
+    @Qualifier("azureCC") restOperations: RestOperations,
 ) : AbstractRestClient(restOperations) {
     fun hentSykepengerFeed(sekvensnummer: Long): String {
         val hentSykepengerFeedUri =

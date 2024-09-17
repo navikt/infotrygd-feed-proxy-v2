@@ -14,7 +14,7 @@ import java.net.URI
 @Service
 class BarnetrygdKontantstotteFeedClient(
     @Value("\${BAKS_FEED_URL}") private val baksFeedUri: URI,
-    @Qualifier("azure") restOperations: RestOperations,
+    @Qualifier("azureCC") restOperations: RestOperations,
 ) : AbstractRestClient(restOperations) {
     fun hentBarnetrygdFeed(sekvensnummer: Long): String {
         val hentBarnetrygdFeedUri =

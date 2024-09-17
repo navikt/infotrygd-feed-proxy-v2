@@ -1,7 +1,7 @@
 package no.nav.infotrygd.feed.proxy.integration.http.interceptor
 
-import no.nav.infotrygd.feed.proxy.integration.http.klient.IdUtils
-import no.nav.infotrygd.feed.proxy.integration.http.klient.MDCConstants
+import no.nav.infotrygd.feed.proxy.integration.http.util.IdUtils
+import no.nav.infotrygd.feed.proxy.integration.http.util.MDCConstants
 import no.nav.infotrygd.feed.proxy.integration.http.util.NavHttpHeaders
 import org.slf4j.MDC
 import org.springframework.http.HttpRequest

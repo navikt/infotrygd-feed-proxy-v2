@@ -14,7 +14,7 @@ import java.net.URI
 @Service
 class YrkesskadeFeedClient(
     @Value("\${YRKESSKADE_FEED_URL}") private val yrkesskadeFeedUri: URI,
-    @Qualifier("azure") restOperations: RestOperations,
+    @Qualifier("azureCC") restOperations: RestOperations,
 ) : AbstractRestClient(restOperations) {
     fun hentYrkesskadeFeed(sekvensnummer: Long): String {
         val hentYrkesskadeFeedUri =

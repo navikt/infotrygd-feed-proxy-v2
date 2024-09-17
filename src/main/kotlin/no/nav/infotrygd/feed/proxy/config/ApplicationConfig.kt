@@ -4,10 +4,8 @@ import no.nav.infotrygd.feed.proxy.integration.http.config.RestTemplateAzure
 import no.nav.infotrygd.feed.proxy.integration.http.interceptor.ConsumerIdClientInterceptor
 import no.nav.infotrygd.feed.proxy.integration.http.interceptor.MdcValuesPropagatingClientInterceptor
 import no.nav.infotrygd.feed.proxy.integration.http.mapper.objectMapper
-import no.nav.infotrygd.feed.proxy.integration.http.sts.StsRestClient
 import no.nav.security.token.support.client.spring.oauth2.EnableOAuth2Client
 import no.nav.security.token.support.spring.api.EnableJwtTokenValidation
-import org.slf4j.LoggerFactory
 import org.springframework.boot.SpringBootConfiguration
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.web.client.RestTemplateBuilder
@@ -21,10 +19,9 @@ import org.springframework.web.client.RestOperations
 @ConfigurationPropertiesScan
 @ComponentScan("no.nav.infotrygd.feed.proxy")
 @EnableJwtTokenValidation(ignore = ["org.springframework", "org.springdoc"])
-@Import(RestTemplateAzure::class, RestTemplateSts::class, StsRestClient::class)
+@Import(RestTemplateAzure::class)
 @EnableOAuth2Client(cacheEnabled = true)
 class ApplicationConfig {
-    private val logger = LoggerFactory.getLogger(this::class.java)
 
     @Bean
     @Primary

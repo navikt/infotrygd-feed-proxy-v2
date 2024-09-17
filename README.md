@@ -5,7 +5,7 @@ på familie-baks-infotrygd-feed med sts token, så mottar denne sts, og kaller v
 azure-token.
 
 ## Deployments
-Appen deployes til teamfamilie, både i dev og prod.
+Appen deployes til team infotrygd, både i dev og prod.
 
 ## Test
 For å teste applikasjon i dev må man bruke sts-token. Slik generer du STS token i dev.

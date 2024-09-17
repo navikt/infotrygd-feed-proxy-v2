@@ -1,7 +1,6 @@
 package no.nav.infotrygd.feed.proxy.integration.http.klient
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import no.nav.familie.kontrakter.felles.Ressurs
 import no.nav.infotrygd.feed.proxy.integration.http.mapper.objectMapper
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -22,8 +21,8 @@ import java.net.URI
 abstract class AbstractRestClient(
     val operations: RestOperations,
 ) {
-    protected val secureLogger: Logger = LoggerFactory.getLogger("secureLogger")
-    protected val log: Logger = LoggerFactory.getLogger(this::class.java)
+    private val secureLogger: Logger = LoggerFactory.getLogger("secureLogger")
+    private val log: Logger = LoggerFactory.getLogger(this::class.java)
 
     inline fun <reified T : Any> getForEntity(
         uri: URI,

@@ -19,8 +19,8 @@ interface INaisProxyCustomizer : RestTemplateCustomizer
 
 @Component
 class NaisProxyCustomizer(
-    @Value("\${familie.nais.proxy.socketTimeout:15000}") val socketTimeout: Long,
-    @Value("\${familie.nais.proxy.requestTimeout:15000}") val requestTimeout: Long,
+    @Value("\${infotrygd.feed.v2.proxy.socketTimeout:15000}") val socketTimeout: Long,
+    @Value("\${infotrygd.feed.v2.proxy.requestTimeout:15000}") val requestTimeout: Long,
 ) : INaisProxyCustomizer {
     override fun customize(restTemplate: RestTemplate) {
         val proxy = HttpHost("webproxy-nais.nav.no", 8088)

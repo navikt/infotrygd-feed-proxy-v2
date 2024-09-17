@@ -1,40 +1,15 @@
 package no.nav.infotrygd.feed.proxy.integration.http.interceptor
 
 import com.nimbusds.oauth2.sdk.GrantType
-import no.nav.infotrygd.feed.proxy.integration.http.sts.StsRestClient
 import no.nav.security.token.support.client.core.ClientProperties
 import no.nav.security.token.support.client.core.oauth2.OAuth2AccessTokenService
 import no.nav.security.token.support.client.spring.ClientConfigurationProperties
-import no.nav.security.token.support.spring.SpringTokenValidationContextHolder
 import org.springframework.http.HttpRequest
 import org.springframework.http.client.ClientHttpRequestExecution
 import org.springframework.http.client.ClientHttpRequestInterceptor
 import org.springframework.http.client.ClientHttpResponse
 import org.springframework.stereotype.Component
 import java.net.URI
-
-@Component
-class BearerTokenClientInterceptor(
-    private val oAuth2AccessTokenService: OAuth2AccessTokenService,
-    private val clientConfigurationProperties: ClientConfigurationProperties,
-) : ClientHttpRequestInterceptor {
-    override fun intercept(
-        request: HttpRequest,
-        body: ByteArray,
-        execution: ClientHttpRequestExecution,
-    ): ClientHttpResponse {
-        genererAccessToken(
-            request,
-            clientConfigurationProperties,
-            oAuth2AccessTokenService,
-        )?.let {
-            request.headers.setBearerAuth(
-                it,
-            )
-        }
-        return execution.execute(request, body)
-    }
-}
 
 @Component
 class BearerTokenClientCredentialsClientInterceptor(
@@ -50,87 +25,10 @@ class BearerTokenClientCredentialsClientInterceptor(
             request,
             clientConfigurationProperties,
             oAuth2AccessTokenService,
-            GrantType.CLIENT_CREDENTIALS,
         )?.let {
             request.headers.setBearerAuth(
                 it,
             )
-        }
-        return execution.execute(request, body)
-    }
-}
-
-@Component
-class BearerTokenExchangeClientInterceptor(
-    private val oAuth2AccessTokenService: OAuth2AccessTokenService,
-    private val clientConfigurationProperties: ClientConfigurationProperties,
-) : ClientHttpRequestInterceptor {
-    override fun intercept(
-        request: HttpRequest,
-        body: ByteArray,
-        execution: ClientHttpRequestExecution,
-    ): ClientHttpResponse {
-        genererAccessToken(
-            request,
-            clientConfigurationProperties,
-            oAuth2AccessTokenService,
-            GrantType.TOKEN_EXCHANGE,
-        )?.let {
-            request.headers.setBearerAuth(
-                it,
-            )
-        }
-        return execution.execute(request, body)
-    }
-}
-
-@Component
-class BearerTokenOnBehalfOfClientInterceptor(
-    private val oAuth2AccessTokenService: OAuth2AccessTokenService,
-    private val clientConfigurationProperties: ClientConfigurationProperties,
-) : ClientHttpRequestInterceptor {
-    override fun intercept(
-        request: HttpRequest,
-        body: ByteArray,
-        execution: ClientHttpRequestExecution,
-    ): ClientHttpResponse {
-        genererAccessToken(
-            request,
-            clientConfigurationProperties,
-            oAuth2AccessTokenService,
-            GrantType.JWT_BEARER,
-        )?.let {
-            request.headers.setBearerAuth(
-                it,
-            )
-        }
-        return execution.execute(request, body)
-    }
-}
-
-@Component
-class BearerTokenWithSTSFallbackClientInterceptor(
-    private val oAuth2AccessTokenService: OAuth2AccessTokenService,
-    private val clientConfigurationProperties: ClientConfigurationProperties,
-    private val stsRestClient: StsRestClient,
-) : ClientHttpRequestInterceptor {
-    override fun intercept(
-        request: HttpRequest,
-        body: ByteArray,
-        execution: ClientHttpRequestExecution,
-    ): ClientHttpResponse {
-        if (erSystembruker()) {
-            request.headers.setBearerAuth(stsRestClient.systemOIDCToken)
-        } else {
-            genererAccessToken(
-                request,
-                clientConfigurationProperties,
-                oAuth2AccessTokenService,
-            )?.let {
-                request.headers.setBearerAuth(
-                    it,
-                )
-            }
         }
         return execution.execute(request, body)
     }
@@ -140,13 +38,11 @@ private fun genererAccessToken(
     request: HttpRequest,
     clientConfigurationProperties: ClientConfigurationProperties,
     oAuth2AccessTokenService: OAuth2AccessTokenService,
-    grantType: GrantType? = null,
 ): String? {
     val clientProperties =
         clientPropertiesFor(
             request.uri,
             clientConfigurationProperties,
-            grantType,
         )
     return oAuth2AccessTokenService.getAccessToken(clientProperties).accessToken
 }
@@ -161,18 +57,9 @@ private fun genererAccessToken(
 private fun clientPropertiesFor(
     uri: URI,
     clientConfigurationProperties: ClientConfigurationProperties,
-    grantType: GrantType?,
 ): ClientProperties {
     val clientProperties = filterClientProperties(clientConfigurationProperties, uri)
-    return if (grantType == null) {
-        if (clientProperties.size == 1) {
-            clientProperties.first()
-        } else {
-            clientPropertiesForGrantType(clientProperties, clientCredentialOrJwtBearer(), uri)
-        }
-    } else {
-        clientPropertiesForGrantType(clientProperties, grantType, uri)
-    }
+    return clientPropertiesForGrantType(clientProperties, uri)
 }
 
 private fun filterClientProperties(
@@ -185,21 +72,8 @@ private fun filterClientProperties(
 
 private fun clientPropertiesForGrantType(
     values: List<ClientProperties>,
-    grantType: GrantType,
     uri: URI,
-): ClientProperties =
-    values.firstOrNull { grantType == it.grantType }
-        ?: error("could not find oauth2 client config for uri=$uri and grant type=$grantType")
+) =
+    values.firstOrNull { GrantType.CLIENT_CREDENTIALS == it.grantType }
+        ?: error("could not find oauth2 client config for uri=$uri and grant type=CLIENT_CREDENTIALS")
 
-private fun clientCredentialOrJwtBearer() = if (erSystembruker()) GrantType.CLIENT_CREDENTIALS else GrantType.JWT_BEARER
-
-private fun erSystembruker(): Boolean {
-    return try {
-        val preferredUsername =
-            SpringTokenValidationContextHolder().getTokenValidationContext().getClaims("azuread").get("preferred_username")
-        return preferredUsername == null
-    } catch (e: Throwable) {
-        // Ingen request context. Skjer ved kall som har opphav i kjørende applikasjon. Ping etc.
-        true
-    }
-}
