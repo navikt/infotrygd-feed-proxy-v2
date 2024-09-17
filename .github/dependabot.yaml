@@ -1,11 +1,11 @@
 version: 2
 
 registries:
-  familie-felles:
+  infotrygd-feed-proxy:
     type: maven-repository
-    url: https://maven.pkg.github.com/navikt/familie-felles
+    url: https://maven.pkg.github.com/navikt/infotrygd-feed-proxy-v2
     username: x-access-token
-    password: "${{secrets.NAV_READ_PACKAGES}}"
+    password: "${{secrets.READER_TOKEN}}"
 
 updates:
   - package-ecosystem: github-actions
@@ -22,4 +22,4 @@ updates:
       time: "04:00"
     open-pull-requests-limit: 10
     registries:
-      - familie-felles
+      - infotrygd-feed-proxy
