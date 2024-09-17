@@ -49,7 +49,7 @@ no.nav.security.jwt:
         resource-url: ${FPSAK_FEED_URL}
         token-endpoint-url: ${AZURE_OPENID_CONFIG_TOKEN_ENDPOINT}
         grant-tyoe: client_credentials
-        scope: api://${CLUSTER_ENV}-gcp.fpsak.fpsak-api/.default
+        scope: api://${CLUSTER_ENV}-fss.fpsak.fpsak-api/.default
         authentication:
           client-id: ${AZURE_APP_CLIENT_ID}
           client-secret: ${AZURE_APP_CLIENT_SECRET}
