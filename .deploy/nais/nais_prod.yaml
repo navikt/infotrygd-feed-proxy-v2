@@ -9,16 +9,16 @@ spec:
   image: {{image}}
   port: 8087
   liveness:
-    path: /api/internal/health/liveness
+    path: /api/actuator/health/liveness
     initialDelay: 30
     failureThreshold: 10
   readiness:
-    path: /api/internal/health/readiness
+    path: /api/actuator/health/readiness
     initialDelay: 30
     failureThreshold: 10
   prometheus:
     enabled: true
-    path: /api/internal/prometheus
+    path: /api/actuator/prometheus
   replicas:
     min: 2
     max: 3
