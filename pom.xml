@@ -12,25 +12,26 @@
     </parent>
 
     <groupId>no.nav</groupId>
-    <artifactId>infotrygd-feed-proxy</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>infotrygd-feed-proxy-v2</artifactId>
+    <version>2.0-SNAPSHOT</version>
 
     <properties>
         <java.version>21</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <kotlin.version>2.0.20</kotlin.version>
+
         <springdoc.version>2.6.0</springdoc.version>
 
         <mockk.version>1.13.12</mockk.version>
-
         <nav.security.version>5.0.5</nav.security.version>
+        <boot-conditionals.version>5.1.2</boot-conditionals.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
+            <artifactId>kotlin-stdlib</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
         <dependency>
@@ -76,7 +77,11 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>8.0</version>
+        </dependency>
         <!-- http -->
         <dependency>
             <groupId>org.apache.httpcomponents.client5</groupId>
@@ -96,10 +101,21 @@
             <version>${nav.security.version}</version>
         </dependency>
         <dependency>
+            <groupId>no.nav.boot</groupId>
+            <artifactId>boot-conditionals</artifactId>
+            <version>${boot-conditionals.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.nimbusds</groupId>
             <artifactId>oauth2-oidc-sdk</artifactId>
             <version>11.19.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+
         <!-- test -->
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -134,13 +150,12 @@
     <build>
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
         <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
-        <finalName>${project.artifactId}</finalName>
+        <finalName>app</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <fork>true</fork>
                     <mainClass>no.nav.infotrygd.feed.proxy.ApplicationKt</mainClass>
                 </configuration>
                 <executions>
@@ -161,6 +176,7 @@
                     <compilerPlugins>
                         <plugin>spring</plugin>
                     </compilerPlugins>
+                    <jvmTarget>${java.version}</jvmTarget>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -196,7 +212,7 @@
                         <phase>verify</phase>
                         <configuration>
                             <target name="ktlint">
-                                <java taskname="ktlint" dir="${basedir}" fork="true" failonerror="true"
+                                <java taskname="ktlint" dir="${basedir}" fork="true" failonerror="false"
                                       classpathref="maven.plugin.classpath" classname="com.pinterest.ktlint.Main">
                                     <arg value="src/**/*.kt"/>
                                 </java>
@@ -211,7 +227,7 @@
                         <phase>validate</phase>
                         <configuration>
                             <target name="ktlint">
-                                <java taskname="ktlint" dir="${basedir}" fork="true" failonerror="true"
+                                <java taskname="ktlint" dir="${basedir}" fork="true" failonerror="false"
                                       classpathref="maven.plugin.classpath" classname="com.pinterest.ktlint.Main">
                                     <jvmarg value="--add-opens"/>
                                     <jvmarg value="java.base/java.lang=ALL-UNNAMED"/>

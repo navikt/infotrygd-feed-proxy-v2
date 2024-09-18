@@ -2,17 +2,12 @@ application:
   name: infotrygd-feed-proxy
 server:
   servlet:
-    context-path: /
+    context-path: /api
   port: 8087
   shutdown: graceful
 
 no.nav.security.jwt:
   issuer:
-    azuread:
-      discoveryurl: ${AZURE_APP_WELL_KNOWN_URL}
-      accepted_audience: ${AZURE_APP_CLIENT_ID}
-      proxyurl: http://webproxy-nais.nav.no:8088
-      cookie_name: azure_token
     sts:
       discoveryurl: ${STS_DISCOVERY_URL}
       accepted_audience: ${GYLDIGE_SERVICE_BRUKERE}
@@ -62,20 +57,14 @@ spring:
     banner-mode: "off"
 
 management:
-  endpoint.health.show-details: always
+  endpoint.health.show-details: never
   endpoint.health.probes.enabled: true
   endpoints.web:
-    exposure.include: info, health, metrics, prometheus
-    base-path: "/internal"
-  metrics.web.server.request.autotime.enabled: true
-  prometheus:
-    metrics:
-      export:
-        enabled: true
+    exposure.include: info, health, metrics, prometheus, env, configprops, beans
 
 springdoc:
   packagesToScan: no.nav.infotrygd.feed.proxy
-  pathsToMatch: /v3/api-docs,/api/**
+  pathsToMatch: /v3/api-docs,/**
   swagger-ui:
     disable-swagger-default-url: true
 
@@ -85,8 +74,5 @@ SYKEPENGER_FEED_URL: https://vedtaksfeed.intern.nav.no
 YRKESSKADE_FEED_URL: https://yrkesskade-infotrygd-feed.intern.nav.no
 FPSAK_FEED_URL: https://fpsak-api.intern.nav.no
 
-STS_PREFIX: http://security-token-service.default
-STS_DISCOVERY_SUFFIX: /rest/v1/sts/.well-known/openid-configuration
-STS_URL: ${STS_PREFIX}/rest/v1/sts/token # Trenges av RestTemplateSTS
 GYLDIGE_SERVICE_BRUKERE: srvinfotrygd-feed-proxy-v2, srvInfot
 STS_DISCOVERY_URL: https://security-token-service.nais.adeo.no/rest/v1/sts/.well-known/openid-configuration

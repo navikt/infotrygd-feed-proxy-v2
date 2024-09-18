@@ -19,7 +19,7 @@ class ForeldreOgSvangerskapspengerFeedClient(
 
     fun hentForeldrepengerFeed(sekvensnummer: Long): String {
         val hentForeldrepengerFeedUri = UriComponentsBuilder.fromUri(fpsvFeedUri)
-            .pathSegment("/fpsak/api/feed/vedtak/foreldrepenger")
+            .pathSegment("fpsak/api/feed/vedtak/foreldrepenger")
             .queryParam("sistLesteSekvensId", sekvensnummer)
             .build().toUri()
         logger.info("Henter foreldrepenger feed med URI=$hentForeldrepengerFeedUri")
@@ -30,7 +30,7 @@ class ForeldreOgSvangerskapspengerFeedClient(
 
     fun hentSvangerskapspengerFeed(sekvensnummer: Long): String {
         val hentSvangerskapspengerFeedUri = UriComponentsBuilder.fromUri(fpsvFeedUri)
-            .pathSegment("/fpsak/api/feed/vedtak/svangerskapspenger")
+            .pathSegment("fpsak/api/feed/vedtak/svangerskapspenger")
             .queryParam("sistLesteSekvensId", sekvensnummer)
             .build().toUri()
         logger.info("Henter svangerskapspenger feed med URI=$hentSvangerskapspengerFeedUri")

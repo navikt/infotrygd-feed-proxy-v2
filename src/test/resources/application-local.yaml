@@ -1,9 +1,17 @@
-AZURE_PREFIX: https://login.microsoftonline.com/navq.onmicrosoft.com/oauth2/v2.0
+AZURE_APP_WELL_KNOWN_URL: http://localhost:8060/rest/azuread/.well-known/openid-configuration
+AZURE_OPENID_CONFIG_TOKEN_ENDPOINT: http://localhost:8060/rest/azuread/token
+AZURE_APP_CLIENT_ID: vtp
+AZURE_APP_CLIENT_SECRET: vtp
 
-AZURE_APP_WELL_KNOWN_URL: ${AZURE_PREFIX}/.well-known/openid-configuration
-AZURE_OPENID_CONFIG_TOKEN_ENDPOINT: ${AZURE_PREFIX}/token
+# OIDC_STS
+STS_DISCOVERY_URL: http://localhost:8060/rest/v1/sts/.well-known/openid-configuration
+GYLDIGE_SERVICE_BRUKERE: sts, vtp
 
-CLUSTER_ENV: dev
+CLUSTER_ENV: test
+SPRING_PROFILES_ACTIVE: test
+NAIS_CLUSTER_NAME: test
 
 CREDENTIAL_USERNAME: 123
 CREDENTIAL_PASSWORD: 123
+
+FPSAK_FEED_URL: http://localhost:8080

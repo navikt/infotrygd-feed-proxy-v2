@@ -4,4 +4,3 @@ SYKEPENGER_FEED_URL: https://vedtaksfeed.intern.dev.nav.no
 YRKESSKADE_FEED_URL: https://yrkesskade-infotrygd-feed.intern.dev.nav.no
 FPSAK_FEED_URL: http://fpsak-api.teamforeldrepenger
 STS_DISCOVERY_URL: https://security-token-service.nais.preprod.local/rest/v1/sts/.well-known/openid-configuration
-STS_URL: https://security-token-service.nais.preprod.local/rest/v1/sts/token

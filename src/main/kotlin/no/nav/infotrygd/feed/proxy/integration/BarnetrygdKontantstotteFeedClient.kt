@@ -34,7 +34,7 @@ class BarnetrygdKontantstotteFeedClient(
         val hentKontantstotteFeedUri =
             UriComponentsBuilder
                 .fromUri(baksFeedUri)
-                .pathSegment("/api/kontantstotte/v1/feed")
+                .pathSegment("api/kontantstotte/v1/feed")
                 .queryParam("sistLesteSekvensId", sekvensnummer)
                 .build()
                 .toUri()

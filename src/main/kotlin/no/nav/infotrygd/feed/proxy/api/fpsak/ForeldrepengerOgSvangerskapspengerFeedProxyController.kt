@@ -1,4 +1,4 @@
-package no.nav.infotrygd.feed.proxy.api.foreldrepenger
+package no.nav.infotrygd.feed.proxy.api.fpsak
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -13,22 +13,47 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/fpsak/api/feed")
+@RequestMapping("/fpsak")
 @ProtectedWithClaims(issuer = "sts")
-class ForeldrepengerFeedProxyController(private val foreldrepengerFeedClient: ForeldreOgSvangerskapspengerFeedClient) {
+class ForeldrepengerOgSvangerskapspengerFeedProxyController(private val foreldrepengerFeedClient: ForeldreOgSvangerskapspengerFeedClient) {
 
     @Operation(
         summary = "Hent liste med hendelser.",
         description = "Henter hendelser med sekvensId større enn sistLesteSekvensId.",
     )
-    @GetMapping("/vedtak/foreldrepenger", produces = ["application/json; charset=us-ascii"])
-    fun hentFeed(
+    @GetMapping("/foreldrepenger/v1/feed", produces = ["application/json; charset=us-ascii"])
+    fun hentFeedForeldrepenger(
         @Parameter(description = "Sist leste sekvensnummer.", required = true, example = "0")
         @RequestParam("sistLesteSekvensId")
         sekvensnummer: Long,
     ): ResponseEntity<String> {
         return Result.runCatching {
             foreldrepengerFeedClient.hentForeldrepengerFeed(sekvensnummer = sekvensnummer)
+        }.fold(
+            onSuccess = { feed ->
+                logger.info("Hentet feeds fra sekvensnummer $sekvensnummer")
+                secureLogger.info("Hentet feeds $feed fra sekvensnummer $sekvensnummer")
+                ResponseEntity.ok(feed)
+            },
+            onFailure = {
+                logger.error("Feil ved henting av feeds fra sekvensnummer $sekvensnummer", it)
+                ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+            },
+        )
+    }
+
+    @Operation(
+        summary = "Hent liste med hendelser.",
+        description = "Henter hendelser med sekvensId større enn sistLesteSekvensId.",
+    )
+    @GetMapping("/svangerskapspenger/v1/feed", produces = ["application/json; charset=us-ascii"])
+    fun hentFeedSvangerskapspenger(
+        @Parameter(description = "Sist leste sekvensnummer.", required = true, example = "0")
+        @RequestParam("sistLesteSekvensId")
+        sekvensnummer: Long,
+    ): ResponseEntity<String> {
+        return Result.runCatching {
+            foreldrepengerFeedClient.hentSvangerskapspengerFeed(sekvensnummer = sekvensnummer)
         }.fold(
             onSuccess = { feed ->
                 logger.info("Hentet feeds fra sekvensnummer $sekvensnummer")
