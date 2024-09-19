@@ -9,16 +9,16 @@ spec:
   image: {{image}}
   port: 8087
   liveness:
-    path: /internal/health/liveness
+    path: /api/actuator/health/liveness
     initialDelay: 30
     failureThreshold: 10
   readiness:
-    path: /internal/health/readiness
+    path: /api/actuator/health/readiness
     initialDelay: 30
     failureThreshold: 10
   prometheus:
     enabled: true
-    path: /internal/prometheus
+    path: /api/actuator/prometheus
   replicas:
     min: 2
     max: 3
@@ -34,12 +34,11 @@ spec:
     enabled: true
   ingresses:
     - https://infotrygd-feed-proxy-v2.intern.nav.no
-    - https://infotrygd-feed-proxy-v2.prod-fss-pub.nais.io
   vault:
     enabled: true
     paths:
       - kvPath: /serviceuser/data/prod/srvinfotrygd-feed-proxy-v2
-        mountPath: /var/run/secrets/serviceuser/srvinfotrygd-feed-proxy-v2
+        mountPath: /var/run/secrets/nais.io/serviceuser
   azure:
     application:
       enabled: true
@@ -60,6 +59,9 @@ spec:
         - application: vedtaksfeed
           namespace: tbd
           cluster: prod-gcp
+        - application: fpsak-api
+          namespace: teamforeldrepenger
+          cluster: prod-fss
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: prod

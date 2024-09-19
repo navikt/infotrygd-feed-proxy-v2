@@ -1,6 +1,6 @@
 package no.nav.infotrygd.feed.proxy.integration
 
-import no.nav.familie.http.client.AbstractRestClient
+import no.nav.infotrygd.feed.proxy.integration.http.klient.AbstractRestClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -14,12 +14,12 @@ import java.net.URI
 @Service
 class ForeldreOgSvangerskapspengerFeedClient(
     @Value("\${FPSAK_FEED_URL}") private val fpsvFeedUri: URI,
-    @Qualifier("azure") restOperations: RestOperations,
-) : AbstractRestClient(restOperations, "fpsvInfotrygdFeed") {
+    @Qualifier("azureCC") restOperations: RestOperations,
+) : AbstractRestClient(restOperations) {
 
     fun hentForeldrepengerFeed(sekvensnummer: Long): String {
         val hentForeldrepengerFeedUri = UriComponentsBuilder.fromUri(fpsvFeedUri)
-            .pathSegment("/fpsak/api/feed/vedtak/foreldrepenger")
+            .pathSegment("fpsak/api/feed/vedtak/foreldrepenger")
             .queryParam("sistLesteSekvensId", sekvensnummer)
             .build().toUri()
         logger.info("Henter foreldrepenger feed med URI=$hentForeldrepengerFeedUri")
@@ -30,7 +30,7 @@ class ForeldreOgSvangerskapspengerFeedClient(
 
     fun hentSvangerskapspengerFeed(sekvensnummer: Long): String {
         val hentSvangerskapspengerFeedUri = UriComponentsBuilder.fromUri(fpsvFeedUri)
-            .pathSegment("/fpsak/api/feed/vedtak/svangerskapspenger")
+            .pathSegment("fpsak/api/feed/vedtak/svangerskapspenger")
             .queryParam("sistLesteSekvensId", sekvensnummer)
             .build().toUri()
         logger.info("Henter svangerskapspenger feed med URI=$hentSvangerskapspengerFeedUri")

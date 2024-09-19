@@ -2,6 +2,4 @@ CLUSTER_ENV: dev
 BAKS_FEED_URL: https://familie-baks-infotrygd-feed.intern.dev.nav.no
 SYKEPENGER_FEED_URL: https://vedtaksfeed.intern.dev.nav.no
 YRKESSKADE_FEED_URL: https://yrkesskade-infotrygd-feed.intern.dev.nav.no
-FPSAK_FEED_URL: https://fpsak-api.intern.dev.nav.no
 STS_DISCOVERY_URL: https://security-token-service.nais.preprod.local/rest/v1/sts/.well-known/openid-configuration
-STS_URL: https://security-token-service.nais.preprod.local/rest/v1/sts/token

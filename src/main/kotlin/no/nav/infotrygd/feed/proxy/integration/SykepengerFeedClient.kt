@@ -1,6 +1,6 @@
 package no.nav.infotrygd.feed.proxy.integration
 
-import no.nav.familie.http.client.AbstractRestClient
+import no.nav.infotrygd.feed.proxy.integration.http.klient.AbstractRestClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -14,14 +14,16 @@ import java.net.URI
 @Service
 class SykepengerFeedClient(
     @Value("\${SYKEPENGER_FEED_URL}") private val sykepengerFeedUri: URI,
-    @Qualifier("azure") restOperations: RestOperations,
-) : AbstractRestClient(restOperations, "vedtaksfeed") {
-
+    @Qualifier("azureCC") restOperations: RestOperations,
+) : AbstractRestClient(restOperations) {
     fun hentSykepengerFeed(sekvensnummer: Long): String {
-        val hentSykepengerFeedUri = UriComponentsBuilder.fromUri(sykepengerFeedUri)
-            .pathSegment("feed")
-            .queryParam("sistLesteSekvensId", sekvensnummer)
-            .build().toUri()
+        val hentSykepengerFeedUri =
+            UriComponentsBuilder
+                .fromUri(sykepengerFeedUri)
+                .pathSegment("feed")
+                .queryParam("sistLesteSekvensId", sekvensnummer)
+                .build()
+                .toUri()
 
         logger.info("Henter sykepenger feed med URI=$hentSykepengerFeedUri")
         return getForEntity<String>(hentSykepengerFeedUri, headers()).also {
@@ -29,10 +31,11 @@ class SykepengerFeedClient(
         }
     }
 
-    private fun headers(): HttpHeaders = HttpHeaders().apply {
-        contentType = MediaType.APPLICATION_JSON
-        accept = listOf(MediaType.APPLICATION_JSON)
-    }
+    private fun headers(): HttpHeaders =
+        HttpHeaders().apply {
+            contentType = MediaType.APPLICATION_JSON
+            accept = listOf(MediaType.APPLICATION_JSON)
+        }
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)

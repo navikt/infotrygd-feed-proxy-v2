@@ -14,7 +14,6 @@ import org.springframework.web.client.exchange
 import java.net.URI
 
 class YrkesskadeFeedClientTest {
-
     private val restOperationsMock: RestOperations = mockk()
 
     private val ysFeedClient = YrkesskadeFeedClient(URI.create("http://localhost:8080"), restOperationsMock)
@@ -36,7 +35,8 @@ class YrkesskadeFeedClientTest {
         assertNotNull(feed)
     }
 
-    private fun feedMelding(): String = """
+    private fun feedMelding(): String =
+        """
 {
   "elementer": [
     {
@@ -85,5 +85,5 @@ class YrkesskadeFeedClientTest {
   "inneholderFlereElementer": true,
   "tittel": "Yrkesskade Infotrygd feed"
 }
-    """.trimIndent()
+        """.trimIndent()
 }

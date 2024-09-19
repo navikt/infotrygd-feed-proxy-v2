@@ -1,8 +1,7 @@
-FROM ghcr.io/navikt/baseimages/temurin:17
+FROM ghcr.io/navikt/baseimages/temurin:21
 
-ENV APPD_ENABLED=true
-ENV APP_NAME=infotrygd-feed-proxy
+ENV APP_NAME=infotrygd-feed-proxy-v2
 ENV JAVA_OPTS="-XX:MaxRAMPercentage=75"
 
 COPY init.sh /init-scripts/init.sh
-COPY ./target/infotrygd-feed-proxy.jar "app.jar"
+COPY ./target/app.jar .
