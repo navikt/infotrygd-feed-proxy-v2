@@ -15,6 +15,13 @@
     <artifactId>infotrygd-feed-proxy-v2</artifactId>
     <version>2.0-SNAPSHOT</version>
 
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
     <properties>
         <java.version>21</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -27,6 +34,13 @@
         <nav.security.version>5.0.5</nav.security.version>
         <boot-conditionals.version>5.1.2</boot-conditionals.version>
     </properties>
+
+    <scm>
+        <connection>scm:git:https://github.com/navikt/infotrygd-feed-proxy-v2.git</connection>
+        <developerConnection>scm:git:https://github.com/navikt/infotrygd-feed-proxy-v2.git
+        </developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
     <dependencies>
         <dependency>
@@ -267,4 +281,12 @@
             <url>https://repo.spring.io/milestone</url>
         </pluginRepository>
     </pluginRepositories>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>Github navikt Maven Packages</name>
+            <url>https://maven.pkg.github.com/navikt/infotrygd-feed-proxy-v2</url>
+        </repository>
+    </distributionManagement>
 </project>
