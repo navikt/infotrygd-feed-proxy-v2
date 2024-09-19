@@ -11,6 +11,10 @@ no.nav.security.jwt:
     sts:
       discoveryurl: ${STS_DISCOVERY_URL}
       accepted_audience: ${GYLDIGE_SERVICE_BRUKERE}
+    azuread:
+      discoveryurl: ${AZURE_APP_WELL_KNOWN_URL}
+      accepted_audience: ${AZURE_APP_CLIENT_ID}
+      proxyurl: http://webproxy-nais.nav.no:8088
   client:
     registration:
       familie-baks-infotrygd-feed:
