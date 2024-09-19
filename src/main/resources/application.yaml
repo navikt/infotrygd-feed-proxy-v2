@@ -48,7 +48,7 @@ no.nav.security.jwt:
         resource-url: ${FPSAK_FEED_URL}
         token-endpoint-url: ${AZURE_OPENID_CONFIG_TOKEN_ENDPOINT}
         grant-type: client_credentials
-        scope: api://${CLUSTER_ENV}-fss.fpsak.fpsak-api/.default
+        scope: api://${CLUSTER_ENV}-fss.teamforeldrepenger.fpsak-api/.default
         authentication:
           client-id: ${AZURE_APP_CLIENT_ID}
           client-secret: ${AZURE_APP_CLIENT_SECRET}
@@ -76,7 +76,7 @@ CLUSTER_ENV: prod
 BAKS_FEED_URL: https://familie-baks-infotrygd-feed.intern.nav.no
 SYKEPENGER_FEED_URL: https://vedtaksfeed.intern.nav.no
 YRKESSKADE_FEED_URL: https://yrkesskade-infotrygd-feed.intern.nav.no
-FPSAK_FEED_URL: https://fpsak-api.intern.nav.no
+FPSAK_FEED_URL: http://fpsak-api.teamforeldrepenger
 
 GYLDIGE_SERVICE_BRUKERE: srvinfotrygd-feed-proxy-v2, srvInfot
 STS_DISCOVERY_URL: https://security-token-service.nais.adeo.no/rest/v1/sts/.well-known/openid-configuration
