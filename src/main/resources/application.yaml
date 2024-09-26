@@ -7,13 +7,13 @@ server:
   shutdown: graceful
 
 no.nav.security.jwt:
-  issuers:
+  issuer:
     sts:
-      discoveryurl: ${STS_DISCOVERY_URL}
-      accepted_audience: ${GYLDIGE_SERVICE_BRUKERE}
+      discovery-url: ${STS_DISCOVERY_URL}
+      accepted-audience: ${GYLDIGE_SERVICE_BRUKERE}
     azuread:
-      discoveryurl: ${AZURE_APP_WELL_KNOWN_URL}
-      accepted_audience: ${AZURE_APP_CLIENT_ID}
+      discovery-url: ${AZURE_APP_WELL_KNOWN_URL}
+      accepted-audience: ${AZURE_APP_CLIENT_ID}
       proxyurl: http://webproxy-nais.nav.no:8088
   client:
     registration:
