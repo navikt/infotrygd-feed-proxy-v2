@@ -78,5 +78,5 @@ SYKEPENGER_FEED_URL: https://vedtaksfeed.intern.nav.no
 YRKESSKADE_FEED_URL: https://yrkesskade-infotrygd-feed.intern.nav.no
 FPSAK_FEED_URL: http://fpsak-api.teamforeldrepenger
 
-GYLDIGE_SERVICE_BRUKERE: srvinfotrygd-feed-proxy-v2,srvInfot,srvfpfordel
+GYLDIGE_SERVICE_BRUKERE: srvinfotrygd-feed-proxy-v2, srvInfot, srvfpfordel
 STS_DISCOVERY_URL: https://security-token-service.nais.adeo.no/rest/v1/sts/.well-known/openid-configuration
