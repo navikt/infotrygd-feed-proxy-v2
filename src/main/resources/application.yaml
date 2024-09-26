@@ -7,7 +7,7 @@ server:
   shutdown: graceful
 
 no.nav.security.jwt:
-  issuer:
+  issuers:
     sts:
       discoveryurl: ${STS_DISCOVERY_URL}
       accepted_audience: ${GYLDIGE_SERVICE_BRUKERE}
