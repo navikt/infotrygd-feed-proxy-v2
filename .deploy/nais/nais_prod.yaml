@@ -59,7 +59,7 @@ spec:
         - application: vedtaksfeed
           namespace: tbd
           cluster: prod-gcp
-        - application: fpsak-api
+        - application: fpsak
           namespace: teamforeldrepenger
           cluster: prod-fss
   env:

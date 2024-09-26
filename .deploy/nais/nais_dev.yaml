@@ -62,7 +62,7 @@ spec:
         - application: yrkesskade-infotrygd-feed
           namespace: yrkesskade
           cluster: dev-gcp
-        - application: fpsak-api
+        - application: fpsak
           namespace: teamforeldrepenger
           cluster: dev-fss
   env:
