@@ -3,4 +3,6 @@ BAKS_FEED_URL: https://familie-baks-infotrygd-feed.intern.dev.nav.no
 SYKEPENGER_FEED_URL: https://vedtaksfeed.intern.dev.nav.no
 YRKESSKADE_FEED_URL: https://yrkesskade-infotrygd-feed.intern.dev.nav.no
 FPSAK_FEED_URL: https://fpsak-api.intern.dev.nav.no
+INST2_URL: https://inst2-q1.dev.intern.nav.no
+INST2_ENV: inst2-q1
 STS_DISCOVERY_URL: https://security-token-service.nais.preprod.local/rest/v1/sts/.well-known/openid-configuration
