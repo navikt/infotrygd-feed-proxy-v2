@@ -34,6 +34,7 @@ spec:
     enabled: true
   ingresses:
     - https://infotrygd-feed-proxy-v2.dev.intern.nav.no
+  webproxy: true
   vault:
     enabled: true
     paths:
