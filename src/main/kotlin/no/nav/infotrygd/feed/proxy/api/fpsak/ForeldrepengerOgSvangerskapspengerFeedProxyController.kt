@@ -36,7 +36,7 @@ class ForeldrepengerOgSvangerskapspengerFeedProxyController(private val foreldre
                 ResponseEntity.ok(feed)
             },
             onFailure = {
-                logger.error("Feil ved henting av feeds fra sekvensnummer $sekvensnummer", it)
+                logger.error("Feil ved henting av FP-feed fra sekvensnummer $sekvensnummer", it)
                 ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
             },
         )
@@ -61,7 +61,7 @@ class ForeldrepengerOgSvangerskapspengerFeedProxyController(private val foreldre
                 ResponseEntity.ok(feed)
             },
             onFailure = {
-                logger.error("Feil ved henting av feeds fra sekvensnummer $sekvensnummer", it)
+                logger.error("Feil ved henting av SV-feed fra sekvensnummer $sekvensnummer", it)
                 ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
             },
         )

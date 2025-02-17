@@ -40,7 +40,7 @@ class Inst2FeedProxyController(
                     ResponseEntity.ok(feed)
                 },
                 onFailure = {
-                    logger.error("Feil ved henting av feeds fra sekvensnummer $sekvensnummer", it)
+                    logger.error("Feil ved henting av Inst2-feed fra sekvensnummer $sekvensnummer", it)
                     ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
                 },
             )
