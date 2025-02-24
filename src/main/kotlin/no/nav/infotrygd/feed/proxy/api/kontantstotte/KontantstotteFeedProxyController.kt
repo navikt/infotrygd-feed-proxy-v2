@@ -33,8 +33,8 @@ class KontantstotteFeedProxyController(
                 barnetrygdKontantstotteFeedClient.hentKontantstotteFeed(sekvensnummer = sekvensnummer)
             }.fold(
                 onSuccess = { feed ->
-                    logger.info("Hentet feeds fra sekvensnummer $sekvensnummer")
-                    secureLogger.info("Hentet feeds $feed fra sekvensnummer $sekvensnummer")
+                    logger.info("Hentet KS-feed fra sekvensnummer $sekvensnummer")
+                    secureLogger.info("Hentet KS-feed $feed fra sekvensnummer $sekvensnummer")
                     ResponseEntity.ok(feed)
                 },
                 onFailure = {

@@ -31,8 +31,8 @@ class ForeldrepengerOgSvangerskapspengerFeedProxyController(private val foreldre
             foreldrepengerFeedClient.hentForeldrepengerFeed(sekvensnummer = sekvensnummer)
         }.fold(
             onSuccess = { feed ->
-                logger.info("Hentet feeds fra sekvensnummer $sekvensnummer")
-                secureLogger.info("Hentet feeds $feed fra sekvensnummer $sekvensnummer")
+                logger.info("Hentet FP-feed fra sekvensnummer $sekvensnummer")
+                secureLogger.info("Hentet FP-feed $feed fra sekvensnummer $sekvensnummer")
                 ResponseEntity.ok(feed)
             },
             onFailure = {
@@ -56,8 +56,8 @@ class ForeldrepengerOgSvangerskapspengerFeedProxyController(private val foreldre
             foreldrepengerFeedClient.hentSvangerskapspengerFeed(sekvensnummer = sekvensnummer)
         }.fold(
             onSuccess = { feed ->
-                logger.info("Hentet feeds fra sekvensnummer $sekvensnummer")
-                secureLogger.info("Hentet feeds $feed fra sekvensnummer $sekvensnummer")
+                logger.info("Hentet SV-feed fra sekvensnummer $sekvensnummer")
+                secureLogger.info("Hentet SVfeed $feed fra sekvensnummer $sekvensnummer")
                 ResponseEntity.ok(feed)
             },
             onFailure = {

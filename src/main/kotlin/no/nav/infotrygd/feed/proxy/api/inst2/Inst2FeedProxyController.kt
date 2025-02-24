@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/after-id")
+@RequestMapping("/inst2")
 @ProtectedWithClaims(issuer = "sts")
 class Inst2FeedProxyController(
     private val inst2FeedClient: Inst2FeedClient) {
@@ -35,12 +35,12 @@ class Inst2FeedProxyController(
                 inst2FeedClient.hentInstitusjonsoppholdFeed(callId, consumerId, sekvensnummer = sekvensnummer)
             }.fold(
                 onSuccess = { feed ->
-                    logger.info("Hentet feeds fra sekvensnummer $sekvensnummer")
-                    secureLogger.info("Hentet feeds $feed fra sekvensnummer $sekvensnummer")
+                    logger.info("Hentet INST2-feed fra sekvensnummer $sekvensnummer")
+                    secureLogger.info("Hentet INST2-feed $feed fra sekvensnummer $sekvensnummer")
                     ResponseEntity.ok(feed)
                 },
                 onFailure = {
-                    logger.error("Feil ved henting av Inst2-feed fra sekvensnummer $sekvensnummer", it)
+                    logger.error("Feil ved henting av INST2-feed fra sekvensnummer $sekvensnummer", it)
                     ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
                 },
             )
