@@ -24,8 +24,7 @@ class ForeldrepengerOgSvangerskapspengerFeedProxyController(private val foreldre
     @GetMapping("/foreldrepenger/v1/feed", produces = ["application/json; charset=us-ascii"])
     fun hentFeedForeldrepenger(
         @Parameter(description = "Sist leste sekvensnummer.", required = true, example = "0")
-        @RequestParam("sistLesteSekvensId")
-        sekvensnummer: Long,
+        @RequestParam("sistLesteSekvensId") sekvensnummer: Long,
     ): ResponseEntity<String> {
         return Result.runCatching {
             foreldrepengerFeedClient.hentForeldrepengerFeed(sekvensnummer = sekvensnummer)

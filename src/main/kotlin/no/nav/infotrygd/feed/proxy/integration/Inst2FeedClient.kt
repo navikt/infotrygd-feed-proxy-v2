@@ -19,12 +19,13 @@ class Inst2FeedClient (
 
     fun hentInstitusjonsoppholdFeed(callId: String,
                                     consumerId: String,
-                                    sekvensnummer: Long): String {
+                                    sekvensnummer: Long,
+                                    antallhendelser: Long): String {
         val hentInstOppholdFeedUri =
             UriComponentsBuilder
                 .fromUri(inst2Uri)
-                .pathSegment("api/v1/hendelse/after-id/")
-                .queryParam("antall-hendelser", sekvensnummer)
+                .pathSegment("api/v1/hendelse/after-id/" + sekvensnummer)
+                .queryParam("antall-hendelser", antallhendelser)
                 .build()
                 .toUri()
         logger.info("Henter institusjonsopphold feed med URI=$hentInstOppholdFeedUri")

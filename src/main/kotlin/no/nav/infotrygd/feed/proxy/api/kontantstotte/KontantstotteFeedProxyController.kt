@@ -25,8 +25,7 @@ class KontantstotteFeedProxyController(
     @GetMapping("/v1/feed", produces = ["application/json; charset=us-ascii"])
     fun hentFeed(
         @Parameter(description = "Sist leste sekvensnummer.", required = true, example = "0")
-        @RequestParam("sistLesteSekvensId")
-        sekvensnummer: Long,
+        @RequestParam("sistLesteSekvensId") sekvensnummer: Long,
     ): ResponseEntity<String> =
         Result
             .runCatching {

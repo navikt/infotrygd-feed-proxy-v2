@@ -23,16 +23,18 @@ class Inst2FeedProxyController(
         summary = "Hent liste med hendelser.",
         description = "Henter hendelser med sekvensId større enn sistLesteSekvensId.",
     )
-    @GetMapping("/v1/hendelse", produces = ["application/json; charset=us-ascii"])
+    @GetMapping("/v1/feed", produces = ["application/json; charset=us-ascii"])
     fun hentFeed(
         @Parameter(description = "Sist leste sekvensnummer.", required = true, example = "0")
-        @RequestParam("antall-hendelser") sekvensnummer: Long,
+        @RequestParam("sistLesteSekvensId") sekvensnummer: Long,
+        @RequestParam("antall-hendelser") antallhendelser: Long,
         @RequestHeader("Nav-Call-Id") callId: String,
         @RequestHeader("Nav-Consumer-Id") consumerId: String,
     ): ResponseEntity<String> =
         Result
             .runCatching {
-                inst2FeedClient.hentInstitusjonsoppholdFeed(callId, consumerId, sekvensnummer = sekvensnummer)
+                inst2FeedClient.hentInstitusjonsoppholdFeed(callId, consumerId,
+                    sekvensnummer = sekvensnummer, antallhendelser)
             }.fold(
                 onSuccess = { feed ->
                     logger.info("Hentet INST2-feed fra sekvensnummer $sekvensnummer")
