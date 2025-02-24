@@ -57,7 +57,7 @@ class ForeldrepengerOgSvangerskapspengerFeedProxyController(private val foreldre
         }.fold(
             onSuccess = { feed ->
                 logger.info("Hentet SV-feed fra sekvensnummer $sekvensnummer")
-                secureLogger.info("Hentet SVfeed $feed fra sekvensnummer $sekvensnummer")
+                secureLogger.info("Hentet SV-feed $feed fra sekvensnummer $sekvensnummer")
                 ResponseEntity.ok(feed)
             },
             onFailure = {
