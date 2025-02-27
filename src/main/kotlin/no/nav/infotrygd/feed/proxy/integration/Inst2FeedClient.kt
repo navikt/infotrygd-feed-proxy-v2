@@ -17,30 +17,67 @@ class Inst2FeedClient (
     @Qualifier("azureCC") restOperations: RestOperations,
 ) : AbstractRestClient(restOperations) {
 
-    fun hentInstitusjonsoppholdFeed(callId: String,
-                                    consumerId: String,
-                                    sekvensnummer: Long,
-                                    antallhendelser: Long): String {
+    fun hentInstitusjonsoppholdPerson(personIdent: String): String {
+        val hentInstOppholdPersonUri =
+            UriComponentsBuilder
+                .fromUri(inst2Uri)
+                .pathSegment("api/v1/person/institusjonsopphold")
+                .build().toUri()
+        logger.info("Henter institusjonsopphold for person med URI=$hentInstOppholdPersonUri")
+        return getForEntity<String>(hentInstOppholdPersonUri, headersPerson(personIdent)).also {
+            logger.info("Hentet institusjonsopphold for person med URI=$hentInstOppholdPersonUri. Kall ok.")
+        }
+    }
+
+    fun hentInstitusjonsoppholdPersoner(personIdenter: String): String {
+        val hentInstOppholdPersonerUri =
+            UriComponentsBuilder
+                .fromUri(inst2Uri)
+                .pathSegment("api/v1/personer/institusjonsopphold")
+                .build().toUri()
+        logger.info("Henter institusjonsopphold for liste med personer med URI=$hentInstOppholdPersonerUri")
+        return getForEntity<String>(hentInstOppholdPersonerUri, headersPersoner(personIdenter)).also {
+            logger.info("Hentet institusjonsopphold for personer med URI=$hentInstOppholdPersonerUri. Kall ok.")
+        }
+    }
+
+    fun hentInstitusjonsoppholdFeed(sekvensnummer: Long, antallhendelser: Long): String {
         val hentInstOppholdFeedUri =
             UriComponentsBuilder
                 .fromUri(inst2Uri)
                 .pathSegment("api/v1/hendelse/after-id/" + sekvensnummer)
                 .queryParam("antall-hendelser", antallhendelser)
-                .build()
-                .toUri()
+                .build().toUri()
         logger.info("Henter institusjonsopphold feed med URI=$hentInstOppholdFeedUri")
-        return getForEntity<String>(hentInstOppholdFeedUri, headers(callId, consumerId)).also {
-            logger.info("Hentet institusjonsopphold feed med URI=$hentInstOppholdFeedUri. Kall ok")
+        return getForEntity<String>(hentInstOppholdFeedUri, headersFeed()).also {
+            logger.info("Hentet institusjonsopphold feed med URI=$hentInstOppholdFeedUri. Kall ok.")
         }
     }
 
-    private fun headers(callId : String,
-                        consumerId : String): HttpHeaders = HttpHeaders().apply {
-                            contentType = MediaType.APPLICATION_JSON
-                            accept = listOf(MediaType.APPLICATION_JSON)
-                            set("Nav-Call-Id", callId)
-                            set("Nav-Consumer-Id", consumerId)
+    private fun headersPerson(
+        personIdent: String): HttpHeaders = HttpHeaders().apply {
+            contentType = MediaType.APPLICATION_JSON
+            accept = listOf(MediaType.APPLICATION_JSON)
+            set("Nav-Call-Id", "institusjonsopphold-person")
+            set("Nav-Consumer-Id", "infotrygd-feed-proxy-v2")
+            set("Nav-Personident", personIdent)
         }
+
+    private fun headersPersoner(
+        personIdenter: String): HttpHeaders = HttpHeaders().apply {
+        contentType = MediaType.APPLICATION_JSON
+        accept = listOf(MediaType.APPLICATION_JSON)
+        set("Nav-Call-Id", "institusjonsopphold-personer")
+        set("Nav-Consumer-Id", "infotrygd-feed-proxy-v2")
+        set("Nav-Personident", personIdenter)
+    }
+
+    private fun headersFeed(): HttpHeaders = HttpHeaders().apply {
+        contentType = MediaType.APPLICATION_JSON
+        accept = listOf(MediaType.APPLICATION_JSON)
+        set("Nav-Call-Id", "institusjonsopphold-feed")
+        set("Nav-Consumer-Id", "infotrygd-feed-proxy-v2")
+    }
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
