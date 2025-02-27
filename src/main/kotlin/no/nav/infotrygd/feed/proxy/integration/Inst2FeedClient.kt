@@ -54,8 +54,7 @@ class Inst2FeedClient (
         }
     }
 
-    private fun headersPerson(
-        personIdent: String): HttpHeaders = HttpHeaders().apply {
+    private fun headersPerson(personIdent: String): HttpHeaders = HttpHeaders().apply {
             contentType = MediaType.APPLICATION_JSON
             accept = listOf(MediaType.APPLICATION_JSON)
             set("Nav-Call-Id", "institusjonsopphold-person")
@@ -63,8 +62,7 @@ class Inst2FeedClient (
             set("Nav-Personident", personIdent)
         }
 
-    private fun headersPersoner(
-        personIdenter: String): HttpHeaders = HttpHeaders().apply {
+    private fun headersPersoner(personIdenter: String): HttpHeaders = HttpHeaders().apply {
         contentType = MediaType.APPLICATION_JSON
         accept = listOf(MediaType.APPLICATION_JSON)
         set("Nav-Call-Id", "institusjonsopphold-personer")
