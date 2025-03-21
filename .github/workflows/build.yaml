@@ -33,16 +33,15 @@ jobs:
           GITHUB_USERNAME: x-access-token
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: mvn package -e -B -s .m2/maven-settings.xml
-      - name: Login to Github Package Registry
+      - name: Create Docker image
+        id: image-creation
+        uses: nais/docker-build-push@v0
         if: (github.ref == 'refs/heads/main' && github.event_name == 'push') || github.event_name == 'workflow_dispatch'
-        env:
-          DOCKER_USERNAME: x-access-token
-          DOCKER_PASSWORD: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          docker build --tag ${IMAGE} .
-          docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
-          docker push ${IMAGE}
+        with:
+          dockerfile: Dockerfile
+          team: infotrygd
+    outputs:
+      image: ${{ steps.image-creation.outputs.image }}
 
   deploy-dev:
     name: Deploy til dev-fss
@@ -53,10 +52,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Deploy til dev-fss
-        uses: nais/deploy/actions/deploy@v1
+        uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-fss
+          IMAGE: ${{ needs.build.outputs.image }}
           RESOURCE: .deploy/nais/nais_dev.yaml
 
   deploy-prod:
@@ -68,8 +67,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Deploy til prod-fss
-        uses: nais/deploy/actions/deploy@v1
+        uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-fss
+          IMAGE: ${{ needs.build.outputs.image }}
           RESOURCE: .deploy/nais/nais_prod.yaml
