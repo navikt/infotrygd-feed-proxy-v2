@@ -17,7 +17,11 @@ jobs:
   build:
     name: Build and push
     runs-on: ubuntu-latest
-    permissions: write-all
+    permissions:
+      packages: write
+      contents: read
+      id-token: write
+      actions: read
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 21
