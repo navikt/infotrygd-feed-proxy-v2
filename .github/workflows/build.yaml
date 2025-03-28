@@ -12,14 +12,11 @@ on:
       - '.github/**'
       - '.m2/**'
 
-env:
-  IMAGE: ghcr.io/navikt/infotrygd-feed-proxy-v2:${{ github.sha }}
-
 jobs:
   build:
-    name: Build
-    permissions: write-all
+    name: Build and push
     runs-on: ubuntu-latest
+    permissions: write-all
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 21
@@ -28,20 +25,11 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
           cache: 'maven'
-      - name: Bygg
-        env:
-          GITHUB_USERNAME: x-access-token
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: mvn package -e -B -s .m2/maven-settings.xml
-      - name: Create Docker image
-        id: image-creation
+      - name: Build and push image and SBOM to OCI registry
         uses: nais/docker-build-push@v0
-        if: (github.ref == 'refs/heads/main' && github.event_name == 'push') || github.event_name == 'workflow_dispatch'
+        id: docker-build-push
         with:
-          dockerfile: Dockerfile
           team: infotrygd
-    outputs:
-      image: ${{ steps.image-creation.outputs.image }}
 
   deploy-dev:
     name: Deploy til dev-fss
@@ -55,8 +43,8 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-fss
-          IMAGE: ${{ needs.build.outputs.image }}
           RESOURCE: .deploy/nais/nais_dev.yaml
+          IMAGE: ${{ steps.docker-build-push.outputs.image }}
 
   deploy-prod:
     name: Deploy til prod-fss
@@ -70,5 +58,5 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: prod-fss
-          IMAGE: ${{ needs.build.outputs.image }}
           RESOURCE: .deploy/nais/nais_prod.yaml
+          IMAGE: ${{ steps.docker-build-push.outputs.image }}
