@@ -26,6 +26,7 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
           cache: 'maven'
+      - run: mvn package -e -B -s .m2/maven-settings.xml
       - name: Build and push image and SBOM to OCI registry
         uses: nais/docker-build-push@v0
         id: docker-build-push
