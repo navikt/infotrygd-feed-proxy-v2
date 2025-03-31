@@ -13,7 +13,7 @@ on:
       - '.m2/**'
 
 jobs:
-  build:
+  build-and-push:
     name: Build and push
     runs-on: ubuntu-latest
     permissions:
@@ -40,7 +40,9 @@ jobs:
     name: Deploy til dev-fss
     if: (github.ref == 'refs/heads/main' && github.event_name == 'push') || github.event_name == 'workflow_dispatch'
     environment: dev-fss:infotrygd
-    needs: build
+    env:
+      IMAGE: ${{ needs.build.outputs.image }}
+    needs: build-and-push
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -52,13 +54,15 @@ jobs:
         env:
           CLUSTER: dev-fss
           RESOURCE: .deploy/nais/nais_dev.yaml
-          IMAGE: ${{ needs.build.outputs.image }}
+          IMAGE: ${{ needs.build-and-push.outputs.image }}
 
   deploy-prod:
     name: Deploy til prod-fss
     if: github.ref_name == 'main'
     environment: prod-fss:infotrygd
-    needs: [build, deploy-dev]
+    env:
+      IMAGE: ${{ needs.build.outputs.image }}
+    needs: [build-and-push, deploy-dev]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -70,4 +74,4 @@ jobs:
         env:
           CLUSTER: prod-fss
           RESOURCE: .deploy/nais/nais_prod.yaml
-          IMAGE: ${{ needs.build.outputs.image }}
+          IMAGE: ${{ needs.build-and-push.outputs.image }}
