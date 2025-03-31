@@ -12,16 +12,11 @@ on:
       - '.github/**'
       - '.m2/**'
 
-
 jobs:
   build:
     name: Build and push
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
-      id-token: write
-      actions: read
+    permissions: write-all
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 21
@@ -50,7 +45,7 @@ jobs:
         env:
           CLUSTER: dev-fss
           RESOURCE: .deploy/nais/nais_dev.yaml
-          IMAGE: ${{ steps.docker-build-push.outputs.image }}
+          IMAGE: ${{ needs.build.outputs.image }}
 
   deploy-prod:
     name: Deploy til prod-fss
@@ -65,4 +60,4 @@ jobs:
         env:
           CLUSTER: prod-fss
           RESOURCE: .deploy/nais/nais_prod.yaml
-          IMAGE: ${{ steps.docker-build-push.outputs.image }}
+          IMAGE: ${{ needs.build.outputs.image }}
