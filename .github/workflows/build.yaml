@@ -16,7 +16,11 @@ jobs:
   build:
     name: Build and push
     runs-on: ubuntu-latest
-    permissions: write-all
+    permissions:
+      packages: write
+      contents: read
+      id-token: write
+      actions: read
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 21
@@ -38,7 +42,9 @@ jobs:
     environment: dev-fss:infotrygd
     needs: build
     runs-on: ubuntu-latest
-    permissions: write-all
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       - name: Deploy til dev-fss
@@ -54,7 +60,9 @@ jobs:
     environment: prod-fss:infotrygd
     needs: [build, deploy-dev]
     runs-on: ubuntu-latest
-    permissions: write-all
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       - name: Deploy til prod-fss
