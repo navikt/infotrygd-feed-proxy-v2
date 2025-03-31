@@ -38,6 +38,7 @@ jobs:
     environment: dev-fss:infotrygd
     needs: build
     runs-on: ubuntu-latest
+    permissions: write-all
     steps:
       - uses: actions/checkout@v4
       - name: Deploy til dev-fss
@@ -53,6 +54,7 @@ jobs:
     environment: prod-fss:infotrygd
     needs: [build, deploy-dev]
     runs-on: ubuntu-latest
+    permissions: write-all
     steps:
       - uses: actions/checkout@v4
       - name: Deploy til prod-fss
