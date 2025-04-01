@@ -40,8 +40,6 @@ jobs:
     name: Deploy til dev-fss
     if: (github.ref == 'refs/heads/main' && github.event_name == 'push') || github.event_name == 'workflow_dispatch'
     environment: dev-fss:infotrygd
-    env:
-      IMAGE: ${{ needs.build.outputs.image }}
     needs: build-and-push
     runs-on: ubuntu-latest
     permissions:
@@ -60,8 +58,6 @@ jobs:
     name: Deploy til prod-fss
     if: github.ref_name == 'main'
     environment: prod-fss:infotrygd
-    env:
-      IMAGE: ${{ needs.build.outputs.image }}
     needs: [build-and-push, deploy-dev]
     runs-on: ubuntu-latest
     permissions:
