@@ -9,7 +9,7 @@ on:
       - '.gitignore'
       - 'LICENSE'
       - 'CODEOWNERS'
-      - '.github/**'
+      - '.github/dependabot.yaml'
       - '.m2/**'
 
 jobs:
