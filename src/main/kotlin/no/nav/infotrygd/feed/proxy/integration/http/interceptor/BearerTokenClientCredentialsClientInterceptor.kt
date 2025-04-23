@@ -45,7 +45,9 @@ private fun genererAccessToken(
             clientConfigurationProperties,
         )
     val tokenResponse = oAuth2AccessTokenService.getAccessToken(clientProperties)
-    return tokenResponse?.accessToken ?: error("Access token not found")
+        ?: error("Failed to retrieve access token: Token response is null")
+
+    return tokenResponse.accessToken ?: error("Access token not found in token response")
 }
 
 /**
