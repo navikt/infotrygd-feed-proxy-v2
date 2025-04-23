@@ -21,7 +21,7 @@ class BearerTokenClientCredentialsClientInterceptor(
         body: ByteArray,
         execution: ClientHttpRequestExecution,
     ): ClientHttpResponse {
-        genererAccessToken(
+        generateAccessToken(
             request,
             clientConfigurationProperties,
             oAuth2AccessTokenService,
@@ -35,7 +35,7 @@ class BearerTokenClientCredentialsClientInterceptor(
 }
 
 @Throws(IllegalStateException::class)
-private fun genererAccessToken(
+private fun generateAccessToken(
     request: HttpRequest,
     clientConfigurationProperties: ClientConfigurationProperties,
     oAuth2AccessTokenService: OAuth2AccessTokenService,
@@ -47,7 +47,8 @@ private fun genererAccessToken(
     val tokenResponse = oAuth2AccessTokenService.getAccessToken(clientProperties)
         ?: throw IllegalStateException("Failed to retrieve access token: Token response is null")
 
-    return tokenResponse.accessToken ?: throw IllegalStateException("Access token not found in token response: $tokenResponse")
+    return tokenResponse.getAccessToken() ?:
+        throw IllegalStateException("Access token not found in token response: $tokenResponse")
 }
 
 /**
