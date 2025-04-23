@@ -38,7 +38,7 @@ private fun genererAccessToken(
     request: HttpRequest,
     clientConfigurationProperties: ClientConfigurationProperties,
     oAuth2AccessTokenService: OAuth2AccessTokenService,
-): String? {
+): String {
     val clientProperties = clientPropertiesFor(
             request.uri,
             clientConfigurationProperties,
