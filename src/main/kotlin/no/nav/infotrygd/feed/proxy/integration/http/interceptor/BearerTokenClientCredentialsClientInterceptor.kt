@@ -43,7 +43,7 @@ private fun generateAccessToken(
             request.uri,
             clientConfigurationProperties,
         )
-    return oAuth2AccessTokenService.getAccessToken(clientProperties).accessToken
+    return oAuth2AccessTokenService.getAccessToken(clientProperties).access_token
 }
 
 /**
