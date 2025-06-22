@@ -31,7 +31,7 @@
         <springdoc.version>2.8.9</springdoc.version>
 
         <mockk.version>1.14.2</mockk.version>
-        <nav.security.version>5.0.29</nav.security.version>
+        <nav.security.version>5.0.30</nav.security.version>
         <boot-conditionals.version>5.1.8</boot-conditionals.version>
     </properties>
 
