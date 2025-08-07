@@ -50,11 +50,11 @@ class Inst2FeedProxyController(
     )
     @GetMapping("v1/personer", produces = ["application/json; charset=us-ascii"])
     fun hentInstPersoner(
-        @RequestHeader("Nav-Personident") personIdent: String,
+        @RequestHeader("Nav-Personident") personIdent: List<String>,
     ): ResponseEntity<String> =
         Result
-            .runCatching { // får en sammenhengende string med personnummere, deles i "chunks" på 11
-                inst2FeedClient.hentInstitusjonsoppholdPersoner(personIdent.split(','))
+            .runCatching {
+                inst2FeedClient.hentInstitusjonsoppholdPersoner(personIdent)
             }.fold(
                 onSuccess = { person ->
                     logger.info("Hentet institusjonsopphold for person identifisert med personident.")
