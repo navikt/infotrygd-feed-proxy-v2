@@ -53,8 +53,8 @@ class Inst2FeedProxyController(
         @RequestHeader("Nav-Personident") personIdent: String,
     ): ResponseEntity<String> =
         Result
-            .runCatching {
-                inst2FeedClient.hentInstitusjonsoppholdPersoner(personIdent)
+            .runCatching { // får en sammenhengende string med personnummere, deles i "chunks" på 11
+                inst2FeedClient.hentInstitusjonsoppholdPersoner(personIdent.split(','))
             }.fold(
                 onSuccess = { person ->
                     logger.info("Hentet institusjonsopphold for person identifisert med personident.")

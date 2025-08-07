@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.client.RestOperations
 import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
+import java.util.UUID
 
 @Service
 class Inst2FeedClient (
@@ -21,22 +22,24 @@ class Inst2FeedClient (
         val hentInstOppholdPersonUri =
             UriComponentsBuilder
                 .fromUri(inst2Uri)
-                .pathSegment("api/v1/person/institusjonsopphold")
+                .pathSegment("api/v1/person/institusjonsopphold/soek")
                 .build().toUri()
         logger.info("Henter institusjonsopphold for person med URI=$hentInstOppholdPersonUri")
-        return getForEntity<String>(hentInstOppholdPersonUri, headersPerson(personIdent)).also {
+        return postForEntity<String, inst2PersonRequest>(hentInstOppholdPersonUri, headers(),
+            inst2PersonRequest(personIdent)).also {
             logger.info("Hentet institusjonsopphold for person med URI=$hentInstOppholdPersonUri. Kall ok.")
         }
     }
 
-    fun hentInstitusjonsoppholdPersoner(personIdenter: String): String {
+    fun hentInstitusjonsoppholdPersoner(personIdenter: List<String>): String {
         val hentInstOppholdPersonerUri =
             UriComponentsBuilder
                 .fromUri(inst2Uri)
-                .pathSegment("api/v1/personer/institusjonsopphold")
+                .pathSegment("api/v1/personer/institusjonsopphold/soek")
                 .build().toUri()
         logger.info("Henter institusjonsopphold for liste med personer med URI=$hentInstOppholdPersonerUri")
-        return getForEntity<String>(hentInstOppholdPersonerUri, headersPersoner(personIdenter)).also {
+        return postForEntity<String, inst2PersonerRequest>(hentInstOppholdPersonerUri, headers(),
+            inst2PersonerRequest(personIdenter)).also {
             logger.info("Hentet institusjonsopphold for personer med URI=$hentInstOppholdPersonerUri. Kall ok.")
         }
     }
@@ -49,33 +52,20 @@ class Inst2FeedClient (
                 .queryParam("antall-hendelser", antallhendelser)
                 .build().toUri()
         logger.info("Henter institusjonsopphold feed med URI=$hentInstOppholdFeedUri")
-        return getForEntity<String>(hentInstOppholdFeedUri, headersFeed()).also {
+        return getForEntity<String>(hentInstOppholdFeedUri, headers()).also {
             logger.info("Hentet institusjonsopphold feed med URI=$hentInstOppholdFeedUri. Kall ok.")
         }
     }
 
-    private fun headersPerson(personIdent: String): HttpHeaders = HttpHeaders().apply {
-            contentType = MediaType.APPLICATION_JSON
-            accept = listOf(MediaType.APPLICATION_JSON)
-            set("Nav-Call-Id", "institusjonsopphold-person")
-            set("Nav-Consumer-Id", "infotrygd-feed-proxy-v2")
-            set("Nav-Personident", personIdent)
-        }
-
-    private fun headersPersoner(personIdenter: String): HttpHeaders = HttpHeaders().apply {
+    private fun headers(): HttpHeaders = HttpHeaders().apply {
         contentType = MediaType.APPLICATION_JSON
         accept = listOf(MediaType.APPLICATION_JSON)
-        set("Nav-Call-Id", "institusjonsopphold-personer")
-        set("Nav-Consumer-Id", "infotrygd-feed-proxy-v2")
-        set("Nav-Personident", personIdenter)
+        set("Nav-Call-Id", UUID.randomUUID().toString())
     }
 
-    private fun headersFeed(): HttpHeaders = HttpHeaders().apply {
-        contentType = MediaType.APPLICATION_JSON
-        accept = listOf(MediaType.APPLICATION_JSON)
-        set("Nav-Call-Id", "institusjonsopphold-feed")
-        set("Nav-Consumer-Id", "infotrygd-feed-proxy-v2")
-    }
+    data class inst2PersonRequest(val personident: String)
+
+    data class inst2PersonerRequest(val personidenter: List<String>)
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
