@@ -1,6 +1,5 @@
 package no.nav.infotrygd.feed.proxy.integration
 
-import no.nav.infotrygd.feed.proxy.api.inst2.Inst2FeedProxyController
 import no.nav.infotrygd.feed.proxy.integration.http.klient.AbstractRestClient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
@@ -19,7 +18,7 @@ class Inst2FeedClient (
     @Qualifier("azureCC") restOperations: RestOperations,
 ) : AbstractRestClient(restOperations) {
 
-    fun hentInstitusjonsoppholdPerson(personIdent: Inst2FeedProxyController.PersonIdent): String {
+    fun hentInstitusjonsoppholdPerson(personIdent: String): String {
         val hentInstOppholdPersonUri =
             UriComponentsBuilder
                 .fromUri(inst2Uri)
@@ -27,7 +26,7 @@ class Inst2FeedClient (
                 .build().toUri()
         logger.info("Henter institusjonsopphold for person med URI=$hentInstOppholdPersonUri")
         return postForEntity<String, inst2PersonRequest>(hentInstOppholdPersonUri, headers(),
-            inst2PersonRequest(personIdent.toString())).also {
+            inst2PersonRequest(personIdent)).also {
             logger.info("Hentet institusjonsopphold for person med URI=$hentInstOppholdPersonUri. Kall ok.")
         }
     }

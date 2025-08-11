@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -26,13 +24,13 @@ class Inst2FeedProxyController(
         summary = "Hent institusjonsopphold for én person.",
         description = "Henter institusjonsopphold for person identifisert med personnummer.",
     )
-    @PostMapping("v1/person", produces = ["application/json; charset=us-ascii"])
+    @GetMapping("v1/person", produces = ["application/json; charset=us-ascii"])
     fun hentInstPerson(
-        @RequestBody personident: PersonIdent
+        @RequestHeader("Nav-Personident") personIdent: String,
     ): ResponseEntity<String> =
         Result
             .runCatching {
-                inst2FeedClient.hentInstitusjonsoppholdPerson(personident)
+                inst2FeedClient.hentInstitusjonsoppholdPerson(personIdent)
             }.fold(
                 onSuccess = { person ->
                     logger.info("Hentet institusjonsopphold for person identifisert med personident.")
@@ -95,8 +93,6 @@ class Inst2FeedProxyController(
                     ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
                 },
             )
-
-    data class PersonIdent(val personident: String)
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
