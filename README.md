@@ -16,5 +16,5 @@ https://security-token-service.nais.preprod.local/swagger-ui/index.html i Chrome
 https://vault.adeo.no/ui/vault/secrets/serviceuser/show/dev/srvinfotrygd-feed-proxy-v2 
 eller ved å logge på POD.
 4. Kall /rest/v1/sts/token tjeneste for å generer et token.
-5. Genererte tokenet kan brukes som Bearer token for å logge på swagger-ui 
-https://infotrygd-feed-proxy.dev.intern.nav.no/swagger-ui/index.html
+5. Genererte tokenet kan brukes som Bearer token for å logge på swagger-ui
+   https://infotrygd-feed-proxy.dev.intern.nav.no/swagger-ui/index.html
