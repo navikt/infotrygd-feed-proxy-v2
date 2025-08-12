@@ -29,11 +29,12 @@ class Inst2FeedProxyController(
     )
     @PostMapping("v2/person", produces = ["application/json; charset=us-ascii"])
     fun hentInstPersonPost(
-        @RequestBody(required = true) personIdent: String
+        @RequestBody(required = true) personIdent: PersonIdent,
     ): ResponseEntity<String> =
         Result
             .runCatching {
-                inst2FeedClient.hentInstitusjonsoppholdPerson(personIdent)
+                println("personIdent: " + personIdent)
+                inst2FeedClient.hentInstitusjonsoppholdPerson(personIdent.toString())
             }.fold(
                 onSuccess = { person ->
                     logger.info("Hentet institusjonsopphold for person identifisert med personident.")
@@ -120,6 +121,8 @@ class Inst2FeedProxyController(
                     ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
                 },
             )
+
+    data class PersonIdent(val personident: String)
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
