@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -18,6 +20,31 @@ import org.springframework.web.bind.annotation.RestController
 @ProtectedWithClaims(issuer = "sts")
 class Inst2FeedProxyController(
     private val inst2FeedClient: Inst2FeedClient) {
+
+    // Kalles fra Infotrygd program K278CPIN
+    // - Ny versjon som benytter POST i stedet for GET
+    @Operation(
+        summary = "Hent institusjonsopphold for én person.",
+        description = "Henter institusjonsopphold for person identifisert med personnummer.",
+    )
+    @PostMapping("v2/person", produces = ["application/json; charset=us-ascii"])
+    fun hentInstPersonPost(
+        @RequestBody(required = true) personIdent: String
+    ): ResponseEntity<String> =
+        Result
+            .runCatching {
+                inst2FeedClient.hentInstitusjonsoppholdPerson(personIdent)
+            }.fold(
+                onSuccess = { person ->
+                    logger.info("Hentet institusjonsopphold for person identifisert med personident.")
+                    secureLogger.info("Hentet institusjonsopphold for person identifisert med personnummer.")
+                    ResponseEntity.ok(person)
+                },
+                onFailure = {
+                    logger.error("Feil ved henting av institusjonsopphold for person", it)
+                    ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+                },
+            )
 
     // Kalles fra Infotrygd program K278CPIN
     @Operation(
