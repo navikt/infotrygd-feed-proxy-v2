@@ -34,7 +34,7 @@ class Inst2FeedProxyController(
         Result
             .runCatching {
                 println("personIdent: " + personIdent)
-                inst2FeedClient.hentInstitusjonsoppholdPerson(personIdent.toString())
+                inst2FeedClient.hentInstitusjonsoppholdPerson(personIdent.personident)
             }.fold(
                 onSuccess = { person ->
                     logger.info("Hentet institusjonsopphold for person identifisert med personident.")
