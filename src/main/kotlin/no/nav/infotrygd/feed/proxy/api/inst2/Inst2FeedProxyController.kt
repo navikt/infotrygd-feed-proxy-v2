@@ -33,7 +33,6 @@ class Inst2FeedProxyController(
     ): ResponseEntity<String> =
         Result
             .runCatching {
-                println("personIdent: " + personIdent)
                 inst2FeedClient.hentInstitusjonsoppholdPerson(personIdent.personident)
             }.fold(
                 onSuccess = { person ->
@@ -70,6 +69,31 @@ class Inst2FeedProxyController(
                     ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
                 },
         )
+
+    // Kalles fra Infotrygd program K278CPI2
+    // - Ny versjon som benytter POST i stedet for GET
+    @Operation(
+        summary = "Hent institusjonsopphold for flere personer.",
+        description = "Henter institusjonsopphold for flere personer identifisert med en liste med personnummer.",
+    )
+    @PostMapping("v2/personer", produces = ["application/json; charset=us-ascii"])
+    fun hentInstPersonerPost(
+        @RequestBody(required = true) personIdenter: PersonIdenter,
+    ): ResponseEntity<String> =
+        Result
+            .runCatching {
+                inst2FeedClient.hentInstitusjonsoppholdPersoner(personIdenter.personidenter)
+            }.fold(
+                onSuccess = { person ->
+                    logger.info("Hentet institusjonsopphold for personer identifisert med personident.")
+                    secureLogger.info("Hentet institusjonsopphold for personer identifisert med personnummer.")
+                    ResponseEntity.ok(person)
+                },
+                onFailure = {
+                    logger.error("Feil ved henting av institusjonsopphold for personer", it)
+                    ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+                },
+            )
 
     // Kalles fra Infotrygd program K278CPI2
     @Operation(
@@ -123,6 +147,8 @@ class Inst2FeedProxyController(
             )
 
     data class PersonIdent(val personident: String)
+
+    data class PersonIdenter(val personidenter: List<String>)
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
