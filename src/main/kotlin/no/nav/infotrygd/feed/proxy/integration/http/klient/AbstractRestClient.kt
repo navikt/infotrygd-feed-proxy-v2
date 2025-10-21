@@ -40,13 +40,6 @@ abstract class AbstractRestClient(
     ): T = execute(uri) { operations.exchange<T>(uri, HttpMethod.PATCH,
         HttpEntity(requestBody, httpHeaders)) }
 
-    inline fun <reified T : Any, reified U : Any> patchForEntity(
-        uri: URI,
-        httpHeaders: HttpHeaders? = null,
-        requestBody: U,
-    ): T = execute(uri) { operations.exchange<T>(uri, HttpMethod.PATCH,
-        HttpEntity(requestBody, httpHeaders)) }
-
     @Suppress("UNCHECKED_CAST")
     private fun <T> validerOgPakkUt(
         respons: ResponseEntity<T>,
