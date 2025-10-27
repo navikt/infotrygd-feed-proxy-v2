@@ -1,7 +1,7 @@
-package no.nav.infotrygd.feed.proxy.api.gsak
+package no.nav.infotrygd.feed.proxy.api.oppgave
 
 import io.swagger.v3.oas.annotations.Operation
-import no.nav.infotrygd.feed.proxy.integration.GsakFeedClient
+import no.nav.infotrygd.feed.proxy.integration.OppgaveClient
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -13,24 +13,24 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/gsak")
+@RequestMapping("/oppgave")
 @ProtectedWithClaims(issuer = "sts")
-class GsakFeedProxyController(
-    private val gsakFeedClient: GsakFeedClient) {
+class OppgaveProxyController(
+    private val oppgaveClient: OppgaveClient) {
 
     // Kalles fra Infotrygd program K278U757
     @Operation(
         summary = "Opprett oppgave med brukertype person.",
-        description = "Oppretter en oppgave i GSAK med brukertype person.",
+        description = "Oppretter en oppgave med brukertype person.",
     )
     @GetMapping("v1/opprettoppgave/person", produces = ["application/json; charset=us-ascii"])
-    fun gsakOpprettOppgavePerson(
-        @RequestBody(required = true) gsakBody: GsakOpprettOppgaveBody,
+    fun opprettOppgavePerson(
+        @RequestBody(required = true) oppgaveBody: OpprettOppgaveBody,
     ): ResponseEntity<String> =
         Result
             .runCatching {
-                gsakFeedClient.opprettOppgave(gsakBody.brukerident, gsakBody.tildeltEnhetsnr,
-                    gsakBody.opprettetAvEnhetsnr, gsakBody.beskrivelse, gsakBody.oppgavetype)
+                oppgaveClient.opprettOppgave(oppgaveBody.brukerident, oppgaveBody.tildeltEnhetsnr,
+                    oppgaveBody.opprettetAvEnhetsnr, oppgaveBody.beskrivelse, oppgaveBody.oppgavetype)
             }.fold(
                 onSuccess = { person ->
                     logger.info("Opprettet oppgave for person identifisert med personident.")
@@ -46,16 +46,16 @@ class GsakFeedProxyController(
     // Kalles fra Infotrygd program K278U757
     @Operation(
         summary = "Opprett oppgave med brukertype organisasjon.",
-        description = "Oppretter en oppgave i GSAK med brukertype organisasjon.",
+        description = "Oppretter en oppgave med brukertype organisasjon.",
     )
     @GetMapping("v1/opprettoppgave/organisasjon", produces = ["application/json; charset=us-ascii"])
-    fun gsakOpprettOppgaveOrg(
-        @RequestBody(required = true) gsakBody: GsakOpprettOppgaveBody,
+    fun opprettOppgaveOrg(
+        @RequestBody(required = true) oppgaveBody: OpprettOppgaveBody,
     ): ResponseEntity<String> =
         Result
             .runCatching {
-                gsakFeedClient.opprettOppgave(gsakBody.brukerident, gsakBody.tildeltEnhetsnr,
-                    gsakBody.opprettetAvEnhetsnr, gsakBody.beskrivelse, gsakBody.oppgavetype)
+                oppgaveClient.opprettOppgave(oppgaveBody.brukerident, oppgaveBody.tildeltEnhetsnr,
+                    oppgaveBody.opprettetAvEnhetsnr, oppgaveBody.beskrivelse, oppgaveBody.oppgavetype)
             }.fold(
                 onSuccess = { org ->
                     logger.info("Opprettet oppgave for organisasjon identifisert med organisasjonsnummer.")
@@ -71,15 +71,15 @@ class GsakFeedProxyController(
     // Kalles fra Infotrygd program K278U717
     @Operation(
         summary = "Ferdigstill oppgave.",
-        description = "Ferdigstiller oppgave i GSAK.",
+        description = "Ferdigstiller oppgave.",
     )
     @PostMapping("v1/ferdigstilloppgave", produces = ["application/json; charset=us-ascii"])
-    fun gsakFerdigstillOppgave(
-        @RequestBody(required = true) gsakBody: GsakFerdigstillOppgaveBody,
+    fun ferdigstillOppgave(
+        @RequestBody(required = true) oppgaveBody: FerdigstillOppgaveBody,
     ): ResponseEntity<String> =
         Result
             .runCatching {
-                gsakFeedClient.ferdigstillOppgave(gsakBody.oppgaveid, gsakBody.tekst)
+                oppgaveClient.ferdigstillOppgave(oppgaveBody.oppgaveid, oppgaveBody.tekst)
             }.fold(
                 onSuccess = { oppgave ->
                     logger.info("Ferdigstiller oppgave identifisert med oppgaveid.")
@@ -92,11 +92,11 @@ class GsakFeedProxyController(
                 },
             )
 
-    data class GsakOpprettOppgaveBody(val brukerident: String, val tildeltEnhetsnr: String,
-                                      val opprettetAvEnhetsnr: String, val beskrivelse: String,
-                                      val oppgavetype: String)
+    data class OpprettOppgaveBody(val brukerident: String, val tildeltEnhetsnr: String,
+                                  val opprettetAvEnhetsnr: String, val beskrivelse: String,
+                                  val oppgavetype: String)
 
-    data class GsakFerdigstillOppgaveBody(val oppgaveid: Long, val tekst: String)
+    data class FerdigstillOppgaveBody(val oppgaveid: Long, val tekst: String)
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)

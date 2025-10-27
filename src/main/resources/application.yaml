@@ -1,5 +1,5 @@
 application:
-  name: infotrygd-feed-proxy
+  name: infotrygd-feed-proxy-v2
 server:
   servlet:
     context-path: /api
@@ -62,11 +62,11 @@ no.nav.security.jwt:
           client-id: ${AZURE_APP_CLIENT_ID}
           client-secret: ${AZURE_APP_CLIENT_SECRET}
           client-auth-method: client_secret_basic
-      gsak:
-        resource-url: ${GSAK_URL}
+      oppgave:
+        resource-url: ${OPPGAVE_URL}
         token-endpoint-url: ${AZURE_OPENID_CONFIG_TOKEN_ENDPOINT}
         grant-type: client_credentials
-        scope: api://${CLUSTER_ENV}-fss.oppgavehandtering.${GSAK_ENV}/.default
+        scope: api://${CLUSTER_ENV}-fss.oppgavehandtering.${OPPGAVE_ENV}/.default
         authentication:
           client-id: ${AZURE_APP_CLIENT_ID}
           client-secret: ${AZURE_APP_CLIENT_SECRET}

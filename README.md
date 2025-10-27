@@ -9,7 +9,7 @@ Appen deployes til team infotrygd, både i dev og prod.
 
 ## Test
 For å teste applikasjon i dev må man bruke sts-token. Slik generer du STS token i dev.
-1. Åpen STS swagger-ui med denne lenke 
+1. Åpne STS swagger-ui med denne lenka 
 https://security-token-service.nais.preprod.local/swagger-ui/index.html i Chrome SKSS
 2. logger på swagger via username "srvinfotrygd-feed-proxy-v2" og passord. 
 3. Passordet finner du enten i vault 

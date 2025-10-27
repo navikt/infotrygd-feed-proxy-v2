@@ -13,8 +13,8 @@ import java.net.URI
 import java.util.UUID
 
 @Service
-class GsakFeedClient (
-    @Value("\${GSAK_URL}") private val gsakUri: URI,
+class OppgaveClient (
+    @Value("\${OPPGAVE_URL}") private val oppgaveUri: URI,
     @Qualifier("azureCC") restOperations: RestOperations,
 ) : AbstractRestClient(restOperations) {
 
@@ -23,12 +23,12 @@ class GsakFeedClient (
         val prioritet ="HOY"
         val opprettOppgaveUri =
             UriComponentsBuilder
-                .fromUri(gsakUri)
+                .fromUri(oppgaveUri)
                 .pathSegment("api/v1/oppgaver")
                 .build().toUri()
         logger.info("Oppretter oppgave med URI=$opprettOppgaveUri")
-        return postForEntity<String, gsakOpprettOppgaveRequest>(opprettOppgaveUri, headers(),
-            gsakOpprettOppgaveRequest(brukerident, tildeltEnhetsnr, opprettetAvEnhetsnr,
+        return postForEntity<String, OpprettOppgaveRequest>(opprettOppgaveUri, headers(),
+            OpprettOppgaveRequest(brukerident, tildeltEnhetsnr, opprettetAvEnhetsnr,
                 beskrivelse, oppgavetype, prioritet)).also {
             logger.info("Opprettet oppgave med URI=$opprettOppgaveUri. Kall ok.")
         }
@@ -38,13 +38,13 @@ class GsakFeedClient (
         val status = "FERDIGSTILT"
         val ferdigstillOppgaveUri =
             UriComponentsBuilder
-                .fromUri(gsakUri)
+                .fromUri(oppgaveUri)
                 .pathSegment("api/v1/oppgaver/" + oppgaveId)
                 .build().toUri()
         logger.info("Ferdigstiller oppgave med URI=$ferdigstillOppgaveUri")
-        return patchForEntity<String, GsakFerdigstillOppgaveRequest>(ferdigstillOppgaveUri, headers(),
-            GsakFerdigstillOppgaveRequest(status,
-                GsakFerdigstillOppgaveKommentar(tekst))).also {
+        return patchForEntity<String, FerdigstillOppgaveRequest>(ferdigstillOppgaveUri, headers(),
+            FerdigstillOppgaveRequest(status,
+                FerdigstillOppgaveKommentar(tekst))).also {
             logger.info("Ferdigstilt oppgave med URI=$ferdigstillOppgaveUri. Kall ok.")
         }
     }
@@ -55,13 +55,13 @@ class GsakFeedClient (
         set("X-Correlation-ID", UUID.randomUUID().toString())
     }
 
-    data class gsakOpprettOppgaveRequest(val brukerident: String, val tildeltEnhetsnr: String,
-                                         val opprettetAvEnhetsnr: String, val beskrivelse: String,
-                                         val oppgavetype: String, val prioritet: String)
+    data class OpprettOppgaveRequest(val brukerident: String, val tildeltEnhetsnr: String,
+                                     val opprettetAvEnhetsnr: String, val beskrivelse: String,
+                                     val oppgavetype: String, val prioritet: String)
 
-    data class GsakFerdigstillOppgaveRequest(val status: String, val kommentar: GsakFerdigstillOppgaveKommentar)
+    data class FerdigstillOppgaveRequest(val status: String, val kommentar: FerdigstillOppgaveKommentar)
 
-    data class GsakFerdigstillOppgaveKommentar(val tekst: String)
+    data class FerdigstillOppgaveKommentar(val tekst: String)
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
