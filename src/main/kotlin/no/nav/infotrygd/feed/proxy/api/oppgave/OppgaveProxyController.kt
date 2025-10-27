@@ -7,8 +7,10 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -80,6 +82,31 @@ class OppgaveProxyController(
         Result
             .runCatching {
                 oppgaveClient.ferdigstillOppgave(oppgaveBody.oppgaveid, oppgaveBody.tekst)
+            }.fold(
+                onSuccess = { oppgave ->
+                    logger.info("Ferdigstiller oppgave identifisert med oppgaveid.")
+                    secureLogger.info("Ferdigstiller oppgave identifisert med oppgaveid.")
+                    ResponseEntity.ok(oppgave)
+                },
+                onFailure = {
+                    logger.error("Feil ved ferdigstilling av oppgave", it)
+                    ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+                },
+            )
+
+    // Kalles fra Infotrygd program K278U717
+    @Operation(
+        summary = "Ferdigstill oppgave.",
+        description = "Ferdigstiller oppgave.",
+    )
+    @GetMapping("v1/ferdigstilloppgave/{oppgaveId}", produces = ["application/json; charset=us-ascii"])
+    fun ferdigstillOppgave2(
+        @PathVariable("oppgaveId") oppgaveId: Long,
+        @RequestHeader("Beskrivelse") beskrivelse: String,
+    ): ResponseEntity<String> =
+        Result
+            .runCatching {
+                oppgaveClient.ferdigstillOppgave2(oppgaveId, beskrivelse)
             }.fold(
                 onSuccess = { oppgave ->
                     logger.info("Ferdigstiller oppgave identifisert med oppgaveid.")
