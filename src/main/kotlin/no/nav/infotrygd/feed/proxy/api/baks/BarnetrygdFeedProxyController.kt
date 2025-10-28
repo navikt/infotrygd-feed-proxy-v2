@@ -1,8 +1,8 @@
-package no.nav.infotrygd.feed.proxy.api.kontantstotte
+package no.nav.infotrygd.feed.proxy.api.baks
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
-import no.nav.infotrygd.feed.proxy.integration.BarnetrygdKontantstotteFeedClient
+import no.nav.infotrygd.feed.proxy.integration.BaksFeedClient
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/kontantstotte")
+@RequestMapping("/barnetrygd")
 @ProtectedWithClaims(issuer = "sts")
-class KontantstotteFeedProxyController(
-    private val barnetrygdKontantstotteFeedClient: BarnetrygdKontantstotteFeedClient,
+class BarnetrygdFeedProxyController(
+    private val baksFeedClient: BaksFeedClient,
 ) {
     @Operation(
         summary = "Hent liste med hendelser.",
@@ -29,15 +29,15 @@ class KontantstotteFeedProxyController(
     ): ResponseEntity<String> =
         Result
             .runCatching {
-                barnetrygdKontantstotteFeedClient.hentKontantstotteFeed(sekvensnummer = sekvensnummer)
+                baksFeedClient.hentBarnetrygdFeed(sekvensnummer = sekvensnummer)
             }.fold(
                 onSuccess = { feed ->
-                    logger.info("Hentet KS-feed fra sekvensnummer $sekvensnummer")
-                    secureLogger.info("Hentet KS-feed $feed fra sekvensnummer $sekvensnummer")
+                    logger.info("Hentet BA-feed fra sekvensnummer $sekvensnummer")
+                    secureLogger.info("Hentet BA-feed $feed fra sekvensnummer $sekvensnummer")
                     ResponseEntity.ok(feed)
                 },
                 onFailure = {
-                    logger.error("Feil ved henting av KS-feed fra sekvensnummer $sekvensnummer", it)
+                    logger.error("Feil ved henting av BA-feed fra sekvensnummer $sekvensnummer", it)
                     ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
                 },
             )

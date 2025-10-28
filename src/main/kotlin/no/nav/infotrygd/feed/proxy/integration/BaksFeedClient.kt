@@ -12,7 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 
 @Service
-class BarnetrygdKontantstotteFeedClient(
+class BaksFeedClient(
     @Value("\${BAKS_FEED_URL}") private val baksFeedUri: URI,
     @Qualifier("azureCC") restOperations: RestOperations,
 ) : AbstractRestClient(restOperations) {

@@ -12,7 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
 
 @Service
-class ForeldreOgSvangerskapspengerFeedClient(
+class FpsakFeedClient(
     @Value("\${FPSAK_FEED_URL}") private val fpsvFeedUri: URI,
     @Qualifier("azureCC") restOperations: RestOperations,
 ) : AbstractRestClient(restOperations) {
