@@ -49,21 +49,6 @@ class OppgaveClient (
         }
     }
 
-    fun ferdigstillOppgave2(oppgaveId: Long, beskrivelse: String): String {
-        val status = "FERDIGSTILT"
-        val ferdigstillOppgaveUri =
-            UriComponentsBuilder
-                .fromUri(oppgaveUri)
-                .pathSegment("api/v1/oppgaver/" + oppgaveId)
-                .build().toUri()
-        logger.info("Ferdigstiller oppgave med URI=$ferdigstillOppgaveUri")
-        return patchForEntity<String, FerdigstillOppgaveRequest>(ferdigstillOppgaveUri, headers(),
-            FerdigstillOppgaveRequest(status,
-                FerdigstillOppgaveKommentar(beskrivelse))).also {
-            logger.info("Ferdigstilt oppgave med URI=$ferdigstillOppgaveUri. Kall ok.")
-        }
-    }
-
     private fun headers(): HttpHeaders = HttpHeaders().apply {
         contentType = MediaType.APPLICATION_JSON
         accept = listOf(MediaType.APPLICATION_JSON)
@@ -76,7 +61,7 @@ class OppgaveClient (
 
     data class FerdigstillOppgaveRequest(val status: String, val kommentar: FerdigstillOppgaveKommentar)
 
-    data class FerdigstillOppgaveKommentar(val beskrivelse: String)
+    data class FerdigstillOppgaveKommentar(val tekst: String)
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)

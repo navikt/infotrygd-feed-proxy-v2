@@ -83,7 +83,7 @@ class OppgaveProxyController(
             .runCatching {
                 logger.info("oppgaveId: $oppgaveId")
                 logger.info("Beskrivelse : $beskrivelse")
-                oppgaveClient.ferdigstillOppgave2(oppgaveId, beskrivelse)
+                oppgaveClient.ferdigstillOppgave(oppgaveId, beskrivelse)
             }.fold(
                 onSuccess = { oppgave ->
                     logger.info("Ferdigstiller oppgave identifisert med oppgaveid.")
