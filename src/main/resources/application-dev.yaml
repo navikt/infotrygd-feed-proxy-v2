@@ -5,6 +5,6 @@ YRKESSKADE_FEED_URL: https://yrkesskade-infotrygd-feed.intern.dev.nav.no
 FPSAK_FEED_URL: https://fpsak-api.intern.dev.nav.no
 INST2_URL: https://inst2-q1.dev.intern.nav.no
 INST2_ENV: inst2-q1
-OPPGAVE_URL: https://oppgave-q1.dev.intern.nav.no
+OPPGAVE_URL: https://oppgave-q1.intern.dev.nav.no
 OPPGAVE_ENV: oppgave-q1
 STS_DISCOVERY_URL: https://security-token-service.nais.preprod.local/rest/v1/sts/.well-known/openid-configuration
