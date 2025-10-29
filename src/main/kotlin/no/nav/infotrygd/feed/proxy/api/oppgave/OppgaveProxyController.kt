@@ -21,50 +21,28 @@ class OppgaveProxyController(
 
     // Kalles fra Infotrygd program K278U757
     @Operation(
-        summary = "Opprett oppgave med brukertype person.",
-        description = "Oppretter en oppgave med brukertype person.",
+        summary = "Opprett oppgave.",
+        description = "Oppretter en oppgave.",
     )
-    @GetMapping("v1/opprettoppgave/person", produces = ["application/json; charset=us-ascii"])
-    fun opprettOppgavePerson(
+    @GetMapping("v1/opprett/{brukertype}", produces = ["application/json; charset=us-ascii"])
+    fun opprettOppgave(
+        @PathVariable("brukertype") brukertype: String,
         @RequestBody(required = true) oppgaveBody: OpprettOppgaveBody,
     ): ResponseEntity<String> =
         Result
             .runCatching {
-                oppgaveClient.opprettOppgave(oppgaveBody.brukerident, oppgaveBody.tildeltEnhetsnr,
-                    oppgaveBody.opprettetAvEnhetsnr, oppgaveBody.beskrivelse, oppgaveBody.oppgavetype)
+                oppgaveClient.opprettOppgave(brukertype, oppgaveBody.brukerident,
+                    oppgaveBody.tildeltEnhetsnr, oppgaveBody.opprettetAvEnhetsnr, oppgaveBody.beskrivelse,
+                    oppgaveBody.tema, oppgaveBody.oppgavetype)
             }.fold(
-                onSuccess = { person ->
-                    logger.info("Opprettet oppgave for person identifisert med personident.")
-                    secureLogger.info("Opprettet oppgave for person identifisert med personnummer.")
-                    ResponseEntity.ok(person)
+                onSuccess = { oppgave ->
+                    logger.info("Opprettet oppgave for bruker identifisert med personident eller orgnr.")
+                    secureLogger.info("Opprettet oppgave for person identifisert med personnummer eller organisasjon" +
+                            " identifsert med organisasjonsnummer.")
+                    ResponseEntity.ok(oppgave)
                 },
                 onFailure = {
-                    logger.error("Feil ved oppretting av oppgave for person", it)
-                    ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
-                },
-            )
-
-    // Kalles fra Infotrygd program K278U757
-    @Operation(
-        summary = "Opprett oppgave med brukertype organisasjon.",
-        description = "Oppretter en oppgave med brukertype organisasjon.",
-    )
-    @GetMapping("v1/opprettoppgave/organisasjon", produces = ["application/json; charset=us-ascii"])
-    fun opprettOppgaveOrg(
-        @RequestBody(required = true) oppgaveBody: OpprettOppgaveBody,
-    ): ResponseEntity<String> =
-        Result
-            .runCatching {
-                oppgaveClient.opprettOppgave(oppgaveBody.brukerident, oppgaveBody.tildeltEnhetsnr,
-                    oppgaveBody.opprettetAvEnhetsnr, oppgaveBody.beskrivelse, oppgaveBody.oppgavetype)
-            }.fold(
-                onSuccess = { org ->
-                    logger.info("Opprettet oppgave for organisasjon identifisert med organisasjonsnummer.")
-                    secureLogger.info("Opprettet oppgave for organisasjon identifisert med organisasjonsnummer.")
-                    ResponseEntity.ok(org)
-                },
-                onFailure = {
-                    logger.error("Feil ved oppretting av oppgave for organisasjon", it)
+                    logger.error("Feil ved oppretting av oppgave", it)
                     ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
                 },
             )
@@ -74,7 +52,7 @@ class OppgaveProxyController(
         summary = "Ferdigstill oppgave.",
         description = "Ferdigstiller oppgave.",
     )
-    @GetMapping("v1/ferdigstilloppgave/{oppgaveId}", produces = ["application/json; charset=us-ascii"])
+    @GetMapping("v1/ferdigstill/{oppgaveId}", produces = ["application/json; charset=us-ascii"])
     fun ferdigstillOppgave(
         @PathVariable("oppgaveId") oppgaveId: Long,
         @RequestHeader("Beskrivelse") beskrivelse: String,
@@ -97,7 +75,7 @@ class OppgaveProxyController(
             )
 
     data class OpprettOppgaveBody(val brukerident: String, val tildeltEnhetsnr: String,
-                                  val opprettetAvEnhetsnr: String, val beskrivelse: String,
+                                  val opprettetAvEnhetsnr: String, val beskrivelse: String, val tema: String,
                                   val oppgavetype: String)
 
     companion object {
