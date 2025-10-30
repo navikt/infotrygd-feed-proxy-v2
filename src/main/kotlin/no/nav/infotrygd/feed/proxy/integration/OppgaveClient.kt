@@ -18,11 +18,9 @@ class OppgaveClient (
     @Qualifier("azureCC") restOperations: RestOperations,
 ) : AbstractRestClient(restOperations) {
 
-    fun opprettOppgave(brukertype: String, brukerident: String, tildeltEnhetsnr: String,
-                       opprettetAvEnhetsnr: String, beskrivelse: String, tema: String, oppgavetype: String): String {
-        val prioritet = "HOY"
-        var personident = ""
-        var orgnr = ""
+    fun opprettOppgave(personident: String, orgnr: String, tildeltEnhetsnr: String,
+                       opprettetAvEnhetsnr: String, saksreferanse: String, beskrivelse: String, tema: String,
+                       oppgavetype: String, aktivDato: String, prioritet: String): String {
         val opprettOppgaveUri =
             UriComponentsBuilder
                 .fromUri(oppgaveUri)
@@ -30,13 +28,9 @@ class OppgaveClient (
                 .build().toUri()
         logger.info("Oppretter oppgave med URI=$opprettOppgaveUri")
 
-        // sjekk om brukerident er orgnr eller personident
-        if (brukertype == "organisasjon") { orgnr = brukerident; }
-        else { personident = brukerident; }
-
         return postForEntity<String, OpprettOppgaveRequest>(opprettOppgaveUri, headers(),
             OpprettOppgaveRequest(personident, orgnr, tildeltEnhetsnr, opprettetAvEnhetsnr,
-                beskrivelse, tema, oppgavetype, prioritet)).also {
+                saksreferanse, beskrivelse, tema, oppgavetype, aktivDato, prioritet)).also {
             logger.info("Opprettet oppgave med URI=$opprettOppgaveUri. Kall ok.")
         }
     }
@@ -63,8 +57,9 @@ class OppgaveClient (
     }
 
     data class OpprettOppgaveRequest(val personident: String, val orgnr: String, val tildeltEnhetsnr: String,
-                                     val opprettetAvEnhetsnr: String, val beskrivelse: String, val tema: String,
-                                     val oppgavetype: String, val prioritet: String)
+                                     val opprettetAvEnhetsnr: String, val saksreferanse: String,
+                                     val beskrivelse: String, val tema: String, val oppgavetype: String,
+                                     val aktivDato: String, val prioritet: String)
 
     data class FerdigstillOppgaveRequest(val status: String, val kommentar: FerdigstillOppgaveKommentar)
 

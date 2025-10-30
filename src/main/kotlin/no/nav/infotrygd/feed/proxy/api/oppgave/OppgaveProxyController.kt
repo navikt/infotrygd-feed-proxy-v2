@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
@@ -24,16 +25,16 @@ class OppgaveProxyController(
         summary = "Opprett oppgave.",
         description = "Oppretter en oppgave.",
     )
-    @GetMapping("v1/opprett/{brukertype}", produces = ["application/json; charset=us-ascii"])
+    @PostMapping("v1/opprett", produces = ["application/json; charset=us-ascii"])
     fun opprettOppgave(
-        @PathVariable("brukertype") brukertype: String,
         @RequestBody(required = true) oppgaveBody: OpprettOppgaveBody,
     ): ResponseEntity<String> =
         Result
             .runCatching {
-                oppgaveClient.opprettOppgave(brukertype, oppgaveBody.brukerident,
-                    oppgaveBody.tildeltEnhetsnr, oppgaveBody.opprettetAvEnhetsnr, oppgaveBody.beskrivelse,
-                    oppgaveBody.tema, oppgaveBody.oppgavetype)
+                oppgaveClient.opprettOppgave(oppgaveBody.personident, oppgaveBody.orgnr,
+                    oppgaveBody.tildeltEnhetsnr, oppgaveBody.opprettetAvEnhetsnr, oppgaveBody.saksreferanse,
+                    oppgaveBody.beskrivelse, oppgaveBody.tema, oppgaveBody.oppgavetype, oppgaveBody.aktivDato,
+                    oppgaveBody.prioritet)
             }.fold(
                 onSuccess = { oppgave ->
                     logger.info("Opprettet oppgave for bruker identifisert med personident eller orgnr.")
@@ -74,9 +75,10 @@ class OppgaveProxyController(
                 },
             )
 
-    data class OpprettOppgaveBody(val brukerident: String, val tildeltEnhetsnr: String,
-                                  val opprettetAvEnhetsnr: String, val beskrivelse: String, val tema: String,
-                                  val oppgavetype: String)
+    data class OpprettOppgaveBody(val personident: String, val orgnr: String, val tildeltEnhetsnr: String,
+                                     val opprettetAvEnhetsnr: String, val saksreferanse: String,
+                                     val beskrivelse: String, val tema: String, val oppgavetype: String,
+                                     val aktivDato: String, val prioritet: String)
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
