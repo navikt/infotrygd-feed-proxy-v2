@@ -33,8 +33,8 @@ class OppgaveProxyController(
             .runCatching {
                 oppgaveClient.opprettOppgave(oppgaveBody.personident, oppgaveBody.orgnr,
                     oppgaveBody.tildeltEnhetsnr, oppgaveBody.opprettetAvEnhetsnr, oppgaveBody.saksreferanse,
-                    oppgaveBody.beskrivelse, oppgaveBody.tema, oppgaveBody.oppgavetype, oppgaveBody.aktivDato,
-                    oppgaveBody.prioritet)
+                    oppgaveBody.beskrivelse, oppgaveBody.tema, oppgaveBody.behandlingstema,
+                    oppgaveBody.oppgavetype, oppgaveBody.aktivDato, oppgaveBody.prioritet)
             }.fold(
                 onSuccess = { oppgave ->
                     logger.info("Opprettet oppgave for bruker identifisert med personident eller orgnr.")
@@ -76,9 +76,9 @@ class OppgaveProxyController(
             )
 
     data class OpprettOppgaveBody(val personident: String, val orgnr: String, val tildeltEnhetsnr: String,
-                                     val opprettetAvEnhetsnr: String, val saksreferanse: String,
-                                     val beskrivelse: String, val tema: String, val oppgavetype: String,
-                                     val aktivDato: String, val prioritet: String)
+                                  val opprettetAvEnhetsnr: String, val saksreferanse: String,
+                                  val beskrivelse: String, val tema: String, val behandlingstema: String,
+                                  val oppgavetype: String, val aktivDato: String, val prioritet: String)
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
