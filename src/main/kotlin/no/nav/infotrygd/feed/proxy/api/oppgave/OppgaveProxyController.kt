@@ -25,7 +25,7 @@ class OppgaveProxyController(
         summary = "Opprett oppgave.",
         description = "Oppretter en oppgave.",
     )
-    @PostMapping("v1/opprett", produces = ["application/json; charset=us-ascii"])
+    @PostMapping("/v1/opprett", produces = ["application/json; charset=us-ascii"])
     fun opprettOppgave(
         @RequestBody(required = true) oppgaveBody: OpprettOppgaveBody,
     ): ResponseEntity<String> =
@@ -53,7 +53,7 @@ class OppgaveProxyController(
         summary = "Ferdigstill oppgave.",
         description = "Ferdigstiller oppgave.",
     )
-    @GetMapping("v1/ferdigstill/{oppgaveId}", produces = ["application/json; charset=us-ascii"])
+    @GetMapping("/v1/ferdigstill/{oppgaveId}", produces = ["application/json; charset=us-ascii"])
     fun ferdigstillOppgave(
         @PathVariable("oppgaveId") oppgaveId: Long,
         @RequestHeader("Beskrivelse") beskrivelse: String,
