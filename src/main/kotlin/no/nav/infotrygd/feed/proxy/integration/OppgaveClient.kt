@@ -20,7 +20,8 @@ class OppgaveClient (
 
     fun opprettOppgave(personident: String, orgnr: String, tildeltEnhetsnr: String,
                        opprettetAvEnhetsnr: String, saksreferanse: String, beskrivelse: String, tema: String,
-                       behandlingstema: String, oppgavetype: String, aktivDato: String, prioritet: String): String {
+                       behandlingstema: String, behandlingstype: String, oppgavetype: String, aktivDato: String,
+                       prioritet: String): String {
         val opprettOppgaveUri =
             UriComponentsBuilder
                 .fromUri(oppgaveUri)
@@ -30,7 +31,8 @@ class OppgaveClient (
 
         return postForEntity<String, OpprettOppgaveRequest>(opprettOppgaveUri, headers(),
             OpprettOppgaveRequest(personident, orgnr, tildeltEnhetsnr, opprettetAvEnhetsnr,
-                saksreferanse, beskrivelse, tema, behandlingstema, oppgavetype, aktivDato, prioritet)).also {
+                saksreferanse, beskrivelse, tema, behandlingstema, behandlingstype, oppgavetype, aktivDato,
+                prioritet)).also {
             logger.info("Opprettet oppgave med URI=$opprettOppgaveUri. Kall ok.")
         }
     }
@@ -59,7 +61,8 @@ class OppgaveClient (
     data class OpprettOppgaveRequest(val personident: String, val orgnr: String, val tildeltEnhetsnr: String,
                                      val opprettetAvEnhetsnr: String, val saksreferanse: String,
                                      val beskrivelse: String, val tema: String, val behandlingstema: String,
-                                     val oppgavetype: String, val aktivDato: String, val prioritet: String)
+                                     val behandlingstype: String, val oppgavetype: String, val aktivDato: String,
+                                     val prioritet: String)
 
     data class FerdigstillOppgaveRequest(val status: String, val kommentar: FerdigstillOppgaveKommentar)
 

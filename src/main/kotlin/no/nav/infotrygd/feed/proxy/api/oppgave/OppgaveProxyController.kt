@@ -33,7 +33,7 @@ class OppgaveProxyController(
             .runCatching {
                 oppgaveClient.opprettOppgave(oppgaveBody.personident, oppgaveBody.orgnr,
                     oppgaveBody.tildeltEnhetsnr, oppgaveBody.opprettetAvEnhetsnr, oppgaveBody.saksreferanse,
-                    oppgaveBody.beskrivelse, oppgaveBody.tema, oppgaveBody.behandlingstema,
+                    oppgaveBody.beskrivelse, oppgaveBody.tema, oppgaveBody.behandlingstema, oppgaveBody.behandlingstype,
                     oppgaveBody.oppgavetype, oppgaveBody.aktivDato, oppgaveBody.prioritet)
             }.fold(
                 onSuccess = { oppgave ->
@@ -76,8 +76,8 @@ class OppgaveProxyController(
             )
 
     data class OpprettOppgaveBody(val personident: String, val orgnr: String, val tildeltEnhetsnr: String,
-                                  val opprettetAvEnhetsnr: String, val saksreferanse: String,
-                                  val beskrivelse: String, val tema: String, val behandlingstema: String,
+                                  val opprettetAvEnhetsnr: String, val saksreferanse: String, val beskrivelse: String,
+                                  val tema: String, val behandlingstema: String, val behandlingstype: String,
                                   val oppgavetype: String, val aktivDato: String, val prioritet: String)
 
     companion object {
