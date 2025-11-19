@@ -27,7 +27,7 @@ class OppgaveProxyController(
     )
     @PostMapping("/v1/opprett", produces = ["application/json; charset=us-ascii"])
     fun opprettOppgave(
-        @RequestBody(required = true) oppgaveBody: OpprettOppgaveBody,
+        @RequestHeader("Data") oppgaveBody: OpprettOppgaveBody
     ): ResponseEntity<String> =
         Result
             .runCatching {
