@@ -73,7 +73,6 @@ no.nav.security.jwt:
           client-auth-method: client_secret_basic
 
 spring:
-  autoconfigure.exclude: org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
   main:
     allow-bean-definition-overriding: true
     banner-mode: "off"
