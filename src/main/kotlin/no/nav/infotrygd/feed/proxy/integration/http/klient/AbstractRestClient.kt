@@ -41,7 +41,7 @@ abstract class AbstractRestClient(
         HttpEntity(requestBody, httpHeaders)) }
 
     @Suppress("UNCHECKED_CAST")
-    private fun <T> validerOgPakkUt(
+    private fun <T : Any> validerOgPakkUt(
         respons: ResponseEntity<T>,
         uri: URI,
     ): T {
@@ -54,7 +54,7 @@ abstract class AbstractRestClient(
         return respons.body as T
     }
 
-    fun <T> execute(
+    fun <T : Any> execute(
         uri: URI,
         function: () -> ResponseEntity<T>,
     ): T {
