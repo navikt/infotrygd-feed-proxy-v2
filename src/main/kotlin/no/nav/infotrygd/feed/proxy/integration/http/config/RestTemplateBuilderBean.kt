@@ -1,7 +1,7 @@
 package no.nav.infotrygd.feed.proxy.integration.http.config
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
-import org.springframework.boot.web.client.RestTemplateBuilder
+import org.springframework.boot.restclient.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
@@ -12,7 +12,8 @@ import org.springframework.context.annotation.Import
 class RestTemplateBuilderBean {
     @Bean
     @ConditionalOnProperty("no.nav.security.jwt.issuer.azuread.proxyurl")
-    fun restTemplateBuilder(iNaisProxyCustomizer: INaisProxyCustomizer): RestTemplateBuilder = RestTemplateBuilder(iNaisProxyCustomizer)
+    fun restTemplateBuilder(iNaisProxyCustomizer: INaisProxyCustomizer): RestTemplateBuilder =
+        RestTemplateBuilder(iNaisProxyCustomizer)
 
     /**
      * Denne bønnnen initialiseres hvis proxy-url ikke finnes. Hvis proxy-url finnnes vil bønnen over initialiseres og

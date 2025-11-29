@@ -10,7 +10,7 @@ import org.apache.hc.core5.http.io.SocketConfig
 import org.apache.hc.core5.http.protocol.HttpContext
 import org.apache.hc.core5.util.Timeout
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.web.client.RestTemplateCustomizer
+import org.springframework.boot.restclient.RestTemplateCustomizer
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
