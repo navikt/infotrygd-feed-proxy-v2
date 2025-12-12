@@ -15,7 +15,7 @@ class TestClient (
 
         logger.info("Mottok test-request: $test")
 
-        return "{\"test\": \"$test\", \"testRespons\": \"Kanskje det virker!\"}"
+        return "{\"test\": \"$test\", \"respons\": \"Det virker!\"}"
     }
 
     companion object {
