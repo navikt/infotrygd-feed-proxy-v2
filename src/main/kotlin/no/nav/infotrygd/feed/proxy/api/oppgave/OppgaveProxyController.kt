@@ -7,10 +7,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -51,22 +49,19 @@ class OppgaveProxyController(
     // Kalles fra Infotrygd program K278U717
     @Operation(
         summary = "Ferdigstill oppgave.",
-        description = "Ferdigstiller oppgave.",
+        description = "Ferdigstiller en oppgave.",
     )
-    @GetMapping("/v1/ferdigstill/{oppgaveId}", produces = ["application/json; charset=us-ascii"])
+    @GetMapping("/v1/ferdigstill", produces = ["application/json; charset=us-ascii"])
     fun ferdigstillOppgave(
-        @PathVariable("oppgaveId") oppgaveId: Long,
-        @RequestHeader("Beskrivelse") beskrivelse: String,
+        @RequestBody ferdigstillBody: FerdigstillOppgaveBody
     ): ResponseEntity<String> =
         Result
             .runCatching {
-                logger.info("oppgaveId: $oppgaveId")
-                logger.info("Beskrivelse : $beskrivelse")
-                oppgaveClient.ferdigstillOppgave(oppgaveId, beskrivelse)
+                oppgaveClient.ferdigstillOppgave(ferdigstillBody.oppgaveId, ferdigstillBody.beskrivelse)
             }.fold(
                 onSuccess = { oppgave ->
                     logger.info("Ferdigstiller oppgave identifisert med oppgaveid.")
-                    secureLogger.info("Ferdigstiller oppgave identifisert med oppgaveid.")
+                    secureLogger.info("Ferdigstiller oppgave identifisert med oppgaveid ${ferdigstillBody.oppgaveId}.")
                     ResponseEntity.ok(oppgave)
                 },
                 onFailure = {
@@ -79,6 +74,8 @@ class OppgaveProxyController(
                                   val opprettetAvEnhetsnr: String, val saksreferanse: String, val beskrivelse: String,
                                   val tema: String, val behandlingstema: String, val behandlingstype: String,
                                   val oppgavetype: String, val aktivDato: String, val prioritet: String)
+
+    data class FerdigstillOppgaveBody(val oppgaveId: Long, val beskrivelse: String)
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
