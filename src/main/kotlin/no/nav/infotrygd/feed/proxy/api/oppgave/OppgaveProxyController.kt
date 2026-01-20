@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 class OppgaveProxyController(
     private val oppgaveClient: OppgaveClient) {
 
-    // Kalles fra Infotrygd program K278U757
+    // Kalles fra Infotrygd program K278U750
     @Operation(
         summary = "Opprett oppgave.",
         description = "Oppretter en oppgave.",
@@ -46,7 +46,7 @@ class OppgaveProxyController(
                 },
             )
 
-    // Kalles fra Infotrygd program K278U717
+    // Kalles fra Infotrygd program K278U710
     @Operation(
         summary = "Ferdigstill oppgave.",
         description = "Ferdigstiller en oppgave.",
@@ -57,7 +57,33 @@ class OppgaveProxyController(
     ): ResponseEntity<String> =
         Result
             .runCatching {
-                oppgaveClient.ferdigstillOppgave(ferdigstillBody.oppgaveId, ferdigstillBody.beskrivelse)
+                oppgaveClient.ferdigstillOppgave(ferdigstillBody.oppgaveId, ferdigstillBody.endretDato,
+                    ferdigstillBody.endretTid, ferdigstillBody.bruker, ferdigstillBody.enhet,
+                    ferdigstillBody.aksjon, ferdigstillBody.resultat)
+            }.fold(
+                onSuccess = { oppgave ->
+                    logger.info("Ferdigstiller oppgave identifisert med oppgaveid.")
+                    secureLogger.info("Ferdigstiller oppgave identifisert med oppgaveid ${ferdigstillBody.oppgaveId}.")
+                    ResponseEntity.ok(oppgave)
+                },
+                onFailure = {
+                    logger.error("Feil ved ferdigstilling av oppgave", it)
+                    ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+                },
+            )
+
+    // Kalles fra Infotrygd program K278U710 ved sakstatus underkjent (UK)
+    @Operation(
+        summary = "Ferdigstill oppgave.",
+        description = "Ferdigstiller en oppgave.",
+    )
+    @GetMapping("/v1/ferdigstill/uk/", produces = ["application/json; charset=us-ascii"])
+    fun ferdigstillOppgaveUk(
+        @RequestBody ferdigstillBody: FerdigstillOppgaveUkBody
+    ): ResponseEntity<String> =
+        Result
+            .runCatching {
+                oppgaveClient.ferdigstillOppgave(ferdigstillBody.oppgaveId, ferdigstillBody.arsakstekst)
             }.fold(
                 onSuccess = { oppgave ->
                     logger.info("Ferdigstiller oppgave identifisert med oppgaveid.")
@@ -75,7 +101,10 @@ class OppgaveProxyController(
                                   val tema: String, val behandlingstema: String, val behandlingstype: String,
                                   val oppgavetype: String, val aktivDato: String, val prioritet: String)
 
-    data class FerdigstillOppgaveBody(val oppgaveId: Long, val beskrivelse: String)
+    data class FerdigstillOppgaveBody(val oppgaveId: Long, val endretDato: String, val endretTid: String,
+                                      val bruker: String, val enhet: String, val aksjon: String, val resultat: String)
+
+    data class FerdigstillOppgaveUkBody(val oppgaveId: Long, val arsakstekst: String)
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)

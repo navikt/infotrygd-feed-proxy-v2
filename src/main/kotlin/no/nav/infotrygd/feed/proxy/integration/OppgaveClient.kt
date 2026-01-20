@@ -52,6 +52,13 @@ class OppgaveClient (
         }
     }
 
+    fun ferdigstillOppgave(oppgaveId: Long, endretDato: String, endretTid: String, brukerid: String,
+                           enhet: String, aksjon: String, resultat: String): String {
+        val tekst = endretDato + "-" + endretTid + " (" + ", " + brukerid + ", " + enhet + ")\n " +
+                aksjon + "\n" + resultat
+        return ferdigstillOppgave(oppgaveId, tekst)
+    }
+
     private fun headers(): HttpHeaders = HttpHeaders().apply {
         contentType = MediaType.APPLICATION_JSON
         accept = listOf(MediaType.APPLICATION_JSON)
