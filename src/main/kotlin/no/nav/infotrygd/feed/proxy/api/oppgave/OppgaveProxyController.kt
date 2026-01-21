@@ -83,7 +83,8 @@ class OppgaveProxyController(
     ): ResponseEntity<String> =
         Result
             .runCatching {
-                oppgaveClient.ferdigstillOppgave(ferdigstillBody.oppgaveId, ferdigstillBody.arsakstekst)
+                oppgaveClient.ferdigstillOppgave(ferdigstillBody.oppgaveId, ferdigstillBody.arsak1,
+                    ferdigstillBody.arsak2, ferdigstillBody.arsak3)
             }.fold(
                 onSuccess = { oppgave ->
                     logger.info("Ferdigstiller oppgave identifisert med oppgaveid.")
@@ -104,7 +105,7 @@ class OppgaveProxyController(
     data class FerdigstillOppgaveBody(val oppgaveId: Long, val endretDato: String, val endretTid: String,
                                       val bruker: String, val enhet: String, val aksjon: String, val resultat: String)
 
-    data class FerdigstillOppgaveUkBody(val oppgaveId: Long, val arsakstekst: String)
+    data class FerdigstillOppgaveUkBody(val oppgaveId: Long, val arsak1: String, val arsak2: String, val arsak3: String)
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)

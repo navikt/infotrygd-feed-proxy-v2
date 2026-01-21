@@ -59,6 +59,11 @@ class OppgaveClient (
         return ferdigstillOppgave(oppgaveId, tekst)
     }
 
+    fun ferdigstillOppgave(oppgaveId: Long, arsak1: String, arsak2: String, arsak3: String): String {
+        val tekst = arsak1 + arsak2 + arsak3
+        return ferdigstillOppgave(oppgaveId, tekst)
+    }
+
     private fun headers(): HttpHeaders = HttpHeaders().apply {
         contentType = MediaType.APPLICATION_JSON
         accept = listOf(MediaType.APPLICATION_JSON)
