@@ -76,7 +76,7 @@ class OppgaveProxyController(
         summary = "Ferdigstill oppgave.",
         description = "Ferdigstiller en oppgave.",
     )
-    @PostMapping("/v1/ferdigstill/uk/", produces = ["application/json; charset=us-ascii"])
+    @PostMapping("/v1/ferdigstill/uk", produces = ["application/json; charset=us-ascii"])
     fun ferdigstillOppgaveUk(
         @RequestBody ferdigstillBody: FerdigstillOppgaveUkBody
     ): ResponseEntity<String> =
