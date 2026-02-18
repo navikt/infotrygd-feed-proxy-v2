@@ -27,7 +27,7 @@ class Inst2FeedProxyController(
         description = "Henter institusjonsopphold for person identifisert med personnummer.",
     )
     @PostMapping("v2/person", produces = ["application/json; charset=us-ascii"])
-    fun hentInstPersonPost(
+    fun hentInstPerson(
         @RequestBody(required = true) personIdent: PersonIdent,
     ): ResponseEntity<String> =
         Result
@@ -45,7 +45,7 @@ class Inst2FeedProxyController(
                 },
             )
 
-    // Kalles fra Infotrygd program K278CPI2
+    // Kalles fra Infotrygd program K278CPI2 - Deprecated
     @Operation(
         summary = "Hent institusjonsopphold for flere personer.",
         description = "Henter institusjonsopphold for flere personer identifisert med liste med flere personident.",
@@ -59,8 +59,32 @@ class Inst2FeedProxyController(
                 inst2FeedClient.hentInstitusjonsoppholdPersoner(personIdent)
             }.fold(
                 onSuccess = { person ->
-                    logger.info("Hentet institusjonsopphold for person identifisert med personident.")
-                    secureLogger.info("Hentet institusjonsopphold for person identifisert med personnummer.")
+                    logger.info("Hentet institusjonsopphold for personer identifisert med personident.")
+                    secureLogger.info("Hentet institusjonsopphold for personer identifisert med personnummer.")
+                    ResponseEntity.ok(person)
+                },
+                onFailure = {
+                    logger.error("Feil ved henting av institusjonsopphold for person", it)
+                    ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+                },
+    )
+
+    // Kalles fra Infotrygd program K278CPI2
+    @Operation(
+        summary = "Hent institusjonsopphold for flere personer.",
+        description = "Henter institusjonsopphold for flere personer identifisert med liste med flere personident.",
+    )
+    @PostMapping("v2/personer", produces = ["application/json; charset=us-ascii"])
+    fun hentInstPersonerPost(
+        @RequestBody(required = true) personIdent: List<String>,
+    ): ResponseEntity<String> =
+        Result
+            .runCatching {
+                inst2FeedClient.hentInstitusjonsoppholdPersoner(personIdent)
+            }.fold(
+                onSuccess = { person ->
+                    logger.info("Hentet institusjonsopphold for personer identifisert med personident.")
+                    secureLogger.info("Hentet institusjonsopphold for personer identifisert med personnummer.")
                     ResponseEntity.ok(person)
                 },
                 onFailure = {
