@@ -64,7 +64,7 @@ class Inst2FeedProxyController(
                     ResponseEntity.ok(person)
                 },
                 onFailure = {
-                    logger.error("Feil ved henting av institusjonsopphold for person", it)
+                    logger.error("Feil ved henting av institusjonsopphold for personer", it)
                     ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
                 },
     )
@@ -88,7 +88,7 @@ class Inst2FeedProxyController(
                     ResponseEntity.ok(person)
                 },
                 onFailure = {
-                    logger.error("Feil ved henting av institusjonsopphold for person", it)
+                    logger.error("Feil ved henting av institusjonsopphold for personer", it)
                     ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
                 },
     )
