@@ -74,7 +74,7 @@ class Inst2FeedProxyController(
         summary = "Hent institusjonsopphold for flere personer.",
         description = "Henter institusjonsopphold for flere personer identifisert med liste med flere personident.",
     )
-    @PostMapping("v2/personer", produces = ["application/json; charset=us-ascii"])
+    @PostMapping("/v2/personer", produces = ["application/json; charset=us-ascii"])
     fun hentInstPersonerPost(
         @RequestBody(required = true) personIdent: List<String>,
     ): ResponseEntity<String> =
