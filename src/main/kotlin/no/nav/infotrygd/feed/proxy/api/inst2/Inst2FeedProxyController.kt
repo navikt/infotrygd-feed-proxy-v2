@@ -26,7 +26,7 @@ class Inst2FeedProxyController(
         summary = "Hent institusjonsopphold for én person.",
         description = "Henter institusjonsopphold for person identifisert med personnummer.",
     )
-    @PostMapping("v2/person", produces = ["application/json; charset=us-ascii"])
+    @PostMapping("/v2/person", produces = ["application/json; charset=us-ascii"])
     fun hentInstPerson(
         @RequestBody(required = true) personIdent: PersonIdent,
     ): ResponseEntity<String> =
@@ -50,13 +50,13 @@ class Inst2FeedProxyController(
         summary = "Hent institusjonsopphold for flere personer.",
         description = "Henter institusjonsopphold for flere personer identifisert med liste med flere personident.",
     )
-    @GetMapping("v1/personer", produces = ["application/json; charset=us-ascii"])
+    @GetMapping("/v1/personer", produces = ["application/json; charset=us-ascii"])
     fun hentInstPersoner(
-        @RequestHeader("Nav-Personident") personIdent: List<String>,
+        @RequestHeader("Nav-Personident") personIdenter: List<String>,
     ): ResponseEntity<String> =
         Result
             .runCatching {
-                inst2FeedClient.hentInstitusjonsoppholdPersoner(personIdent)
+                inst2FeedClient.hentInstitusjonsoppholdPersoner(personIdenter)
             }.fold(
                 onSuccess = { person ->
                     logger.info("Hentet institusjonsopphold for personer identifisert med personident.")
@@ -76,11 +76,11 @@ class Inst2FeedProxyController(
     )
     @PostMapping("/v2/personer", produces = ["application/json; charset=us-ascii"])
     fun hentInstPersonerPost(
-        @RequestBody(required = true) personIdent: List<String>,
+        @RequestBody(required = true) personIdent: PersonIdenter,
     ): ResponseEntity<String> =
         Result
             .runCatching {
-                inst2FeedClient.hentInstitusjonsoppholdPersoner(personIdent)
+                inst2FeedClient.hentInstitusjonsoppholdPersoner(personIdent.personidenter)
             }.fold(
                 onSuccess = { person ->
                     logger.info("Hentet institusjonsopphold for personer identifisert med personident.")
@@ -121,6 +121,8 @@ class Inst2FeedProxyController(
             )
 
     data class PersonIdent(val personident: String)
+
+    data class PersonIdenter(val personidenter: List<String>)
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
