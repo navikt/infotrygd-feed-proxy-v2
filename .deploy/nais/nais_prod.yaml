@@ -29,8 +29,6 @@ spec:
     requests:
       memory: 512Mi
       cpu: 500m
-  secureLogs:
-    enabled: true
   ingresses:
     - https://infotrygd-feed-proxy-v2.intern.nav.no
   webproxy: true
