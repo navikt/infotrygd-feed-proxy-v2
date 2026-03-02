@@ -33,7 +33,6 @@ class KontantstotteFeedProxyController(
             }.fold(
                 onSuccess = { feed ->
                     logger.info("Hentet KS-feed fra sekvensnummer $sekvensnummer")
-                    secureLogger.info("Hentet KS-feed $feed fra sekvensnummer $sekvensnummer")
                     ResponseEntity.ok(feed)
                 },
                 onFailure = {
@@ -44,6 +43,5 @@ class KontantstotteFeedProxyController(
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
-        private val secureLogger = LoggerFactory.getLogger("secureLogger")
     }
 }

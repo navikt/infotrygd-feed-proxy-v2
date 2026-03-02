@@ -36,7 +36,6 @@ class Inst2FeedProxyController(
             }.fold(
                 onSuccess = { person ->
                     logger.info("Hentet institusjonsopphold for person identifisert med personident.")
-                    secureLogger.info("Hentet institusjonsopphold for person identifisert med personnummer.")
                     ResponseEntity.ok(person)
                 },
                 onFailure = {
@@ -60,7 +59,6 @@ class Inst2FeedProxyController(
             }.fold(
                 onSuccess = { person ->
                     logger.info("Hentet institusjonsopphold for personer identifisert med personident.")
-                    secureLogger.info("Hentet institusjonsopphold for personer identifisert med personnummer.")
                     ResponseEntity.ok(person)
                 },
                 onFailure = {
@@ -84,7 +82,6 @@ class Inst2FeedProxyController(
             }.fold(
                 onSuccess = { person ->
                     logger.info("Hentet institusjonsopphold for personer identifisert med personident.")
-                    secureLogger.info("Hentet institusjonsopphold for personer identifisert med personnummer.")
                     ResponseEntity.ok(person)
                 },
                 onFailure = {
@@ -111,7 +108,6 @@ class Inst2FeedProxyController(
             }.fold(
                 onSuccess = { feed ->
                     logger.info("Hentet INST2-feed fra sekvensnummer $sekvensnummer")
-                    secureLogger.info("Hentet INST2-feed $feed fra sekvensnummer $sekvensnummer")
                     ResponseEntity.ok(feed)
                 },
                 onFailure = {
@@ -126,6 +122,5 @@ class Inst2FeedProxyController(
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
-        private val secureLogger = LoggerFactory.getLogger("secureLogger")
     }
 }

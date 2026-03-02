@@ -31,7 +31,6 @@ class ForeldrepengerFeedProxyController(private val fpsakFeedClient: FpsakFeedCl
         }.fold(
             onSuccess = { feed ->
                 logger.info("Hentet FP-feed fra sekvensnummer $sekvensnummer")
-                secureLogger.info("Hentet FP-feed $feed fra sekvensnummer $sekvensnummer")
                 ResponseEntity.ok(feed)
             },
             onFailure = {
@@ -43,6 +42,5 @@ class ForeldrepengerFeedProxyController(private val fpsakFeedClient: FpsakFeedCl
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
-        private val secureLogger = LoggerFactory.getLogger("secureLogger")
     }
 }

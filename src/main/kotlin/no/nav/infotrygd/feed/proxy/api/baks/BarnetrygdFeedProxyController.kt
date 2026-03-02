@@ -33,7 +33,6 @@ class BarnetrygdFeedProxyController(
             }.fold(
                 onSuccess = { feed ->
                     logger.info("Hentet BA-feed fra sekvensnummer $sekvensnummer")
-                    secureLogger.info("Hentet BA-feed $feed fra sekvensnummer $sekvensnummer")
                     ResponseEntity.ok(feed)
                 },
                 onFailure = {
@@ -44,6 +43,5 @@ class BarnetrygdFeedProxyController(
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
-        private val secureLogger = LoggerFactory.getLogger("secureLogger")
     }
 }

@@ -35,8 +35,6 @@ class OppgaveProxyController(
             }.fold(
                 onSuccess = { oppgave ->
                     logger.info("Opprettet oppgave for bruker identifisert med personident eller orgnr.")
-                    secureLogger.info("Opprettet oppgave for person identifisert med personnummer eller organisasjon" +
-                            " identifsert med organisasjonsnummer.")
                     ResponseEntity.ok(oppgave)
                 },
                 onFailure = {
@@ -62,7 +60,6 @@ class OppgaveProxyController(
             }.fold(
                 onSuccess = { oppgave ->
                     logger.info("Ferdigstiller oppgave identifisert med oppgaveid.")
-                    secureLogger.info("Ferdigstiller oppgave identifisert med oppgaveid ${ferdigstillBody.oppgaveId}.")
                     ResponseEntity.ok(oppgave)
                 },
                 onFailure = {
@@ -87,7 +84,6 @@ class OppgaveProxyController(
             }.fold(
                 onSuccess = { oppgave ->
                     logger.info("Ferdigstiller oppgave identifisert med oppgaveid.")
-                    secureLogger.info("Ferdigstiller oppgave identifisert med oppgaveid ${ferdigstillBody.oppgaveId}.")
                     ResponseEntity.ok(oppgave)
                 },
                 onFailure = {
@@ -108,6 +104,5 @@ class OppgaveProxyController(
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
-        private val secureLogger = LoggerFactory.getLogger("secureLogger")
     }
 }

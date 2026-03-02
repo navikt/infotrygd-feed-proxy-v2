@@ -33,7 +33,6 @@ class SykepengerFeedProxyController(
             }.fold(
                 onSuccess = { feed ->
                     logger.info("Hentet SP-feed fra sekvensnummer $sekvensnummer")
-                    secureLogger.info("Hentet SP-feed $feed fra sekvensnummer $sekvensnummer")
                     ResponseEntity.ok(feed)
                 },
                 onFailure = {
@@ -44,6 +43,5 @@ class SykepengerFeedProxyController(
 
     companion object {
         private val logger = LoggerFactory.getLogger(this::class.java)
-        private val secureLogger = LoggerFactory.getLogger("secureLogger")
     }
 }
