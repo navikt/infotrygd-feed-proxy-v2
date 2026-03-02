@@ -76,11 +76,11 @@ class Inst2FeedProxyController(
     )
     @PostMapping("/v2/personer", produces = ["application/json; charset=us-ascii"])
     fun hentInstPersonerPost(
-        @RequestBody(required = true) personIdent: PersonIdenter,
+        @RequestBody(required = true) personidenter: PersonIdenter,
     ): ResponseEntity<String> =
         Result
             .runCatching {
-                inst2FeedClient.hentInstitusjonsoppholdPersoner(personIdent.personidenter)
+                inst2FeedClient.hentInstitusjonsoppholdPersoner(personidenter.personidenter)
             }.fold(
                 onSuccess = { person ->
                     logger.info("Hentet institusjonsopphold for personer identifisert med personident.")
