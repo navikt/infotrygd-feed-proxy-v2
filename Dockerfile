@@ -1,4 +1,4 @@
-FROM amazoncorretto:21.0.10-alpine3.23
+FROM ghcr.io/navikt/baseimages/temurin:21
 
 ENV APP_NAME=infotrygd-feed-proxy-v2
 ENV JAVA_OPTS="-XX:MaxRAMPercentage=75"
