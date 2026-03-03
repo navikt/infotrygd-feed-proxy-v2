@@ -6,4 +6,4 @@ ENV JAVA_OPTS="-XX:MaxRAMPercentage=75"
 RUN mkdir /opt/app
 
 COPY target/*.jar /opt/app/app.jar
-COPY init-scripts/init.sh /opt/app/init.sh
+COPY init.sh /opt/app/init.sh
