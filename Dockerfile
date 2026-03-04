@@ -5,3 +5,5 @@ ENV JAVA_OPTS="-XX:MaxRAMPercentage=75"
 
 COPY init.sh /init-scripts/init.sh
 COPY ./target/app.jar .
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
