@@ -7,3 +7,8 @@ RUN mkdir /opt/app
 
 COPY target/*.jar /opt/app/app.jar
 COPY init.sh /opt/app/init.sh
+
+WORKDIR /opt/app
+
+CMD ["sh", "init.sh"]
+CMD ["java", "-jar", "app.jar"]
