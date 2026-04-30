@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.client.RestOperations
 import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
+import java.time.LocalDateTime
 import java.util.UUID
 
 @Service
@@ -22,6 +23,7 @@ class OppgaveClient (
                        opprettetAvEnhetsnr: String, saksreferanse: String, beskrivelse: String, tema: String,
                        behandlingstema: String, behandlingstype: String, oppgavetype: String, aktivDato: String,
                        prioritet: String): String {
+        val fristFerdigstillelse = LocalDateTime.now().toLocalDate().toString()
         val opprettOppgaveUri =
             UriComponentsBuilder
                 .fromUri(oppgaveUri)
@@ -32,7 +34,7 @@ class OppgaveClient (
         return postForEntity<String, OpprettOppgaveRequest>(opprettOppgaveUri, headers(),
             OpprettOppgaveRequest(personident, orgnr, tildeltEnhetsnr, opprettetAvEnhetsnr,
                 saksreferanse, beskrivelse, tema, behandlingstema, behandlingstype, oppgavetype, aktivDato,
-                prioritet)).also {
+                fristFerdigstillelse, prioritet)).also {
             logger.info("Opprettet oppgave med URI=$opprettOppgaveUri. Kall ok.")
         }
     }
@@ -73,7 +75,7 @@ class OppgaveClient (
                                      val opprettetAvEnhetsnr: String, val saksreferanse: String,
                                      val beskrivelse: String, val tema: String, val behandlingstema: String,
                                      val behandlingstype: String, val oppgavetype: String, val aktivDato: String,
-                                     val prioritet: String)
+                                     val fristFerdigstillelse: String, val prioritet: String)
 
     data class FerdigstillOppgaveRequest(val status: String, val kommentar: FerdigstillOppgaveKommentar)
 
