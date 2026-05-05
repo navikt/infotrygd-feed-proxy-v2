@@ -22,13 +22,12 @@ spec:
   replicas:
     min: 2
     max: 3
-    cpuThresholdPercentage: 50
+    cpuThresholdPercentage: 90
   resources:
     limits:
       memory: 512Mi
     requests:
       memory: 512Mi
-      cpu: 500m
   ingresses:
     - https://infotrygd-feed-proxy-v2.intern.nav.no
   webproxy: true
@@ -56,6 +55,9 @@ spec:
           cluster: prod-gcp
         - application: vedtaksfeed
           namespace: tbd
+          cluster: prod-gcp
+        - application: yrkesskade-infotrygd-feed
+          namespace: yrkesskade
           cluster: prod-gcp
         - application: fpsak
           namespace: teamforeldrepenger
