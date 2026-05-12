@@ -1,4 +1,4 @@
-package no.nav.infotrygd.feed.proxy.api.inst2
+package no.nav.infotrygd.feed.proxy.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/inst2")
 @ProtectedWithClaims(issuer = "sts")
 class Inst2FeedProxyController(
-    private val inst2FeedClient: Inst2FeedClient) {
+    private val inst2FeedClient: Inst2FeedClient
+) {
 
     // Kalles fra Infotrygd program K278CPIN
     @Operation(

@@ -1,4 +1,4 @@
-package no.nav.infotrygd.feed.proxy.api.oppgave
+package no.nav.infotrygd.feed.proxy.api
 
 import io.swagger.v3.oas.annotations.Operation
 import no.nav.infotrygd.feed.proxy.integration.OppgaveClient
@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/oppgave")
 @ProtectedWithClaims(issuer = "sts")
 class OppgaveProxyController(
-    private val oppgaveClient: OppgaveClient) {
+    private val oppgaveClient: OppgaveClient
+) {
 
     // Kalles fra Infotrygd program K278U750
     @Operation(

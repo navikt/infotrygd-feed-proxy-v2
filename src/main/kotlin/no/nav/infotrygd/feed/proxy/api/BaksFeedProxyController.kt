@@ -1,4 +1,4 @@
-package no.nav.infotrygd.feed.proxy.api.baks
+package no.nav.infotrygd.feed.proxy.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -37,6 +37,40 @@ class BarnetrygdFeedProxyController(
                 },
                 onFailure = {
                     logger.error("Feil ved henting av BA-feed fra sekvensnummer $sekvensnummer", it)
+                    ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+                },
+            )
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(this::class.java)
+    }
+}
+
+@RestController
+@RequestMapping("/kontantstotte")
+@ProtectedWithClaims(issuer = "sts")
+class KontantstotteFeedProxyController(
+    private val baksFeedClient: BaksFeedClient,
+) {
+    @Operation(
+        summary = "Hent liste med hendelser.",
+        description = "Henter hendelser med sekvensId større enn sistLesteSekvensId.",
+    )
+    @GetMapping("/v1/feed", produces = ["application/json; charset=us-ascii"])
+    fun hentFeed(
+        @Parameter(description = "Sist leste sekvensnummer.", required = true, example = "0")
+        @RequestParam("sistLesteSekvensId") sekvensnummer: Long,
+    ): ResponseEntity<String> =
+        Result
+            .runCatching {
+                baksFeedClient.hentKontantstotteFeed(sekvensnummer = sekvensnummer)
+            }.fold(
+                onSuccess = { feed ->
+                    logger.info("Hentet KS-feed fra sekvensnummer $sekvensnummer")
+                    ResponseEntity.ok(feed)
+                },
+                onFailure = {
+                    logger.error("Feil ved henting av KS-feed fra sekvensnummer $sekvensnummer", it)
                     ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
                 },
             )

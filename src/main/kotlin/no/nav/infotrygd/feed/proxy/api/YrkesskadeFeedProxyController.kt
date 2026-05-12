@@ -1,4 +1,4 @@
-package no.nav.infotrygd.feed.proxy.api.yrkesskade
+package no.nav.infotrygd.feed.proxy.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
