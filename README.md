@@ -40,7 +40,6 @@ sequenceDiagram
 | Innkommende endpoint (proxy) | Metode | Utgående kall (ekstern API) | Metode | Notat |
 |---|---|---|---|---|
 | `/api/barnetrygd/v1/feed?sistLesteSekvensId={id}` | GET | `${BAKS_FEED_URL}/api/barnetrygd/v1/feed?sistLesteSekvensId={id}` | GET | Barnetrygd-feed |
-| `/api/kontantstotte/v1/feed?sistLesteSekvensId={id}` | GET | `${BAKS_FEED_URL}/api/kontantstotte/v1/feed?sistLesteSekvensId={id}` | GET | Kontantstøtte-feed |
 | `/api/fpsak/foreldrepenger/v1/feed?sistLesteSekvensId={id}` | GET | `${FPSAK_FEED_URL}/fpsak/api/feed/vedtak/foreldrepenger?sistLesteSekvensId={id}` | GET | Foreldrepenger-feed |
 | `/api/fpsak/svangerskapspenger/v1/feed?sistLesteSekvensId={id}` | GET | `${FPSAK_FEED_URL}/fpsak/api/feed/vedtak/svangerskapspenger?sistLesteSekvensId={id}` | GET | Svangerskapspenger-feed |
 | `/api/sykepenger/vedtaksfeed/v1/feed?sistLesteSekvensId={id}` | GET | `${SYKEPENGER_FEED_URL}/feed?sistLesteSekvensId={id}` | GET | Sykepenger vedtaksfeed |

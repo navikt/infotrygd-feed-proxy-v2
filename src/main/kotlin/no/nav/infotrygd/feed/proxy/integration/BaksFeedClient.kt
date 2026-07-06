@@ -16,6 +16,7 @@ class BaksFeedClient(
     @Value("\${BAKS_FEED_URL}") private val baksFeedUri: URI,
     @Qualifier("azureCC") restOperations: RestOperations,
 ) : AbstractRestClient(restOperations) {
+
     fun hentBarnetrygdFeed(sekvensnummer: Long): String {
         val hentBarnetrygdFeedUri =
             UriComponentsBuilder
@@ -27,20 +28,6 @@ class BaksFeedClient(
         logger.info("Henter barnetrygd feed med URI=$hentBarnetrygdFeedUri")
         return getForEntity<String>(hentBarnetrygdFeedUri, headers()).also {
             logger.info("Hentet barnetrygd feed med URI=$hentBarnetrygdFeedUri. Kall ok")
-        }
-    }
-
-    fun hentKontantstotteFeed(sekvensnummer: Long): String {
-        val hentKontantstotteFeedUri =
-            UriComponentsBuilder
-                .fromUri(baksFeedUri)
-                .pathSegment("api/kontantstotte/v1/feed")
-                .queryParam("sistLesteSekvensId", sekvensnummer)
-                .build()
-                .toUri()
-        logger.info("Henter kontantstotte feed med URI=$hentKontantstotteFeedUri")
-        return getForEntity<String>(hentKontantstotteFeedUri, headers()).also {
-            logger.info("Hentet kontantstotte feed med URI=$hentKontantstotteFeedUri. Kall ok")
         }
     }
 
