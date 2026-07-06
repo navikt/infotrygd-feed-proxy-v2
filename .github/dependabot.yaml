@@ -41,15 +41,3 @@ updates:
       docker-major:
         patterns: ["*"]
         update-types: ["major"]
-
-  - package-ecosystem: "docker-compose"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    groups:
-      docker-compose-minor-patch:
-        patterns: ["*"]
-        update-types: ["minor", "patch"]
-      docker-compose-major:
-        patterns: ["*"]
-        update-types: ["major"]
