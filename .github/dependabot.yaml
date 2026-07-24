@@ -8,17 +8,19 @@ updates:
       default-days: 7
     ignore:
       - dependency-name: "org.springframework.boot*"
-        update-types: ["version-update:semver-major"]
+        update-types: [ "version-update:semver-major" ]
+      - dependency-name: "org.jetbrains.kotlin*"
+        versions: [ "> 2.4.0" ]
     groups:
       spring-boot-minor:
-        patterns: ["org.springframework.boot*"]
-        update-types: ["minor"]
+        patterns: [ "org.springframework.boot*" ]
+        update-types: [ "minor" ]
       maven-minor-patch:
-        patterns: ["*"]
-        update-types: ["minor", "patch"]
+        patterns: [ "*" ]
+        update-types: [ "minor", "patch" ]
       maven-major:
-        patterns: ["*"]
-        update-types: ["major"]
+        patterns: [ "*" ]
+        update-types: [ "major" ]
 
   - package-ecosystem: "github-actions"
     directory: "/"
