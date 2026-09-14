@@ -31,7 +31,6 @@
 
         <springdoc.version>3.1.0</springdoc.version>
 
-        <mockk.version>1.14.11</mockk.version>
         <nav.security.version>6.0.12</nav.security.version>
         <boot-conditionals.version>6.0.8</boot-conditionals.version>
     </properties>
@@ -149,12 +148,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.mockk</groupId>
-            <artifactId>mockk-jvm</artifactId>
-            <version>${mockk.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>no.nav.security</groupId>
             <artifactId>token-validation-spring-test</artifactId>
             <version>${nav.security.version}</version>
@@ -216,7 +209,6 @@
                     <!--suppress UnresolvedMavenProperty -->
                     <excludedGroups>${excludedGroups}</excludedGroups>
                     <threadCount>1</threadCount>
-                    <argLine>-Djdk.attach.allowAttachSelf=true</argLine>
                 </configuration>
             </plugin>
             <plugin>
