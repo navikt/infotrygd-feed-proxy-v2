@@ -216,6 +216,7 @@
                     <!--suppress UnresolvedMavenProperty -->
                     <excludedGroups>${excludedGroups}</excludedGroups>
                     <threadCount>1</threadCount>
+                    <argLine>-Djdk.attach.allowAttachSelf=true</argLine>
                 </configuration>
             </plugin>
             <plugin>
