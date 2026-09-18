@@ -1,7 +1,6 @@
 package no.nav.infotrygd.feed.proxy.integration
 
 import no.nav.infotrygd.feed.proxy.integration.http.klient.AbstractRestClient
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
@@ -22,10 +21,7 @@ class FpsakFeedClient(
             .pathSegment("fpsak/api/feed/vedtak/foreldrepenger")
             .queryParam("sistLesteSekvensId", sekvensnummer)
             .build().toUri()
-        logger.info("Henter foreldrepenger feed med URI=$hentForeldrepengerFeedUri")
-        return getForEntity<String>(hentForeldrepengerFeedUri, headers()).also {
-            logger.info("Hentet foreldrepenger feed med URI=$hentForeldrepengerFeedUri. Kall ok")
-        }
+        return getForEntity(hentForeldrepengerFeedUri, headers())
     }
 
     fun hentSvangerskapspengerFeed(sekvensnummer: Long): String {
@@ -33,10 +29,7 @@ class FpsakFeedClient(
             .pathSegment("fpsak/api/feed/vedtak/svangerskapspenger")
             .queryParam("sistLesteSekvensId", sekvensnummer)
             .build().toUri()
-        logger.info("Henter svangerskapspenger feed med URI=$hentSvangerskapspengerFeedUri")
-        return getForEntity<String>(hentSvangerskapspengerFeedUri, headers()).also {
-            logger.info("Hentet svangerskapspenger feed med URI=$hentSvangerskapspengerFeedUri. Kall ok")
-        }
+        return getForEntity(hentSvangerskapspengerFeedUri, headers())
     }
 
     private fun headers(): HttpHeaders = HttpHeaders().apply {
@@ -44,7 +37,4 @@ class FpsakFeedClient(
         accept = listOf(MediaType.APPLICATION_JSON)
     }
 
-    companion object {
-        private val logger = LoggerFactory.getLogger(this::class.java)
-    }
 }

@@ -6,6 +6,10 @@ metadata:
   labels:
     team: infotrygd
 spec:
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: java
   image: {{image}}
   port: 8087
   liveness:
