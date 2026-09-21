@@ -1,7 +1,6 @@
 package no.nav.infotrygd.feed.proxy.integration
 
 import no.nav.infotrygd.feed.proxy.integration.http.klient.AbstractRestClient
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpHeaders
@@ -25,10 +24,7 @@ class SykepengerFeedClient(
                 .build()
                 .toUri()
 
-        logger.info("Henter sykepenger feed med URI=$hentSykepengerFeedUri")
-        return getForEntity<String>(hentSykepengerFeedUri, headers()).also {
-            logger.info("Hentet sykepenger feed med URI=$hentSykepengerFeedUri. Kall ok")
-        }
+        return getForEntity(hentSykepengerFeedUri, headers())
     }
 
     private fun headers(): HttpHeaders =
@@ -37,7 +33,4 @@ class SykepengerFeedClient(
             accept = listOf(MediaType.APPLICATION_JSON)
         }
 
-    companion object {
-        private val logger = LoggerFactory.getLogger(this::class.java)
-    }
 }
