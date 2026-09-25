@@ -1,38 +1,33 @@
 package no.nav.infotrygd.feed.proxy.integration
 
-import io.mockk.every
-import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
-import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.util.LinkedMultiValueMap
-import org.springframework.web.client.RestOperations
-import org.springframework.web.client.exchange
+import org.springframework.http.MediaType
+import org.springframework.test.web.client.MockRestServiceServer
+import org.springframework.test.web.client.match.MockRestRequestMatchers.method
+import org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo
+import org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess
+import org.springframework.web.client.RestTemplate
 import java.net.URI
 
 class YrkesskadeFeedClientTest {
-    private val restOperationsMock: RestOperations = mockk()
+    private val restTemplate = RestTemplate()
+    private val mockServer = MockRestServiceServer.createServer(restTemplate)
 
-    private val ysFeedClient = YrkesskadeFeedClient(URI.create("http://localhost:8080"), restOperationsMock)
+    private val ysFeedClient = YrkesskadeFeedClient(URI.create("http://localhost:8080"), restTemplate)
 
     @Test
     fun `skal hente yrkesskade feed`() {
-        val headers = LinkedMultiValueMap<String, String>()
-
-        every {
-            restOperationsMock.exchange<String>(
-                any<URI>(),
-                eq(HttpMethod.GET),
-                any<HttpEntity<String>>(),
-            )
-        } returns ResponseEntity(feedMelding(), headers, HttpStatus.OK)
+        mockServer
+            .expect(requestTo("http://localhost:8080/api/v1/feed?sistLesteSekvensId=0"))
+            .andExpect(method(HttpMethod.GET))
+            .andRespond(withSuccess(feedMelding(), MediaType.APPLICATION_JSON))
 
         val feed = ysFeedClient.hentYrkesskadeFeed(0)
 
         assertNotNull(feed)
+        mockServer.verify()
     }
 
     private fun feedMelding(): String =
