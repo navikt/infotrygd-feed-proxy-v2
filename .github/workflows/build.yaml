@@ -53,7 +53,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.1
       - name: Deploy til dev-fss
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@v3
         env:
           CLUSTER: dev-fss
           RESOURCE: .deploy/nais/nais_dev.yaml
@@ -71,7 +71,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.1
       - name: Deploy til prod-fss
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@v3
         env:
           CLUSTER: prod-fss
           RESOURCE: .deploy/nais/nais_prod.yaml

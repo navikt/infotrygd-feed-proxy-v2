@@ -2,8 +2,6 @@ package no.nav.infotrygd.feed.proxy.integration.http.klient
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.infotrygd.feed.proxy.integration.http.mapper.objectMapper
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -17,8 +15,6 @@ import java.net.URI
 abstract class AbstractRestClient(
     val operations: RestOperations,
 ) {
-    private val log: Logger = LoggerFactory.getLogger(this::class.java)
-
     inline fun <reified T : Any> getForEntity(
         uri: URI,
         httpHeaders: HttpHeaders? = null,
@@ -40,12 +36,8 @@ abstract class AbstractRestClient(
         HttpEntity(requestBody, httpHeaders)) }
 
     @Suppress("UNCHECKED_CAST")
-    private fun <T : Any> validerOgPakkUt(
-        respons: ResponseEntity<T>,
-        uri: URI,
-    ): T {
+    private fun <T : Any> validerOgPakkUt(respons: ResponseEntity<T>): T {
         if (!respons.statusCode.is2xxSuccessful) {
-            log.info("Kall mot $uri feilet: ${respons.statusCode}")
             throw HttpServerErrorException(respons.statusCode, "",
                 respons.body?.toString()?.toByteArray(), Charsets.UTF_8)
         }
@@ -58,13 +50,13 @@ abstract class AbstractRestClient(
     ): T {
         try {
             val responseEntity = function.invoke()
-            return validerOgPakkUt(responseEntity, uri)
+            return validerOgPakkUt(responseEntity)
         } catch (e: RestClientResponseException) {
             lesRessurs(e)?.let { throw RessursException(it, e) } ?: throw e
         } catch (e: HttpClientErrorException) {
             lesRessurs(e)?.let { throw RessursException(it, e) } ?: throw e
         } catch (e: Exception) {
-            throw RuntimeException("Feil ved kall mot uri=$uri", e)
+            throw RuntimeException("Kall mot eksternt system feilet", e)
         }
     }
 
