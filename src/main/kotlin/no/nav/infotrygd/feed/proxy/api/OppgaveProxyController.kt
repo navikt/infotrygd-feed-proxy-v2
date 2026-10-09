@@ -2,6 +2,7 @@ package no.nav.infotrygd.feed.proxy.api
 
 import io.swagger.v3.oas.annotations.Operation
 import no.nav.infotrygd.feed.proxy.integration.OppgaveClient
+import no.nav.infotrygd.feed.proxy.integration.http.klient.RessursException
 import no.nav.security.token.support.core.api.ProtectedWithClaims
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.client.RestClientResponseException
 
 @RestController
 @RequestMapping("/oppgave")
@@ -39,8 +41,7 @@ class OppgaveProxyController(
                     ResponseEntity.ok(oppgave)
                 },
                 onFailure = {
-                    logger.error("Feil ved oppretting av oppgave", it)
-                    ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+                    håndterFeil(it, "oppretting")
                 },
             )
 
@@ -64,8 +65,7 @@ class OppgaveProxyController(
                     ResponseEntity.ok(oppgave)
                 },
                 onFailure = {
-                    logger.error("Feil ved ferdigstilling av oppgave", it)
-                    ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+                    håndterFeil(it, "ferdigstilling")
                 },
             )
 
@@ -88,10 +88,26 @@ class OppgaveProxyController(
                     ResponseEntity.ok(oppgave)
                 },
                 onFailure = {
-                    logger.error("Feil ved ferdigstilling av oppgave", it)
-                    ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+                    håndterFeil(it, "ferdigstilling")
                 },
             )
+
+    private fun håndterFeil(feil: Throwable, operasjon: String): ResponseEntity<String> {
+        val status = when (feil) {
+            is RessursException -> feil.httpStatus.value()
+            is RestClientResponseException -> feil.statusCode.value()
+            else -> null
+        }
+        when (status) {
+            HttpStatus.CONFLICT.value() ->
+                logger.warn("Konflikt ved {} av oppgave. status={}", operasjon, status)
+            null ->
+                logger.error("Feil ved {} av oppgave", operasjon, feil)
+            else ->
+                logger.error("Oppgave avviste {} av oppgave. status={}", operasjon, status)
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+    }
 
     data class OpprettOppgaveBody(val personident: String, val orgnr: String, val tildeltEnhetsnr: String,
                                   val opprettetAvEnhetsnr: String, val saksreferanse: String, val beskrivelse: String,
@@ -104,6 +120,6 @@ class OppgaveProxyController(
     data class FerdigstillOppgaveUkBody(val oppgaveId: Long, val arsak1: String, val arsak2: String, val arsak3: String)
 
     companion object {
-        private val logger = LoggerFactory.getLogger(this::class.java)
+        private val logger = LoggerFactory.getLogger(OppgaveProxyController::class.java)
     }
 }
