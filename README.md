@@ -39,8 +39,7 @@ sequenceDiagram
     Note over S,T: Planlagt polling av feeder
     loop Ved hver planlagte kjøring
         S->>I: Start henting av nye hendelser
-        I->>P: GET feed med sistLesteSekvensId og STS-token
-        Note over I,P: Inst2-feed krever også antall-hendelser
+        I->>P: GET feed med sistLesteSekvensId/antall-hendelser og STS-token
         P->>P: Valider STS-token og hent eller gjenbruk Azure-token
         P->>F: GET feed med Azure-token
         F-->>P: Hendelser etter sistLesteSekvensId
