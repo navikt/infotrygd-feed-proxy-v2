@@ -32,7 +32,7 @@
         <springdoc.version>3.1.1</springdoc.version>
 
         <mockk.version>1.14.11</mockk.version>
-        <nav.security.version>6.0.13</nav.security.version>
+        <nav.security.version>6.0.14</nav.security.version>
         <boot-conditionals.version>6.0.9</boot-conditionals.version>
     </properties>
 
@@ -101,7 +101,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents.client5</groupId>
             <artifactId>httpclient5</artifactId>
-            <version>5.6.4</version>
+            <version>5.6.5</version>
         </dependency>
 
         <!-- sikkerhet -->
