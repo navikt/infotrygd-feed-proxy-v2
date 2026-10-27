@@ -1,0 +1,49 @@
+package no.nav.infotrygd.feed.proxy.api
+
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import no.nav.infotrygd.feed.proxy.integration.GrunnstonadFeedClient
+import no.nav.security.token.support.core.api.ProtectedWithClaims
+import org.slf4j.LoggerFactory
+import org.springframework.context.annotation.Profile
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
+
+@RestController
+@Profile("dev")
+@RequestMapping("/grunnstonad")
+@ProtectedWithClaims(issuer = "sts")
+class GrunnstonadFeedProxyController(
+    private val grunnstonadFeedClient: GrunnstonadFeedClient,
+) {
+    @Operation(
+        summary = "Hent liste med hendelser.",
+        description = "Henter hendelser med sekvensId større enn sistLesteSekvensId.",
+    )
+    @GetMapping("/v1/feed", produces = ["application/json; charset=us-ascii"])
+    fun hentFeed(
+        @Parameter(description = "Sist leste sekvensnummer.", required = true, example = "0")
+        @RequestParam("sistLesteSekvensId") sekvensnummer: Long,
+    ): ResponseEntity<String> =
+        Result
+            .runCatching {
+                grunnstonadFeedClient.hentGrunnstonadFeed(sekvensnummer = sekvensnummer)
+            }.fold(
+                onSuccess = { feed ->
+                    logger.info("Hentet GS-feed fra sekvensnummer $sekvensnummer")
+                    ResponseEntity.ok(feed)
+                },
+                onFailure = {
+                    logger.error("Feil ved henting av GS-feed fra sekvensnummer $sekvensnummer", it)
+                    ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
+                },
+            )
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(this::class.java)
+    }
+}
