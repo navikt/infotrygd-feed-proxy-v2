@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/fpsak/foreldrepenger")
 @ProtectedWithClaims(issuer = "sts")
 class ForeldrepengerFeedProxyController(private val fpsakFeedClient: FpsakFeedClient) {
-
     @Operation(
         summary = "Hent liste med hendelser.",
         description = "Henter hendelser med sekvensId større enn sistLesteSekvensId.",
@@ -49,7 +48,6 @@ class ForeldrepengerFeedProxyController(private val fpsakFeedClient: FpsakFeedCl
 @RequestMapping("/fpsak/svangerskapspenger")
 @ProtectedWithClaims(issuer = "sts")
 class SvangerskapspengerFeedProxyController(private val fpsakFeedClient: FpsakFeedClient) {
-
     @Operation(
         summary = "Hent liste med hendelser.",
         description = "Henter hendelser med sekvensId større enn sistLesteSekvensId.",

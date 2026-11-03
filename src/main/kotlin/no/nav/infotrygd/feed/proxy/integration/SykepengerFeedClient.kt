@@ -32,5 +32,4 @@ class SykepengerFeedClient(
             contentType = MediaType.APPLICATION_JSON
             accept = listOf(MediaType.APPLICATION_JSON)
         }
-
 }
