@@ -2,6 +2,17 @@
 
 Proxy som lar Infotrygd hente og sende data mellom on-prem og tjenester i GCP og FSS. Infotrygd bruker GET for å hente hendelsesfeeder og POST for å søke etter institusjonsopphold, opprette oppgaver og ferdigstille oppgaver. Proxyen mottar STS-token og kaller tjenestene med Azure-token.
 
+## Avhengighetsrapportering
+
+Workflowen «Submit dependency graph» sender Maven-avhengighetsgrafen til GitHub
+for Dependabot. Den beholder Java 21 fra byggeflyten og bruker `GITHUB_TOKEN`
+til GitHub Packages. Den genererte Maven-settings-fila sendes eksplisitt til
+innsendingen.
+
+Workflowen kjører ved POM- eller workflow-endringer på `main`, eller manuelt
+fra GitHub Actions. Etter merge må vellykket innsending bekrefte oppdatert
+rapportering. SBOM-generering og deploy i Nais er uendret.
+
 ## Eksterne API-kall
 
 Alle innkommende kall går til proxyen under `/api/*` med STS-token (issuer `sts`).
