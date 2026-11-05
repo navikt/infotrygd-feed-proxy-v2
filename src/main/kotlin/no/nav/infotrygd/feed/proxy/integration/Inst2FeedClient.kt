@@ -12,19 +12,21 @@ import java.net.URI
 import java.util.UUID
 
 @Service
-class Inst2FeedClient (
+class Inst2FeedClient(
     @Value("\${INST2_URL}") private val inst2Uri: URI,
     @Qualifier("azureCC") restOperations: RestOperations,
 ) : AbstractRestClient(restOperations) {
-
     fun hentInstitusjonsoppholdPerson(personIdent: String): String {
         val hentInstOppholdPersonUri =
             UriComponentsBuilder
                 .fromUri(inst2Uri)
                 .pathSegment("api/v1/person/institusjonsopphold/soek")
                 .build().toUri()
-        return postForEntity<String, inst2PersonRequest>(hentInstOppholdPersonUri, headers(),
-            inst2PersonRequest(personIdent)            )
+        return postForEntity<String, inst2PersonRequest>(
+            hentInstOppholdPersonUri,
+            headers(),
+            inst2PersonRequest(personIdent),
+        )
     }
 
     fun hentInstitusjonsoppholdPersoner(personIdenter: List<String>): String {
@@ -33,11 +35,17 @@ class Inst2FeedClient (
                 .fromUri(inst2Uri)
                 .pathSegment("api/v1/personer/institusjonsopphold/soek")
                 .build().toUri()
-        return postForEntity<String, inst2PersonerRequest>(hentInstOppholdPersonerUri, headers(),
-            inst2PersonerRequest(personIdenter)            )
+        return postForEntity<String, inst2PersonerRequest>(
+            hentInstOppholdPersonerUri,
+            headers(),
+            inst2PersonerRequest(personIdenter),
+        )
     }
 
-    fun hentInstitusjonsoppholdFeed(sekvensnummer: Long, antallhendelser: Long): String {
+    fun hentInstitusjonsoppholdFeed(
+        sekvensnummer: Long,
+        antallhendelser: Long,
+    ): String {
         val hentInstOppholdFeedUri =
             UriComponentsBuilder
                 .fromUri(inst2Uri)
@@ -47,14 +55,14 @@ class Inst2FeedClient (
         return getForEntity(hentInstOppholdFeedUri, headers())
     }
 
-    private fun headers(): HttpHeaders = HttpHeaders().apply {
-        contentType = MediaType.APPLICATION_JSON
-        accept = listOf(MediaType.APPLICATION_JSON)
-        set("Nav-Call-Id", UUID.randomUUID().toString())
-    }
+    private fun headers(): HttpHeaders =
+        HttpHeaders().apply {
+            contentType = MediaType.APPLICATION_JSON
+            accept = listOf(MediaType.APPLICATION_JSON)
+            set("Nav-Call-Id", UUID.randomUUID().toString())
+        }
 
     data class inst2PersonRequest(val personident: String)
 
     data class inst2PersonerRequest(val personidenter: List<String>)
-
 }

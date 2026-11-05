@@ -19,9 +19,8 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/inst2")
 @ProtectedWithClaims(issuer = "sts")
 class Inst2FeedProxyController(
-    private val inst2FeedClient: Inst2FeedClient
+    private val inst2FeedClient: Inst2FeedClient,
 ) {
-
     // Kalles fra Infotrygd program K278CPIN
     @Operation(
         summary = "Hent institusjonsopphold for én person.",
@@ -66,7 +65,7 @@ class Inst2FeedProxyController(
                     logger.error("Feil ved henting av institusjonsopphold for personer", it)
                     ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
                 },
-    )
+            )
 
     // Kalles fra Infotrygd program K278CPI2
     @Operation(
@@ -89,7 +88,7 @@ class Inst2FeedProxyController(
                     logger.error("Feil ved henting av institusjonsopphold for personer", it)
                     ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
                 },
-    )
+            )
 
     // Kalles fra Infotrygd program K278CPI3
     @Operation(
