@@ -22,7 +22,6 @@ import org.springframework.web.client.RestOperations
 @Import(RestTemplateAzure::class)
 @EnableOAuth2Client(cacheEnabled = true)
 class ApplicationConfig {
-
     @Bean
     @Primary
     fun objectMapper() = objectMapper

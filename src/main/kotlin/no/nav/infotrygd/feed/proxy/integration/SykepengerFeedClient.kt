@@ -32,5 +32,34 @@ class SykepengerFeedClient(
             contentType = MediaType.APPLICATION_JSON
             accept = listOf(MediaType.APPLICATION_JSON)
         }
+}
 
+@Service
+class FpsakFeedClient(
+    @Value("\${FPSAK_FEED_URL}") private val fpsvFeedUri: URI,
+    @Qualifier("azureCC") restOperations: RestOperations,
+) : AbstractRestClient(restOperations) {
+    fun hentForeldrepengerFeed(sekvensnummer: Long): String {
+        val hentForeldrepengerFeedUri =
+            UriComponentsBuilder.fromUri(fpsvFeedUri)
+                .pathSegment("fpsak/api/feed/vedtak/foreldrepenger")
+                .queryParam("sistLesteSekvensId", sekvensnummer)
+                .build().toUri()
+        return getForEntity(hentForeldrepengerFeedUri, headers())
+    }
+
+    fun hentSvangerskapspengerFeed(sekvensnummer: Long): String {
+        val hentSvangerskapspengerFeedUri =
+            UriComponentsBuilder.fromUri(fpsvFeedUri)
+                .pathSegment("fpsak/api/feed/vedtak/svangerskapspenger")
+                .queryParam("sistLesteSekvensId", sekvensnummer)
+                .build().toUri()
+        return getForEntity(hentSvangerskapspengerFeedUri, headers())
+    }
+
+    private fun headers(): HttpHeaders =
+        HttpHeaders().apply {
+            contentType = MediaType.APPLICATION_JSON
+            accept = listOf(MediaType.APPLICATION_JSON)
+        }
 }

@@ -39,7 +39,8 @@ private fun generateAccessToken(
     clientConfigurationProperties: ClientConfigurationProperties,
     oAuth2AccessTokenService: OAuth2AccessTokenService,
 ): String? {
-    val clientProperties = clientPropertiesFor(
+    val clientProperties =
+        clientPropertiesFor(
             request.uri,
             clientConfigurationProperties,
         )
@@ -72,6 +73,5 @@ private fun filterClientProperties(
 private fun clientPropertiesForGrantType(
     values: List<ClientProperties>,
     uri: URI,
-) =
-    values.firstOrNull { GrantType.CLIENT_CREDENTIALS.equals(it.grantType) }
-        ?: error("could not find oauth2 client config for uri=$uri and grant type=CLIENT_CREDENTIALS")
+) = values.firstOrNull { GrantType.CLIENT_CREDENTIALS.equals(it.grantType) }
+    ?: error("could not find oauth2 client config for uri=$uri and grant type=CLIENT_CREDENTIALS")
