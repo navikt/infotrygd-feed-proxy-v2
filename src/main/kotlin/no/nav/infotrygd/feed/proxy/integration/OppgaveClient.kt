@@ -13,64 +13,108 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 @Service
-class OppgaveClient (
+class OppgaveClient(
     @Value("\${OPPGAVE_URL}") private val oppgaveUri: URI,
     @Qualifier("azureCC") restOperations: RestOperations,
 ) : AbstractRestClient(restOperations) {
-
-    fun opprettOppgave(personident: String, orgnr: String, tildeltEnhetsnr: String,
-                       opprettetAvEnhetsnr: String, saksreferanse: String, beskrivelse: String, tema: String,
-                       behandlingstema: String, behandlingstype: String, oppgavetype: String, aktivDato: String,
-                       prioritet: String): String {
+    fun opprettOppgave(
+        personident: String,
+        orgnr: String,
+        tildeltEnhetsnr: String,
+        opprettetAvEnhetsnr: String,
+        saksreferanse: String,
+        beskrivelse: String,
+        tema: String,
+        behandlingstema: String,
+        behandlingstype: String,
+        oppgavetype: String,
+        aktivDato: String,
+        prioritet: String,
+    ): String {
         val fristFerdigstillelse = LocalDateTime.now().toLocalDate().toString()
         val opprettOppgaveUri =
             UriComponentsBuilder
                 .fromUri(oppgaveUri)
                 .pathSegment("api/v1/oppgaver")
                 .build().toUri()
-        return postForEntity<String, OpprettOppgaveRequest>(opprettOppgaveUri, headers(),
-            OpprettOppgaveRequest(personident, orgnr, tildeltEnhetsnr, opprettetAvEnhetsnr,
+        return postForEntity<String, OpprettOppgaveRequest>(
+            opprettOppgaveUri,
+            headers(),
+            OpprettOppgaveRequest(
+                personident, orgnr, tildeltEnhetsnr, opprettetAvEnhetsnr,
                 saksreferanse, beskrivelse, tema, behandlingstema, behandlingstype, oppgavetype, aktivDato,
-                fristFerdigstillelse, prioritet)                )
+                fristFerdigstillelse, prioritet,
+            ),
+        )
     }
 
-    fun ferdigstillOppgave(oppgaveId: Long, tekst: String): String {
+    fun ferdigstillOppgave(
+        oppgaveId: Long,
+        tekst: String,
+    ): String {
         val status = "FERDIGSTILT"
         val ferdigstillOppgaveUri =
             UriComponentsBuilder
                 .fromUri(oppgaveUri)
                 .pathSegment("api/v1/oppgaver/" + oppgaveId)
                 .build().toUri()
-        return patchForEntity<String, FerdigstillOppgaveRequest>(ferdigstillOppgaveUri, headers(),
-            FerdigstillOppgaveRequest(status,
-                FerdigstillOppgaveKommentar(tekst))                )
+        return patchForEntity<String, FerdigstillOppgaveRequest>(
+            ferdigstillOppgaveUri,
+            headers(),
+            FerdigstillOppgaveRequest(
+                status,
+                FerdigstillOppgaveKommentar(tekst),
+            ),
+        )
     }
 
-    fun ferdigstillOppgave(oppgaveId: Long, endretDato: String, endretTid: String, brukerid: String,
-                           enhet: String, aksjon: String, resultat: String): String {
+    fun ferdigstillOppgave(
+        oppgaveId: Long,
+        endretDato: String,
+        endretTid: String,
+        brukerid: String,
+        enhet: String,
+        aksjon: String,
+        resultat: String,
+    ): String {
         val tekst = endretDato + "-" + endretTid + " (" + brukerid + ", " + enhet + ")\n " + aksjon + "\n" + resultat
         return ferdigstillOppgave(oppgaveId, tekst)
     }
 
-    fun ferdigstillOppgave(oppgaveId: Long, arsak1: String, arsak2: String, arsak3: String): String {
+    fun ferdigstillOppgave(
+        oppgaveId: Long,
+        arsak1: String,
+        arsak2: String,
+        arsak3: String,
+    ): String {
         val tekst = arsak1 + arsak2 + arsak3
         return ferdigstillOppgave(oppgaveId, tekst)
     }
 
-    private fun headers(): HttpHeaders = HttpHeaders().apply {
-        contentType = MediaType.APPLICATION_JSON
-        accept = listOf(MediaType.APPLICATION_JSON)
-        set("X-Correlation-ID", UUID.randomUUID().toString())
-    }
+    private fun headers(): HttpHeaders =
+        HttpHeaders().apply {
+            contentType = MediaType.APPLICATION_JSON
+            accept = listOf(MediaType.APPLICATION_JSON)
+            set("X-Correlation-ID", UUID.randomUUID().toString())
+        }
 
-    data class OpprettOppgaveRequest(val personident: String, val orgnr: String, val tildeltEnhetsnr: String,
-                                     val opprettetAvEnhetsnr: String, val saksreferanse: String,
-                                     val beskrivelse: String, val tema: String, val behandlingstema: String,
-                                     val behandlingstype: String, val oppgavetype: String, val aktivDato: String,
-                                     val fristFerdigstillelse: String, val prioritet: String)
+    data class OpprettOppgaveRequest(
+        val personident: String,
+        val orgnr: String,
+        val tildeltEnhetsnr: String,
+        val opprettetAvEnhetsnr: String,
+        val saksreferanse: String,
+        val beskrivelse: String,
+        val tema: String,
+        val behandlingstema: String,
+        val behandlingstype: String,
+        val oppgavetype: String,
+        val aktivDato: String,
+        val fristFerdigstillelse: String,
+        val prioritet: String,
+    )
 
     data class FerdigstillOppgaveRequest(val status: String, val kommentar: FerdigstillOppgaveKommentar)
 
     data class FerdigstillOppgaveKommentar(val tekst: String)
-
 }
