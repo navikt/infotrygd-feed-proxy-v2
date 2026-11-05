@@ -17,6 +17,7 @@ class GrunnstonadFeedClientTest {
 
     private val grunnstonadFeedClient = GrunnstonadFeedClient(URI.create("http://localhost:8080"), restTemplate)
 
+    
     @Test
     fun `skal hente grunnstønad feed`() {
         mockServer
