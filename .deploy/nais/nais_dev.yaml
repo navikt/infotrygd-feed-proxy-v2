@@ -66,6 +66,9 @@ spec:
         - application: fpsak
           namespace: teamforeldrepenger
           cluster: dev-fss
+        - application: grunn-og-hjelp-infotrygd-feed
+          namespace: grunn-og-hjelp
+          cluster: dev-gcp
   env:
     - name: SPRING_PROFILES_ACTIVE
       value: dev
