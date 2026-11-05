@@ -3,8 +3,22 @@ BAKS_FEED_URL: https://familie-baks-infotrygd-feed.intern.dev.nav.no
 SYKEPENGER_FEED_URL: https://vedtaksfeed.intern.dev.nav.no
 YRKESSKADE_FEED_URL: https://yrkesskade-infotrygd-feed.intern.dev.nav.no
 FPSAK_FEED_URL: https://fpsak-api.intern.dev.nav.no
+GRUNN_OG_HJELP_URL: https://grunn-og-hjelp-infotrygd-feed.intern.dev.nav.no
 INST2_URL: https://inst2-q1.dev.intern.nav.no
 INST2_ENV: inst2-q1
 OPPGAVE_URL: https://oppgave-q1.intern.dev.nav.no
 OPPGAVE_ENV: oppgave-q1
 STS_DISCOVERY_URL: https://security-token-service.nais.preprod.local/rest/v1/sts/.well-known/openid-configuration
+
+no.nav.security.jwt:
+  client:
+    registration:
+      grunn-og-hjelp:
+        resource-url: ${GRUNN_OG_HJELP_URL}
+        token-endpoint-url: ${AZURE_OPENID_CONFIG_TOKEN_ENDPOINT}
+        grant-type: client_credentials
+        scope: api://dev-gcp.grunn-og-hjelp.grunn-og-hjelp-infotrygd-feed/.default
+        authentication:
+          client-id: ${AZURE_APP_CLIENT_ID}
+          client-secret: ${AZURE_APP_CLIENT_SECRET}
+          client-auth-method: client_secret_basic

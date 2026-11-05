@@ -17,9 +17,8 @@ import org.springframework.web.client.RestClientResponseException
 @RequestMapping("/oppgave")
 @ProtectedWithClaims(issuer = "sts")
 class OppgaveProxyController(
-    private val oppgaveClient: OppgaveClient
+    private val oppgaveClient: OppgaveClient,
 ) {
-
     // Kalles fra Infotrygd program K278U750
     @Operation(
         summary = "Opprett oppgave.",
@@ -27,21 +26,23 @@ class OppgaveProxyController(
     )
     @PostMapping("/v1/opprett", produces = ["application/json; charset=us-ascii"])
     fun opprettOppgave(
-        @RequestBody oppgaveBody: OpprettOppgaveBody
+        @RequestBody oppgaveBody: OpprettOppgaveBody,
     ): ResponseEntity<String> =
         Result
             .runCatching {
-                oppgaveClient.opprettOppgave(oppgaveBody.personident, oppgaveBody.orgnr,
+                oppgaveClient.opprettOppgave(
+                    oppgaveBody.personident, oppgaveBody.orgnr,
                     oppgaveBody.tildeltEnhetsnr, oppgaveBody.opprettetAvEnhetsnr, oppgaveBody.saksreferanse,
                     oppgaveBody.beskrivelse, oppgaveBody.tema, oppgaveBody.behandlingstema, oppgaveBody.behandlingstype,
-                    oppgaveBody.oppgavetype, oppgaveBody.aktivDato, oppgaveBody.prioritet)
+                    oppgaveBody.oppgavetype, oppgaveBody.aktivDato, oppgaveBody.prioritet,
+                )
             }.fold(
                 onSuccess = { oppgave ->
                     logger.info("Opprettet oppgave for bruker identifisert med personident eller orgnr.")
                     ResponseEntity.ok(oppgave)
                 },
                 onFailure = {
-                    håndterFeil(it, "oppretting")
+                    haandterFeil(it, "oppretting")
                 },
             )
 
@@ -52,20 +53,26 @@ class OppgaveProxyController(
     )
     @PostMapping("/v1/ferdigstill", produces = ["application/json; charset=us-ascii"])
     fun ferdigstillOppgave(
-        @RequestBody ferdigstillBody: FerdigstillOppgaveBody
+        @RequestBody ferdigstillBody: FerdigstillOppgaveBody,
     ): ResponseEntity<String> =
         Result
             .runCatching {
-                oppgaveClient.ferdigstillOppgave(ferdigstillBody.oppgaveId, ferdigstillBody.endretDato,
-                    ferdigstillBody.endretTid, ferdigstillBody.bruker, ferdigstillBody.enhet,
-                    ferdigstillBody.aksjon, ferdigstillBody.resultat)
+                oppgaveClient.ferdigstillOppgave(
+                    ferdigstillBody.oppgaveId,
+                    ferdigstillBody.endretDato,
+                    ferdigstillBody.endretTid,
+                    ferdigstillBody.bruker,
+                    ferdigstillBody.enhet,
+                    ferdigstillBody.aksjon,
+                    ferdigstillBody.resultat,
+                )
             }.fold(
                 onSuccess = { oppgave ->
                     logger.info("Ferdigstiller oppgave identifisert med oppgaveid.")
                     ResponseEntity.ok(oppgave)
                 },
                 onFailure = {
-                    håndterFeil(it, "ferdigstilling")
+                    haandterFeil(it, "ferdigstilling")
                 },
             )
 
@@ -76,28 +83,36 @@ class OppgaveProxyController(
     )
     @PostMapping("/v1/ferdigstill/uk", produces = ["application/json; charset=us-ascii"])
     fun ferdigstillOppgaveUk(
-        @RequestBody ferdigstillBody: FerdigstillOppgaveUkBody
+        @RequestBody ferdigstillBody: FerdigstillOppgaveUkBody,
     ): ResponseEntity<String> =
         Result
             .runCatching {
-                oppgaveClient.ferdigstillOppgave(ferdigstillBody.oppgaveId, ferdigstillBody.arsak1,
-                    ferdigstillBody.arsak2, ferdigstillBody.arsak3)
+                oppgaveClient.ferdigstillOppgave(
+                    ferdigstillBody.oppgaveId,
+                    ferdigstillBody.arsak1,
+                    ferdigstillBody.arsak2,
+                    ferdigstillBody.arsak3,
+                )
             }.fold(
                 onSuccess = { oppgave ->
                     logger.info("Ferdigstiller oppgave identifisert med oppgaveid.")
                     ResponseEntity.ok(oppgave)
                 },
                 onFailure = {
-                    håndterFeil(it, "ferdigstilling")
+                    haandterFeil(it, "ferdigstilling")
                 },
             )
 
-    private fun håndterFeil(feil: Throwable, operasjon: String): ResponseEntity<String> {
-        val status = when (feil) {
-            is RessursException -> feil.httpStatus.value()
-            is RestClientResponseException -> feil.statusCode.value()
-            else -> null
-        }
+    private fun haandterFeil(
+        feil: Throwable,
+        operasjon: String,
+    ): ResponseEntity<String> {
+        val status =
+            when (feil) {
+                is RessursException -> feil.httpStatus.value()
+                is RestClientResponseException -> feil.statusCode.value()
+                else -> null
+            }
         when (status) {
             HttpStatus.CONFLICT.value() ->
                 logger.warn("Konflikt ved {} av oppgave. status={}", operasjon, status)
@@ -109,13 +124,30 @@ class OppgaveProxyController(
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build()
     }
 
-    data class OpprettOppgaveBody(val personident: String, val orgnr: String, val tildeltEnhetsnr: String,
-                                  val opprettetAvEnhetsnr: String, val saksreferanse: String, val beskrivelse: String,
-                                  val tema: String, val behandlingstema: String, val behandlingstype: String,
-                                  val oppgavetype: String, val aktivDato: String, val prioritet: String)
+    data class OpprettOppgaveBody(
+        val personident: String,
+        val orgnr: String,
+        val tildeltEnhetsnr: String,
+        val opprettetAvEnhetsnr: String,
+        val saksreferanse: String,
+        val beskrivelse: String,
+        val tema: String,
+        val behandlingstema: String,
+        val behandlingstype: String,
+        val oppgavetype: String,
+        val aktivDato: String,
+        val prioritet: String,
+    )
 
-    data class FerdigstillOppgaveBody(val oppgaveId: Long, val endretDato: String, val endretTid: String,
-                                      val bruker: String, val enhet: String, val aksjon: String, val resultat: String)
+    data class FerdigstillOppgaveBody(
+        val oppgaveId: Long,
+        val endretDato: String,
+        val endretTid: String,
+        val bruker: String,
+        val enhet: String,
+        val aksjon: String,
+        val resultat: String,
+    )
 
     data class FerdigstillOppgaveUkBody(val oppgaveId: Long, val arsak1: String, val arsak2: String, val arsak3: String)
 

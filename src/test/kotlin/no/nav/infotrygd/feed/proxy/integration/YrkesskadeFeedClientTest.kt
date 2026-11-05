@@ -32,53 +32,53 @@ class YrkesskadeFeedClientTest {
 
     private fun feedMelding(): String =
         """
-{
-  "elementer": [
-    {
-      "innhold": {
-        "fnrStoenadsmottaker": "12345678910",
-        "skadeDato": "2024-03-31",
-        "fomDato": null,
-        "tomDato": null,
-        "tekst": "avslag"
-      },
-      "metadata": {
-        "opprettetDato": "2024-03-31"
-      },
-      "sekvensId": 1,
-      "type": "Ys_avslag"
-    },
-    {
-      "innhold": {
-        "fnrStoenadsmottaker": "09510674968",
-        "skadeDato": "2024-04-01",
-        "fomDato": null,
-        "tomDato": null,
-        "tekst": ""
-      },
-      "metadata": {
-        "opprettetDato": "2024-05-01"
-      },
-      "sekvensId": 4,
-      "type": "Ys_godkjent"
-    },
-    {
-      "innhold": {
-        "fnrStoenadsmottaker": "17458938083",
-        "skadeDato": "2024-03-04",
-        "fomDato": null,
-        "tomDato": null,
-        "tekst": ""
-      },
-      "metadata": {
-        "opprettetDato": "2024-05-29"
-      },
-      "sekvensId": 100,
-      "type": "Ys_godkjent"
-    }
-  ],
-  "inneholderFlereElementer": true,
-  "tittel": "Yrkesskade Infotrygd feed"
-}
+        {
+          "elementer": [
+            {
+              "innhold": {
+                "fnrStoenadsmottaker": "12345678910",
+                "skadeDato": "2024-03-31",
+                "fomDato": null,
+                "tomDato": null,
+                "tekst": "avslag"
+              },
+              "metadata": {
+                "opprettetDato": "2024-03-31"
+              },
+              "sekvensId": 1,
+              "type": "Ys_avslag"
+            },
+            {
+              "innhold": {
+                "fnrStoenadsmottaker": "09510674968",
+                "skadeDato": "2024-04-01",
+                "fomDato": null,
+                "tomDato": null,
+                "tekst": ""
+              },
+              "metadata": {
+                "opprettetDato": "2024-05-01"
+              },
+              "sekvensId": 4,
+              "type": "Ys_godkjent"
+            },
+            {
+              "innhold": {
+                "fnrStoenadsmottaker": "17458938083",
+                "skadeDato": "2024-03-04",
+                "fomDato": null,
+                "tomDato": null,
+                "tekst": ""
+              },
+              "metadata": {
+                "opprettetDato": "2024-05-29"
+              },
+              "sekvensId": 100,
+              "type": "Ys_godkjent"
+            }
+          ],
+          "inneholderFlereElementer": true,
+          "tittel": "Yrkesskade Infotrygd feed"
+        }
         """.trimIndent()
 }

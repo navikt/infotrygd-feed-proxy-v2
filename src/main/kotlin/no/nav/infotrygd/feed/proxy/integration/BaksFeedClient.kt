@@ -15,7 +15,6 @@ class BaksFeedClient(
     @Value("\${BAKS_FEED_URL}") private val baksFeedUri: URI,
     @Qualifier("azureCC") restOperations: RestOperations,
 ) : AbstractRestClient(restOperations) {
-
     fun hentBarnetrygdFeed(sekvensnummer: Long): String {
         val hentBarnetrygdFeedUri =
             UriComponentsBuilder
@@ -32,5 +31,4 @@ class BaksFeedClient(
             contentType = MediaType.APPLICATION_JSON
             accept = listOf(MediaType.APPLICATION_JSON)
         }
-
 }

@@ -18,28 +18,50 @@ abstract class AbstractRestClient(
     inline fun <reified T : Any> getForEntity(
         uri: URI,
         httpHeaders: HttpHeaders? = null,
-    ): T = execute(uri) { operations.exchange<T>(uri, HttpMethod.GET,
-        HttpEntity(null, httpHeaders)) }
+    ): T =
+        execute(uri) {
+            operations.exchange<T>(
+                uri,
+                HttpMethod.GET,
+                HttpEntity(null, httpHeaders),
+            )
+        }
 
     inline fun <reified T : Any, reified U : Any> postForEntity(
         uri: URI,
         httpHeaders: HttpHeaders? = null,
         requestBody: U,
-    ): T = execute(uri) { operations.exchange<T>(uri, HttpMethod.POST,
-        HttpEntity(requestBody, httpHeaders)) }
+    ): T =
+        execute(uri) {
+            operations.exchange<T>(
+                uri,
+                HttpMethod.POST,
+                HttpEntity(requestBody, httpHeaders),
+            )
+        }
 
     inline fun <reified T : Any, reified U : Any> patchForEntity(
         uri: URI,
         httpHeaders: HttpHeaders? = null,
         requestBody: U,
-    ): T = execute(uri) { operations.exchange<T>(uri, HttpMethod.PATCH,
-        HttpEntity(requestBody, httpHeaders)) }
+    ): T =
+        execute(uri) {
+            operations.exchange<T>(
+                uri,
+                HttpMethod.PATCH,
+                HttpEntity(requestBody, httpHeaders),
+            )
+        }
 
     @Suppress("UNCHECKED_CAST")
     private fun <T : Any> validerOgPakkUt(respons: ResponseEntity<T>): T {
         if (!respons.statusCode.is2xxSuccessful) {
-            throw HttpServerErrorException(respons.statusCode, "",
-                respons.body?.toString()?.toByteArray(), Charsets.UTF_8)
+            throw HttpServerErrorException(
+                respons.statusCode,
+                "",
+                respons.body?.toString()?.toByteArray(),
+                Charsets.UTF_8,
+            )
         }
         return respons.body as T
     }
